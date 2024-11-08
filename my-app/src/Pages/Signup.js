@@ -87,7 +87,7 @@ function Signup() {
 
                     <div className="flex flex-col items-center space-y-4"> 
                         <button type="submit"
-                                className="w-1/4 h-8 bg-zinc-100 hover:bg-zinc-200 rounded-2xl border border-black shadow-lg">
+                                className="w-1/3 h-8 bg-zinc-100 hover:bg-zinc-200 rounded-2xl border border-black shadow-lg">
                             Create Account
                         </button>
                     </div>
