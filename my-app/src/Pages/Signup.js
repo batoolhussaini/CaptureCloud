@@ -82,7 +82,7 @@ function Signup() {
                 {error && <p className="text-red-600 text-center mt-4 text-sm">{error}</p>}
             </div>
             <p className="mt-6 text-center">
-                Already have an account? <a href="/login" className="text-sky-500 hover:text-sky-600">Login here!</a>    
+                Already have an account? <a href="/login" className="text-sky-500 hover:text-sky-600 underline">Login here!</a>    
             </p>
         </div>
   );
