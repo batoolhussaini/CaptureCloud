@@ -3,6 +3,7 @@ import logo from '../Assets/Logo/Logo.png';
 import { useNavigate } from 'react-router-dom';
 
 function Signup() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
@@ -27,6 +28,16 @@ function Signup() {
             return;
         }
 
+        if (password1 == "") {
+            setError("")
+            return;
+        }
+
+        if (name == "") {
+            setError("")
+            return;
+        }
+
         setError("");
 
         navigate('/home')
@@ -43,7 +54,9 @@ function Signup() {
                             Full Name
                         </label>
                         <input type="full name" id="full name" placeholder="Type full name"
-                            className="w-full p-2 border border-gray-300 rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black" />
+                            className="w-full p-2 border border-gray-300 rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black" 
+                            value = {name} onChange={(e) => setName(e.target.value)} />
+
                     </div>
 
                     <div className="flex items-center">
