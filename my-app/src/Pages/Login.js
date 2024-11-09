@@ -27,7 +27,9 @@ function Login() {
     }
     return (
         <div className="bg-loginPage-bg h-screen flex flex-col items-center justify-center">
-            <img src={logo} alt="Logo" className="w-56 mb-16" />
+            <div className="absolute top-10">
+                <img src={logo} alt="Logo" className="w-56 mb-16" />
+            </div>
             <h1 className="text-4xl text-center mb-6">LOG IN</h1>
             <div className="bg-ccBlue p-16 rounded-3xl border border-black w-2/5 mx-auto shadow-lg">
             <form className="space-y-7" onSubmit={handleLogin} noValidate>
