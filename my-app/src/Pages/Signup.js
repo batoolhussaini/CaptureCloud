@@ -44,19 +44,21 @@ function Signup() {
     }
 
     return (
-        <div className="bg-loginPage-bg h-screen flex flex-col items-center justify-center">     
-            <div className="absolute top-10">
-                <img src={logo} alt="Logo" className="w-56 mb-16" />
+        <div style={{ backgroundColor: '#F0F0F0'}} className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8">     
+            <div className="fixed top-2 left-1/2 transform -translate-x-1/2 z-10">
+                <img src={logo} alt="Logo" className="w-40 sm:w-48 md:w-56 lg:w-64 xl:w-72" />
             </div>
-            <h1 className="text-4xl text-center mb-6">CREATE ACCOUNT</h1>    
+            <div className= "pt-28 sm:pt-32 md:pt-36 lg:pt-40">
+                <h1 className="text-4xl text-center mb-6">CREATE ACCOUNT</h1>    
+            </div>
             <div className="bg-ccBlue p-16 rounded-3xl border border-black w-2/5 mx-auto shadow-lg">
-            <form className="space-y-7" onSubmit={handleCreateAccount} noValidate>
+            <form className="space-y-6" onSubmit={handleCreateAccount} noValidate>
                     <div className="flex items-center">
                         <label htmlFor="full name" className="mr-10  w-32">
                             Full Name
                         </label>
                         <input type="full name" id="full name" placeholder="Type full name"
-                            className="w-full p-2 border border-gray-300 rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black" 
+                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
                             value = {name} onChange={(e) => setName(e.target.value)} />
 
                     </div>
@@ -66,7 +68,7 @@ function Signup() {
                             Email
                         </label>
                         <input type="email" id="email" placeholder="Type email address"
-                            className="w-full p-2 border border-gray-300 rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black" 
+                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
                             value = {email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="flex items-center">
@@ -74,7 +76,7 @@ function Signup() {
                             Password
                         </label>
                         <input type="password" id="password" placeholder="Type password"
-                            className="w-full p-2 border border-gray-300 rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black" 
+                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
                             value = {password1} onChange={(e) => setPassword1(e.target.value)} />
                     </div>
 
@@ -83,7 +85,7 @@ function Signup() {
                             Password
                         </label>
                         <input type="password" id="password" placeholder="Re-type password"
-                            className="w-full p-2 border border-gray-300 rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black" 
+                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
                             value = {password2} onChange={(e) => setPassword2(e.target.value)} />
                     </div>
 
