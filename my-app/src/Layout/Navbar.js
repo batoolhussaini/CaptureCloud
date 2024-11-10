@@ -6,7 +6,7 @@ import soldIcon from '../Assets/Icons/photo.png';
 import uploadIcon from '../Assets/Icons/Upload cloud.png';
 import trashIcon from '../Assets/Icons/Trash 3.png';
 import statsIcon from '../Assets/Icons/Pie chart.png';
-import albumsIcon from '../Assets/Icons/Trash 3.png';
+import albumsIcon from '../Assets/Icons/folder_filled.png';
 import logoutIcon from '../Assets/Icons/Log out.png';
 import line from '../Assets/Icons/Line 7.png';
 
