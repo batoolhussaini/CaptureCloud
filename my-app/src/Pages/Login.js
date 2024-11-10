@@ -11,13 +11,23 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
 
+        if(email == "") {
+            setError("please enter your email.")
+            return;
+        }
+
+        if (password == "") {
+            setError("please enter your password.")
+            return;
+        }
+
         if(email !== "janedoe@gmail.com") {
-            setError("Incorrect email or password.")
+            setError("incorrect email or password.")
             return;
         }
 
         if (password !== "fox245") {
-            setError("Incorrect email or password.")
+            setError("incorrect email or password.")
             return;
         }
 
@@ -40,7 +50,7 @@ function Login() {
                             Email
                         </label>
                         <input type="email" id="email" placeholder="Type email address"
-                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
+                            className={`w-full p-2 border ${(error === "please enter your email." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] italic`} 
                             value = {email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="flex items-center">
@@ -48,7 +58,7 @@ function Login() {
                             Password
                         </label>
                         <input type="password" id="password" placeholder="Type password"
-                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
+                            className={`w-full p-2 border ${(error === "please enter your password." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] italic`} 
                             value = {password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className="flex flex-col items-center space-y-4"> 

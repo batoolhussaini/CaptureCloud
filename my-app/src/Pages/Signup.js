@@ -18,23 +18,33 @@ function Signup() {
     const handleCreateAccount = (e) => {
         e.preventDefault();
 
+        if (name == "") {
+            setError("please enter your name.")
+            return;
+        }
+
+        if (email == "") {
+            setError("please enter your email.")
+            return;
+        }
+
         if(!validEmail(email)) {
             setError("invalid email address.")
             return;
         }
 
+        if (password1 == "") {
+            setError("please enter a password.")
+            return;
+        }
+
+        if (password2 == "") {
+            setError("please re-type your password.")
+            return;
+        }
+
         if (password1 !== password2) {
             setError("passwords don't match.")
-            return;
-        }
-
-        if (password1 == "") {
-            setError("")
-            return;
-        }
-
-        if (name == "") {
-            setError("")
             return;
         }
 
@@ -58,7 +68,7 @@ function Signup() {
                             Full Name
                         </label>
                         <input type="full name" id="full name" placeholder="Type full name"
-                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
+                            className={`w-full p-2 border ${error === "please enter your name." ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic`} 
                             value = {name} onChange={(e) => setName(e.target.value)} />
 
                     </div>
@@ -68,7 +78,7 @@ function Signup() {
                             Email
                         </label>
                         <input type="email" id="email" placeholder="Type email address"
-                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
+                            className={`w-full p-2 border ${(error === "please enter your email." || error === "invalid email address.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] italic`}
                             value = {email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="flex items-center">
@@ -76,7 +86,7 @@ function Signup() {
                             Password
                         </label>
                         <input type="password" id="password" placeholder="Type password"
-                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
+                            className={`w-full p-2 border ${(error === "please enter a password." || error === "passwords don't match.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] italic`} 
                             value = {password1} onChange={(e) => setPassword1(e.target.value)} />
                     </div>
 
@@ -85,7 +95,7 @@ function Signup() {
                             Password
                         </label>
                         <input type="password" id="password" placeholder="Re-type password"
-                            className="w-full p-2 border border-black rounded-2xl shadow-lg text-xs focus:outline-none  focus:ring-black focus:border-black bg-[#F5F5F5] italic" 
+                            className={`w-full p-2 border ${(error === "please re-type your password." || error === "passwords don't match.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] italic`} 
                             value = {password2} onChange={(e) => setPassword2(e.target.value)} />
                     </div>
 
