@@ -33,7 +33,7 @@ function Login() {
             <div className= "pt-28 sm:pt-32 md:pt-36 lg:pt-40">
                 <h1 className="text-4xl text-center mb-6">LOG IN</h1>
             </div>
-            <div className="bg-ccBlue p-16 rounded-3xl border border-black w-2/5 mx-auto shadow-lg">
+            <div className="bg-ccBlue p-16 rounded-3xl border border-black w-2/5 mx-auto shadow-lg flex flex-col justify-between max-h-[320px]">
             <form className="space-y-7" onSubmit={handleLogin} noValidate>
                     <div className="flex items-center">
                         <label htmlFor="email" className="mr-10  w-32">
