@@ -79,7 +79,7 @@ function Upload() {
         {images.map((image, index) => (
           <div key={index} className="relative">
             <img
-              src={image} alt={`Uploaded ${index + 1}`} className="h-48 w-48 object-cover border-2 border-gray-400 rounded-lg ml-2" />
+              src={image} alt={`Uploaded ${index + 1}`} className="h-48 w-48 object-cover border-2 border-gray-400 rounded-3xl ml-2" />
             
             <button
               onClick={() => handleDelete(image)} className="absolute top-0 right-0 text-black bg-white p-2 rounded-full hover:bg-gray-200"
