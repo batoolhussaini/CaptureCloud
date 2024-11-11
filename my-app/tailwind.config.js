@@ -13,6 +13,7 @@ module.exports = {
         'loginPage-bg': '#F0F0F0',
         'ccBlue': '#CEECF5',
         'loginPageB': 'F5F5F5',
+        'Navbar-c': '#FAFAFA'
       },
       fontFamily: {
         sans: ['Arial', 'Helvetica', 'sans-serif'], // This sets Arial as the default sans-serif font
