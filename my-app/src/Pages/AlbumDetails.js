@@ -12,7 +12,10 @@ import Button from '../UI/button';
 function AlbumDetails() {
   const { name } = useParams();  
   const [images, setImages] = useState([]); 
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);  
+  const [isUploaded, setIsUploaded] = useState(false); 
+  const [isUploadClicked, setIsUploadClicked] = useState(false); 
+  const [isSelected, setIsSelected] = useState(false); 
 
   const handleImageChange = (e) => {
     const files = e.target.files;
@@ -30,6 +33,7 @@ function AlbumDetails() {
 
       Promise.all(newImages).then((loadedImages) => {
         setImages((prevImages) => [...prevImages, ...loadedImages]);
+        setIsUploaded(true);  
       });
     }
   };
@@ -40,10 +44,16 @@ function AlbumDetails() {
 
   const handleRemoveAll = () => {
     setImages([]); 
+    setIsUploaded(false);  
   };
 
   const handleUploadClick = () => {
-    setIsVisible(false);
+    setIsVisible(false);  
+    setIsUploadClicked(true); 
+  };
+
+  const handleButtonClick = () => {
+    setIsSelected(!isSelected); 
   };
 
   return (
@@ -74,7 +84,7 @@ function AlbumDetails() {
           </div>
       
           <div className="flex-grow flex items-center justify-center mt-6">
-            {isVisible && (  // Only show the upload box if isVisible is true
+            {isVisible && (  
               <div className="border-2 border-dashed border-black rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center bg-[#F5F5F5]">
                 <img src={photoIcon} alt="Photo Icon" className="h-28 w-28" />
                 <div className="flex items-center space-x-2">
@@ -119,14 +129,12 @@ function AlbumDetails() {
       </div>
 
       {isVisible && images.length > 0 && (
-        <Button 
-          color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
-          children="Remove All" 
-          onClick={handleRemoveAll}
-        />
+        <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6">
+          Remove All
+        </button>
       )}
 
-      {isVisible && (
+      {isUploaded && !isUploadClicked && (
         <Button 
           color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
           icon={uploadIcon} 
@@ -134,6 +142,27 @@ function AlbumDetails() {
           onClick={handleUploadClick}
           className="fixed bottom-8 right-10 flex items-center justify-center"  
         />
+      )}
+
+      {isUploadClicked && (
+        <>
+          <img 
+            src={uploadIcon} 
+            alt="Uploaded Icon" 
+            className="absolute top-1/3 right-12 transform -translate-y-1/4 w-10 h-10 cursor-pointer"  
+            onClick={handleUploadClick}  
+          />
+          
+          <div className="absolute top-12 right-40 mt-6 mr-6">
+        <Button
+          onClick={handleButtonClick}
+          color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
+          className="fixed w-36 h-12"
+        >
+          <span>{isSelected ? 'Cancel' : 'Select'}</span>
+        </Button>
+          </div>
+        </>
       )}
     </div>
   );
