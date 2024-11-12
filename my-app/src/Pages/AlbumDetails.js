@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';  
+import { useParams, useNavigate } from 'react-router-dom';  
 import Navbar from '../Layout/Navbar';  
 import logo from '../Assets/Logo/Logo.png';  
 import folderIcon from '../Assets/Icons/Folder_blue.png'; 
@@ -8,9 +8,11 @@ import infoIcon from '../Assets/Icons/Info icon.png';
 import editIcon from '../Assets/Icons/Edit pencil.png';  
 import uploadIcon from '../Assets/Icons/Upload.png'; 
 import Button from '../UI/button';  
+import leftArrowIcon from '../Assets/Icons/Arrow left.png';  
 
 function AlbumDetails() {
   const { name } = useParams();  
+  const navigate = useNavigate();  
   const [images, setImages] = useState([]); 
   const [isVisible, setIsVisible] = useState(true);  
   const [isUploaded, setIsUploaded] = useState(false); 
@@ -84,6 +86,10 @@ function AlbumDetails() {
 
   const handleButtonClick = () => {
     setIsSelected(!isSelected); 
+  };
+
+  const handleBackClick = () => {
+    navigate('/albums'); 
   };
 
   return (
@@ -188,16 +194,23 @@ function AlbumDetails() {
           />
           
           <div className="absolute top-12 right-40 mt-6 mr-6">
-        <Button
-          onClick={handleButtonClick}
-          color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
-          className="fixed w-36 h-12"
-        >
-          <span>{isSelected ? 'Cancel' : 'Select'}</span>
-        </Button>
+            <Button
+              onClick={handleButtonClick}
+              color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
+              className="fixed w-36 h-12"
+            >
+              <span>{isSelected ? 'Cancel' : 'Select'}</span>
+            </Button>
           </div>
         </>
       )}
+
+     <div className="fixed left-40 top-20">
+        <img src={leftArrowIcon} alt="Back" 
+        className="w-10 h-10 cursor-pointer" 
+        onClick= {handleBackClick}
+        />
+      </div>
     </div>
   );
 }
