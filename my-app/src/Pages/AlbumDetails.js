@@ -119,11 +119,11 @@ function AlbumDetails() {
       </div>
 
       {isVisible && images.length > 0 && (
-        <Button 
-          color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
-          children="Remove All" 
-          onClick={handleRemoveAll}
-        />
+        images.length > 0 && (
+          <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6">
+            Remove All
+          </button>
+        )
       )}
 
       {isVisible && (
