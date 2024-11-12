@@ -17,24 +17,54 @@ function AlbumDetails() {
   const [isUploadClicked, setIsUploadClicked] = useState(false); 
   const [isSelected, setIsSelected] = useState(false); 
 
+  const maxImages = 10; 
+
   const handleImageChange = (e) => {
     const files = e.target.files;
     if (files) {
-      const fileArray = Array.from(files); 
-      const newImages = fileArray.map((file) => {
-        const reader = new FileReader();
-        return new Promise((resolve) => {
-          reader.onloadend = () => {
-            resolve(reader.result); 
-          };
-          reader.readAsDataURL(file);
-        });
-      });
+      const fileArray = Array.from(files);
+      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
 
-      Promise.all(newImages).then((loadedImages) => {
-        setImages((prevImages) => [...prevImages, ...loadedImages]);
-        setIsUploaded(true);  
-      });
+      if (invalidFiles.length > 0) {
+        alert("Please upload only image files.");
+        return;
+      }
+
+      if (images.length + fileArray.length > maxImages) {
+        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+        return;
+      }
+
+      setImages((prevImages) => [...prevImages, ...fileArray]);
+      setIsUploaded(true);  
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
+
+      if (invalidFiles.length > 0) {
+        alert("Please upload only image files.");
+        return;
+      }
+
+      if (images.length + fileArray.length > maxImages) {
+        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+        return;
+      }
+
+      setImages((prevImages) => [...prevImages, ...fileArray]);
+      setIsUploaded(true);  
     }
   };
 
@@ -85,7 +115,11 @@ function AlbumDetails() {
       
           <div className="flex-grow flex items-center justify-center mt-6">
             {isVisible && (  
-              <div className="border-2 border-dashed border-black rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center bg-[#F5F5F5]">
+              <div 
+                className="border-2 border-dashed border-black rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center bg-[#F5F5F5]"
+                onDragOver={handleDragOver} 
+                onDrop={handleDrop}
+              >
                 <img src={photoIcon} alt="Photo Icon" className="h-28 w-28" />
                 <div className="flex items-center space-x-2">
                   <p className="text-black text-3xl mt-6">
@@ -101,7 +135,7 @@ function AlbumDetails() {
                 <div className="flex items-center space-x-2">
                   <img src={infoIcon} alt="Information Icon" className="h-7 w-7"/>
                   <p className="text-black-500 text-lg">
-                    10 photos max 
+                    {maxImages} photos max
                   </p>
                 </div>
               </div>
@@ -112,7 +146,7 @@ function AlbumDetails() {
             {images.map((image, index) => (
               <div key={index} className="relative">
                 <img
-                  src={image} alt={`Uploaded ${index + 1}`} className="h-40 w-48 object-cover rounded-3xl ml-2 shadow-lg" />
+                  src={URL.createObjectURL(image)} alt={`Uploaded ${index + 1}`} className="h-40 w-48 object-cover rounded-3xl ml-2 shadow-lg" />
                 
                 {isVisible && (  
                   <button
