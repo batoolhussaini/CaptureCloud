@@ -64,26 +64,45 @@ function Statistics() {
         <Navbar />
       </div>
 
-      <div className="flex flex-col items-center justify-center mt-20">
+      <div className="flex flex-col items-center justify-center mt-1">
         <img src={logo} alt="Logo" className="mt-2 w-32" />
         <h1 className="text-4xl text-center mt-4">Statistics</h1>
       </div>
 
-      <div className="flex justify-center mt-12 w-50">
-        <Pie data={chartData[`chart${currentChart + 1}`]} />
+      <div className="flex justify-center items-center mx-80">
+        <Pie data={chartData[`chart${currentChart + 1}`]}/>
+        
       </div>
 
-      <div className="arrows-container flex justify-between w-full mt-4">
+      <div className="arrows-container flex justify-between w-full my-44">
         <button
           onClick={prevChart}
-          className="bg-gray-500 text-white p-2 rounded-full hover:bg-gray-700"
+          className="
+            text-blue-800 
+            border border-blue-800 
+            p-2 
+            rounded-full 
+            hover:bg-blue-800 
+            hover:text-white 
+            active:bg-blue-900 
+            active:text-white
+            ml-48 mt-8 w-12"
         >
           &lt;
         </button>
 
         <button
           onClick={nextChart}
-          className="bg-gray-500 text-white p-2 rounded-full hover:bg-gray-700"
+          className="
+            text-blue-800 
+            border border-blue-800 
+            p-2 
+            rounded-full 
+            hover:bg-blue-800 
+            hover:text-white 
+            active:bg-blue-900 
+            active:text-white
+            mr-32 mt-8 w-12"
         >
           &gt;
         </button>
