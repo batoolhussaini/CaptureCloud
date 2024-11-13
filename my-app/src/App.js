@@ -9,6 +9,7 @@ import Statistics from './Pages/Statistics';
 import Trash from './Pages/Trash';
 import Sold from './Pages/Sold';
 import Upload from './Pages/Upload';
+import AllTags from './Pages/AllTags';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/trash" element={<Trash />} />
         <Route path="/sold" element={<Sold />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/all-tags" component={<AllTags />} />
       </Routes>
     </Router>
   );
