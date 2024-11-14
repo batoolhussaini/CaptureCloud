@@ -23,7 +23,6 @@ function AlbumDetails() {
 
   const maxImages = 10;
 
-  // Handle file selection and validation
   const handleImageChange = (e) => {
     const files = e.target.files;
     if (files) {
@@ -45,13 +44,11 @@ function AlbumDetails() {
     }
   };
 
-  // Handle drag over event
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  // Handle drop event
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -124,8 +121,8 @@ function AlbumDetails() {
         </div>
 
         <div className="flex-1 p-6" 
-          onDragOver={handleDragOver}  // Added drag over event listener
-          onDrop={handleDrop}          // Added drop event listener
+          onDragOver={handleDragOver}  
+          onDrop={handleDrop}         
         >
           <div className="text-4xl text-left mt-2 ml-10 flex items-center space-x-4">
             <img src={folderIcon} alt="Folder Icon" className="w-12 h-12" />
