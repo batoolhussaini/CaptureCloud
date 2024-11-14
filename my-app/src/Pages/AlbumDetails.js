@@ -23,6 +23,7 @@ function AlbumDetails() {
 
   const maxImages = 10;
 
+  // Handle file selection and validation
   const handleImageChange = (e) => {
     const files = e.target.files;
     if (files) {
@@ -39,6 +40,33 @@ function AlbumDetails() {
         return;
       }
 
+      setImages((prevImages) => [...prevImages, ...fileArray]);
+      setIsUploaded(true);
+    }
+  };
+
+  // Handle drag over event
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  // Handle drop event
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
+      if (invalidFiles.length > 0) {
+        alert("Please upload only image files.");
+        return;
+      }
+      if (images.length + fileArray.length > maxImages) {
+        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+        return;
+      }
       setImages((prevImages) => [...prevImages, ...fileArray]);
       setIsUploaded(true);
     }
@@ -95,7 +123,10 @@ function AlbumDetails() {
           <img src={logo} alt="Logo" className="mt-2 w-32" />
         </div>
 
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6" 
+          onDragOver={handleDragOver}  // Added drag over event listener
+          onDrop={handleDrop}          // Added drop event listener
+        >
           <div className="text-4xl text-left mt-2 ml-10 flex items-center space-x-4">
             <img src={folderIcon} alt="Folder Icon" className="w-12 h-12" />
             <h2 className="text-[#6AABD2]">{decodeURIComponent(name)}</h2>
