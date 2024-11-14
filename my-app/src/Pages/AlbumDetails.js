@@ -114,7 +114,7 @@ function AlbumDetails() {
       <div className='fixed'>
         <Navbar />
       </div>
-      <h1 className="text-7xl text-center mb-6 text-[#6AABD2] mt-6">Albums</h1>
+      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6">Albums</h1>
       <div className="flex">
         <div className="flex justify-center">
           <img src={logo} alt="Logo" className="mt-2 w-32" />
@@ -150,10 +150,7 @@ function AlbumDetails() {
                 </div>
 
                 {images.length > 0 && (
-                <button 
-                 onClick={handleRemoveAll} 
-                 className="fixed bottom-8 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6 z-50"
-                >
+                <button onClick={handleRemoveAll} className="fixed bottom-1 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6 z-50">
                   Remove All
                 </button>
                 )}
@@ -167,7 +164,7 @@ function AlbumDetails() {
             )}
           </div>
 
-          <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[40px]">
+          <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[95px]">
             {images.map((image, index) => (
               <div key={index} className="relative">
                 <div
@@ -182,7 +179,7 @@ function AlbumDetails() {
                     <img
                       src={checkIcon}
                       alt="Checkmark"
-                      className="absolute top-3 left-40 w-6 h-6 z-10"  
+                      className="absolute top-3 left-40 w-6 h-5 z-10"  
                     />
                   )}
               
@@ -207,7 +204,7 @@ function AlbumDetails() {
           icon={uploadIcon} 
           children="Upload" 
           onClick={handleUploadClick}
-          className="fixed bottom-8 right-10 flex items-center justify-center"  
+          className="fixed bottom-3 right-10 flex items-center justify-center"  
         />
       )}
 
