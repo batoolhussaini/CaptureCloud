@@ -35,7 +35,7 @@ function Searchbar() {
     <div className="flex flex-col items-center mt-4">
       <div className="relative w-64">
         {/* Display Selected Tags */}
-        <div className="flex flex-wrap mb-2">
+        <div className="flex flex-wrap mb-2"> 
           {selectedTags.map((tag, index) => (
             <span key={index} className="bg-blue-200 text-blue-800 px-2 py-1 rounded-full mr-2 mb-2 flex items-center"> 
               {tag}
@@ -47,12 +47,13 @@ function Searchbar() {
         </div>
 
         {/* Search Input */}
+        
         <input
           type="text"
-          placeholder="Search tags..."
+          placeholder="doesnt fully work hehe"
           value={searchTerm}
           onChange={handleSearchChange}
-          className="w-full border border-blue-300 p-2 pl-90 rounded-full shadow-md focus:outline-none focus:border-blue-500"
+          className="w-full border-2 text-gray-500 text-c rounded-full p-1 border-text-c"
         />
 
         {/* Search Icon */}
@@ -89,7 +90,8 @@ function Searchbar() {
           </ul>
         )}
       </div>
-    </div>
+      </div>
+    
   );
 }
 
