@@ -15,7 +15,7 @@ function Home() {
     url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
     caption: '',
     tags: [],
-    isStarred: true,
+    isStarred: false,
   };
 
   // Open the first popup (Photo Details)
