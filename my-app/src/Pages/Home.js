@@ -155,13 +155,13 @@ function Home() {
               </p>
               <div className="flex justify-between">
                 <button
-                  onClick={() => setShowSoldMessage(false)} // Resume editing
+                  onClick={() => setShowSoldMessage(false)} // closes sold message
                   className="bg-[#BDD9E2] px-4 py-2 rounded-full font-medium"
                 >
                   Cancel
                 </button>
                 <button
-                  onClick={handleSoldPopup} // Exit without saving
+                  onClick={handleSoldPopup} // doesnt do anything yet
                   className="bg-greenButton-c px-4 py-2 rounded-full text-black font-medium"
                 >
                   Sold
