@@ -129,7 +129,7 @@ function AlbumDetails() {
             <h2 className="text-[#6AABD2]">{decodeURIComponent(name)}</h2>
 
             <button className="ml-4">
-              <img src={editIcon} alt="Edit Icon" className="w-7 h-8 cursor-pointer" />
+              <img src={editIcon} alt="Edit Icon" className="w-8 h-8 cursor-pointer" />
             </button>
           </div>
 
