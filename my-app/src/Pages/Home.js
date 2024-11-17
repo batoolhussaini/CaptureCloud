@@ -63,17 +63,31 @@ function Home() {
           <img src={logo} alt="Logo" className="mt-2 w-32" />
         </div>
 
-        <h1 className="text-5xl text-center mb-3 text-[#6AABD2] mt-6">Home</h1>
+        <h1 className="text-5xl font-medium text-center mb-3 text-text-c mt-6">Home</h1>
 
         {/* Searchbar */}
-        <div className="mt-8 flex flex-col items-center">
-          <div className="h-full rounded-lg flex items-center justify-center text-gray-800">
+        <div className="mt-4 flex flex-col items-center">
             <Searchbar />
-          </div>
         </div>
 
+        {/* Top Tags - HARDCODED */}
+        <div class = "flex flex-row mt-8 items-start justify-center gap-5"> 
+          <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">Top Tags</h2>
+          <button className = "bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">&#9733; Favourites</button>
+          <button className = "bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Nature</button>
+          <button className = "bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Summer</button>
+          <button className = "bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Beach</button>
+          <button className = "bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Animal</button>
+
+          <button className = "mb-4 text-xl text-[#016AC7] font-bold">All Tags &#10230;
+            {/* go to all tags here */}
+          </button>
+        </div>
+
+          
+
         {/* Image Box with Hover Effect */}
-        <div className="mt-8 flex flex-col items-center">
+        <div className="mt-10 flex flex-col items-center">
           <div
             className={`relative w-52 h-48 rounded-lg transform transition-transform duration-200 ${
               hovered ? 'scale-105' : ''
@@ -81,16 +95,16 @@ function Home() {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-                {/* Image Element */}
-    <img
-      src={selectedImage?.url || "https://via.placeholder.com/150"} // Use your image URL or a placeholder
-      alt="Preview"
-      className="relative w-52 h-48 rounded-lg transform transition-transform duration-200"
-    />
+          {/* Image Element */}
+            <img
+              src={selectedImage?.url || "https://via.placeholder.com/150"} // Use your image URL or a placeholder
+              alt="Preview"
+              className="relative w-52 h-48 rounded-lg transform transition-transform duration-200"
+            />
             {hovered && (
               <button
                 onClick={handleOpenPhotoDetails} // Show the initial popup
-                className="bg-[#BDD9E2] p-2 px-4 rounded-full shadow-md focus:outline-none focus:border-blue-500 absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
+                className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none focus:border-blue-500 absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
               >
                 Photo Details
               </button>
