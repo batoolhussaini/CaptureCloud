@@ -3,13 +3,14 @@ import Navbar from '../Layout/Navbar.js';
 import Searchbar from '../Layout/Searchbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import EditPopup from '../Layout/EditPopup.js';
+import InfoIcon from '../Assets/Icons/Info icon.png';
 
 function Home() {
   const [hovered, setHovered] = useState(false); // Hover state for image box
   const [showModal, setShowModal] = useState(false); // Initial popup modal state
   const [showEditPopup, setShowEditPopup] = useState(false); // Edit popup state
   const [selectedImage, setSelectedImage] = useState(null); // Selected image details
-
+  const [showSoldMessage, setShowSoldMessage] = useState(false);
   // Dummy image data for demonstration
   const dummyImage = {
     url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
@@ -40,7 +41,12 @@ function Home() {
     setShowModal(true); // Reopen the first popup to show updated details
   };
 
+  const handleSoldPopup = () => {
+    setShowSoldMessage(true);
+    //move to sold somehow lol..
+  }
   const handleDeleteImage = () => {
+    //DELETE FUNCTIONALITY...
     setShowEditPopup(false); // Close the EditPopup after deleting
   };
 
@@ -126,14 +132,44 @@ function Home() {
                 >
                   Edit
                 </button>
-                <button className="bg-ccBlue px-4 py-2 rounded-lg">
+                <button 
+                  onClick={() => setShowSoldMessage(true)}
+                  className="bg-ccBlue px-4 py-2 rounded-lg">
                   Sold
                 </button>
               </div>
             </div>
           </div>
         )}
-
+        {/* Sold Message */}
+        {showSoldMessage && (
+          <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm text-center">
+            
+              <h2 className="text-lg font-bold mb-4 flex items-center justify-center gap-3">
+              <img src={InfoIcon} className="w-10 h-10" alt="Info Icon" />
+                Mark Photo as Sold?
+              </h2>
+              <p className="text-gray-700 mb-4">
+                This photo will be moved to the Sold page and removed from Home. 
+              </p>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowSoldMessage(false)} // Resume editing
+                  className="bg-[#BDD9E2] px-4 py-2 rounded-full font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSoldPopup} // Exit without saving
+                  className="bg-greenButton-c px-4 py-2 rounded-full text-black font-medium"
+                >
+                  Sold
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* EditPopup Component */}
         {showEditPopup && (
           <EditPopup
