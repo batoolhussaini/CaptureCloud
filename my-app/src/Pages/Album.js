@@ -83,12 +83,13 @@ function Album() {
             <div 
               onClick={(e) => isSelected ? handleAlbumSelect(album.name, e) : null} 
               className={`cursor-pointer ${isSelected && selectedAlbums.includes(album.name) ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
+              style={{ marginTop: '47px' }} 
             >
               {isSelected && selectedAlbums.includes(album.name) && (
                 <img 
                   src={checkIcon} 
                   alt="Checkmark" 
-                  className="absolute top-2 right-2 w-8 h-8"
+                  className="absolute top-2 right-2 w-5 h-5"
                 />
               )}
 
@@ -97,7 +98,7 @@ function Album() {
                   <img 
                     src={album.icon} 
                     alt={album.name} 
-                    className="h-[279px] w-[300px]" 
+                    className="h-[189px] w-[240px]" 
                   />
                 </Link>
               )}
@@ -105,13 +106,14 @@ function Album() {
                 <img 
                   src={album.icon} 
                   alt={album.name} 
-                  className="h-[279px] w-[300px]" 
+                  className="h-[190px] w-[240px]" 
                 />
               )}
             </div>
             <span className="text-center text-blue-400">{album.name}</span> 
             </div>
         ))}
+
       </div>
 
       <div className="fixed top-12 right-40 mt-6 mr-6">
