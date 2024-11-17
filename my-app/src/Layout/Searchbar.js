@@ -32,10 +32,10 @@ function Searchbar() {
   };
 
   return (
-    <div className="flex flex-col items-center mt-4">
-      <div className="relative w-64">
+    <div className="flex flex-col items-center">
+      <div className="relative">
         {/* Display Selected Tags */}
-        <div className="flex flex-wrap mb-2"> 
+        <div className="flex flex-wrap"> 
           {selectedTags.map((tag, index) => (
             <span key={index} className="bg-blue-200 text-blue-800 px-2 py-1 rounded-full mr-2 mb-2 flex items-center"> 
               {tag}
@@ -47,13 +47,12 @@ function Searchbar() {
         </div>
 
         {/* Search Input */}
-        
         <input
           type="text"
           placeholder="doesnt fully work hehe"
           value={searchTerm}
           onChange={handleSearchChange}
-          className="w-full border-2 text-gray-500 text-c rounded-full p-1 border-text-c"
+          className="w-96 h-full border-2 text-gray-500 rounded-full px-5 py-1 border-text-c items-center justify-center text-center"
         />
 
         {/* Search Icon */}
@@ -72,7 +71,7 @@ function Searchbar() {
 
         {/* Dropdown List */}
         {searchTerm && (
-          <ul className="absolute mt-1 w-full bg-white border border-gray-100 rounded shadow-md max-h-40 overflow-y-auto">
+          <ul className="absolute border-2 mt-1 w-full bg-white border-text-c rounded-lg shadow-md max-h-40 overflow-y-auto z-50">
             {tags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())).length > 0 ? (
               tags.filter(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())).map((tag, index) => (
                 <li key={index} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">

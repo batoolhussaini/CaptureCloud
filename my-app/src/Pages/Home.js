@@ -67,7 +67,7 @@ function Home() {
 
         {/* Searchbar */}
         <div className="mt-8 flex flex-col items-center">
-          <div className="w-full h-13 -mt-13 bg-blue-200 border-2 border-gray-300 rounded-lg flex items-center justify-center text-gray-800">
+          <div className="h-full rounded-lg flex items-center justify-center text-gray-800">
             <Searchbar />
           </div>
         </div>
