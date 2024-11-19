@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
@@ -10,6 +10,7 @@ import uploadIcon from '../Assets/Icons/Upload.png';
 import Button from '../UI/button';
 import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import checkIcon from '../Assets/Icons/white_check.png';
+import { imageToString, getImages, saveImages, removeImages } from '../UI/photos'; 
 
 function AlbumDetails() {
   const { name } = useParams();
@@ -23,7 +24,17 @@ function AlbumDetails() {
 
   const maxImages = 10;
 
-  const handleImageChange = (e) => {
+  useEffect(() => {
+    const savedImages = getImages(name);
+    setImages(savedImages);
+  
+    if (savedImages.length > 0) {
+      setIsVisible(false); 
+      setIsUploadClicked(true); 
+    }
+  }, [name]);
+
+  const handleImageChange = async (e) => {
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files);
@@ -39,8 +50,17 @@ function AlbumDetails() {
         return;
       }
 
-      setImages((prevImages) => [...prevImages, ...fileArray]);
+      const newImages = [];
+      for (let file of fileArray) {
+        const base64 = await imageToString(file); 
+        newImages.push(base64);
+      }
+
+      const updatedImages = [...images, ...newImages];
+      setImages(updatedImages);
       setIsUploaded(true);
+
+      saveImages(name, updatedImages);
     }
   };
 
@@ -49,7 +69,7 @@ function AlbumDetails() {
     e.stopPropagation();
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     const files = e.dataTransfer.files;
@@ -64,8 +84,18 @@ function AlbumDetails() {
         alert(`You can only upload a maximum of ${maxImages} images at a time.`);
         return;
       }
-      setImages((prevImages) => [...prevImages, ...fileArray]);
+
+      const newImages = [];
+      for (let file of fileArray) {
+        const base64image = await imageToString(file); 
+        newImages.push(base64image);
+      }
+
+      const updatedImages = [...images, ...newImages];
+      setImages(updatedImages);
       setIsUploaded(true);
+
+      saveImages(name, updatedImages);
     }
   };
 
@@ -77,6 +107,8 @@ function AlbumDetails() {
     if (fileInput) {
       fileInput.value = ''; 
     }
+
+    removeImages(name);
   };
 
   const handleUploadClick = () => {
@@ -104,6 +136,8 @@ function AlbumDetails() {
     const updatedImages = images.filter((image) => !selectedImages.includes(image));
     setImages(updatedImages);
     setSelectedImages([]); 
+
+    saveImages(name, updatedImages);
   };
 
   return (
@@ -129,7 +163,7 @@ function AlbumDetails() {
             <h2 className="text-[#6AABD2]">{decodeURIComponent(name)}</h2>
 
             <button className="ml-4">
-              <img src={editIcon} alt="Edit Icon" className="w-8 h-8 cursor-pointer" />
+              <img src={editIcon} alt="Edit Icon" className="w-7 h-8 cursor-pointer" title="Edit Name" />
             </button>
           </div>
 
@@ -172,7 +206,7 @@ function AlbumDetails() {
                   className={`cursor-pointer ${isSelected && selectedImages.includes(image) ? 'border-4 border-yellow-200 rounded-2xl' : 'rounded-2xl'}`}
                   style={{
                     width: '12rem',
-                    height: '10.6rem',
+                    height: '10.5rem',
                   }}  
                 >
                   {isSelected && selectedImages.includes(image) && (
@@ -184,7 +218,7 @@ function AlbumDetails() {
                   )}
               
                   <img
-                    src={URL.createObjectURL(image)} 
+                    src={image}  
                     alt={`Uploaded ${index + 1}`} 
                     className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''}`}  
                     style={{
@@ -213,14 +247,14 @@ function AlbumDetails() {
           <img 
             src={uploadIcon} 
             alt="Uploaded Icon" 
-            className="absolute top-1/3 right-12 transform -translate-y-1/4 w-10 h-10 cursor-pointer"  
+            className="fixed top-1/3 right-12 transform -translate-y-5 w-10 h-10 cursor-pointer" title="Upload Photos"
             onClick={handleUploadClick}  
           />
           
           <div className="absolute top-12 right-40 mt-6 mr-6">
             <Button
               onClick={handleButtonClick}
-              color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
+              color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
               className="fixed w-36 h-12"
             >
               <span>{isSelected ? 'Cancel' : 'Select'}</span>
@@ -245,7 +279,7 @@ function AlbumDetails() {
         <img
           src={leftArrowIcon}
           alt="Back"
-          className="w-10 h-10 cursor-pointer"
+          className="w-10 h-10 cursor-pointer" title="Back to Albums"
           onClick={handleBackClick}
         />
       </div>

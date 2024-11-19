@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
-import plusIcon from '../Assets/Icons/Folder_add_duotone_fill.png'; 
+import folderPlusIcon from '../Assets/Icons/Folder_add_duotone_fill.png'; 
 import folderIcon from '../Assets/Icons/Folder_add_fill.png'; 
 import { Link } from 'react-router-dom'; 
 import Button from '../UI/button';  
@@ -47,11 +47,13 @@ function Album() {
     }
   };
 
-  const handleDeleteSelected = () => {
-    const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
-    setAlbums(updatedAlbums);
-    setSelectedAlbums([]); 
-  };
+ const handleDeleteSelected = () => {
+  const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
+  setAlbums(updatedAlbums);
+  setSelectedAlbums([]); 
+  localStorage.setItem('albums', JSON.stringify(updatedAlbums));
+};
+
 
   return (
     <div className="flex flex-col">
@@ -70,9 +72,9 @@ function Album() {
             disabled={isSelected} 
           >
             <img 
-              src={plusIcon} 
-              alt="Plus Icon" 
-              className="h-[300px] w-[300px]" 
+              src={folderPlusIcon} 
+              alt="Folder Plus Icon" 
+              className="h-[300px] w-[300px]"  title="New Album"
               style={{ opacity: isSelected ? 0.5 : 1 }} 
             />
           </button>
@@ -119,7 +121,7 @@ function Album() {
       <div className="fixed top-12 right-40 mt-6 mr-6">
         <Button
           onClick={handleButtonClick}
-          color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
+          color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
           className="w-36 h-12"
         >
           <span>{isSelected ? 'Cancel' : 'Select'}</span>
