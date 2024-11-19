@@ -47,11 +47,13 @@ function Album() {
     }
   };
 
-  const handleDeleteSelected = () => {
-    const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
-    setAlbums(updatedAlbums);
-    setSelectedAlbums([]); 
-  };
+ const handleDeleteSelected = () => {
+  const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
+  setAlbums(updatedAlbums);
+  setSelectedAlbums([]); 
+  localStorage.setItem('albums', JSON.stringify(updatedAlbums));
+};
+
 
   return (
     <div className="flex flex-col">
