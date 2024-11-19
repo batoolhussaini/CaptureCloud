@@ -88,7 +88,7 @@ function Trash() {
                 </Button>
             </div>
 
-            {isSelected && (
+            {isSelected && ( //will add to show up only when a photo is clicked, now just for demo purposes
                 <>
                     <div className="fixed bottom-20 left-1/2 transform -translate-x-40">
                         <Button
@@ -113,8 +113,8 @@ function Trash() {
                     <div className="absolute top-12 left-60 mt-10">
                     <span
                         onClick={handleSelectAll}
-                        className={`cursor-pointer underline text-blue-500 text-2xl ${isSelectAllActive ? 'font-bold' : ''} hover:text-2xl`}
-                    >
+                        className={`cursor-pointer underline text-blue-500 text-2xl ${isSelectAllActive ? 'font-bold' : 'hover:font-bold'}`}
+                        >
                         Select All
                     </span>
                 </div>
