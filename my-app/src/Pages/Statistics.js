@@ -10,7 +10,7 @@ import {
   Legend
 } from 'chart.js';
 import logo from '../Assets/Logo/Logo.png';
-import exportIcon from '../Assets/Icons/export_icon.png'; // Import your PNG icon here
+import exportIcon from '../Assets/Icons/export_icon.png';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 
@@ -25,7 +25,6 @@ function Statistics() {
     const fixedData = () => {
       const labels1 = ['Sold', 'Unsold'];
       const data1 = [37, 63];
-
       const labels2 = ['Nature', 'Wedding', 'Flower', 'Sunset', 'Garden'];
       const data2 = [15, 30, 25, 10, 20];
 
@@ -63,8 +62,8 @@ function Statistics() {
   const showSecondChart = () => setCurrentChart(1);
 
   const chartTitles = [
-    <>Sold vs Unsold Photos of <span className="text-[#6AABD2]">December 6, 2024</span></>,
-    <>Most Sold Photos by Tags As of <span className="text-[#6AABD2]">December 6, 2024</span></>
+    <>Sold vs Unsold Photos of December 6, 2024</>,
+    <>Most Sold Photos by Tags As of December 6, 2024</>
   ];
 
   return (
@@ -83,13 +82,15 @@ function Statistics() {
         <div className="text-2xl font-semibold mb-2 font-[Anek Bangla]">{chartTitles[currentChart]}</div>
 
         <div className="flex items-center space-x-4">
-          <button
-            onClick={showFirstChart}
-            className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
-            aria-label="Show First Chart"
-          >
-            &lt;
-          </button>
+          {currentChart > 0 && (
+            <button
+              onClick={showFirstChart}
+              className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
+              aria-label="Show First Chart"
+            >
+              &lt;
+            </button>
+          )}
 
           <div className="w-80 h-80">
             <Pie 
@@ -115,13 +116,15 @@ function Statistics() {
             />
           </div>
 
-          <button
-            onClick={showSecondChart}
-            className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
-            aria-label="Show Second Chart"
-          >
-            &gt;
-          </button>
+          {currentChart < 1 && (
+            <button
+              onClick={showSecondChart}
+              className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
+              aria-label="Show Second Chart"
+            >
+              &gt;
+            </button>
+          )}
         </div>
       </div>
 
@@ -130,8 +133,8 @@ function Statistics() {
           className="flex items-center justify-center bg-[#CEECF5] text-black font-[Anek Bangla] text-lg p-3 rounded-full shadow-lg hover:bg-[#A3D3E0] focus:outline-none transition"
           aria-label="Export"
         >
-          <img src={exportIcon} alt="Export Icon" className="w-6 h-6 ml-2 mr-2" /> {/* Added margin-right to icon */}
-          Export <span className="ml-3"></span> {/* Added margin-left to text */}
+          <img src={exportIcon} alt="Export Icon" className="w-6 h-6 ml-2 mr-2" />
+          Export <span className="ml-3"></span>
         </button>
       </div>
 
