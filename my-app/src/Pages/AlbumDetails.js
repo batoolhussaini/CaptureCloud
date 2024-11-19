@@ -163,7 +163,7 @@ function AlbumDetails() {
             <h2 className="text-[#6AABD2]">{decodeURIComponent(name)}</h2>
 
             <button className="ml-4">
-              <img src={editIcon} alt="Edit Icon" className="w-7 h-8 cursor-pointer" />
+              <img src={editIcon} alt="Edit Icon" className="w-7 h-8 cursor-pointer" title="Edit Name" />
             </button>
           </div>
 
@@ -206,7 +206,7 @@ function AlbumDetails() {
                   className={`cursor-pointer ${isSelected && selectedImages.includes(image) ? 'border-4 border-yellow-200 rounded-2xl' : 'rounded-2xl'}`}
                   style={{
                     width: '12rem',
-                    height: '10.6rem',
+                    height: '10.5rem',
                   }}  
                 >
                   {isSelected && selectedImages.includes(image) && (
@@ -247,14 +247,14 @@ function AlbumDetails() {
           <img 
             src={uploadIcon} 
             alt="Uploaded Icon" 
-            className="absolute top-1/3 right-12 transform -translate-y-1/4 w-10 h-10 cursor-pointer"  
+            className="fixed top-1/3 right-12 transform -translate-y-5 w-10 h-10 cursor-pointer" title="Upload Photos"
             onClick={handleUploadClick}  
           />
           
           <div className="absolute top-12 right-40 mt-6 mr-6">
             <Button
               onClick={handleButtonClick}
-              color="bg-[#D9D9D9] hover:bg-[#D0D8E9]" 
+              color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
               className="fixed w-36 h-12"
             >
               <span>{isSelected ? 'Cancel' : 'Select'}</span>
@@ -279,7 +279,7 @@ function AlbumDetails() {
         <img
           src={leftArrowIcon}
           alt="Back"
-          className="w-10 h-10 cursor-pointer"
+          className="w-10 h-10 cursor-pointer" title="Back to Albums"
           onClick={handleBackClick}
         />
       </div>
