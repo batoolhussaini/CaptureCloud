@@ -65,7 +65,7 @@ function Album() {
       </div>
       <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6">Albums</h1>  
 
-      <div className="flex flex-wrap mt-6 ml-40 justify-start gap-15">
+      <div className="flex flex-wrap mt-7 ml-40 justify-start gap-15">
         <div className="flex flex-col items-center space-y-2 w-1/4"> 
           <button 
             onClick={handlePlusClick} 
@@ -74,7 +74,7 @@ function Album() {
             <img 
               src={folderPlusIcon} 
               alt="Folder Plus Icon" 
-              className="h-[300px] w-[300px]"  title="New Album"
+              className="h-[180px] w-[210px] mt-8"  title="New Album"
               style={{ opacity: isSelected ? 0.5 : 1 }} 
             />
           </button>
@@ -100,7 +100,7 @@ function Album() {
                   <img 
                     src={album.icon} 
                     alt={album.name} 
-                    className="h-[189px] w-[240px]" 
+                    className="h-[170px] w-[210px] -mt-5" 
                   />
                 </Link>
               )}
@@ -108,7 +108,7 @@ function Album() {
                 <img 
                   src={album.icon} 
                   alt={album.name} 
-                  className="h-[190px] w-[240px]" 
+                  className="h-[170px] w-[210px] -mt-5" 
                 />
               )}
             </div>

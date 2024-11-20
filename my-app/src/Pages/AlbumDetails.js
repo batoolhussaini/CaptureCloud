@@ -159,11 +159,11 @@ function AlbumDetails() {
           onDrop={handleDrop}         
         >
           <div className="text-4xl text-left mt-2 ml-10 flex items-center space-x-4">
-            <img src={folderIcon} alt="Folder Icon" className="w-12 h-12" />
-            <h2 className="text-[#6AABD2]">{decodeURIComponent(name)}</h2>
+            <img src={folderIcon} alt="Folder Icon" className="w-10 h-10" />
+            <h2 className="text-[#6AABD2] text-3xl">{decodeURIComponent(name)}</h2>
 
             <button className="ml-4">
-              <img src={editIcon} alt="Edit Icon" className="w-7 h-8 cursor-pointer" title="Edit Name" />
+              <img src={editIcon} alt="Edit Icon" className="w-5 h-6 mt-0 cursor-pointer" title="Edit Name" />
             </button>
           </div>
 
@@ -247,7 +247,7 @@ function AlbumDetails() {
           <img 
             src={uploadIcon} 
             alt="Uploaded Icon" 
-            className="fixed top-1/3 right-12 transform -translate-y-5 w-10 h-10 cursor-pointer" title="Upload Photos"
+            className="fixed top-1/3 right-12 transform -translate-y-5 w-8 h-8 cursor-pointer" title="Upload Photos"
             onClick={handleUploadClick}  
           />
           
@@ -275,11 +275,11 @@ function AlbumDetails() {
         </div>
       )}
 
-      <div className="fixed left-40 top-20">
+      <div className="fixed left-48 top-20">
         <img
           src={leftArrowIcon}
           alt="Back"
-          className="w-10 h-10 cursor-pointer" title="Back to Albums"
+          className="w-8 h-8 mt-5 cursor-pointer" title="Back to Albums"
           onClick={handleBackClick}
         />
       </div>
