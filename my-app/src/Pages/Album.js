@@ -74,7 +74,7 @@ function Album() {
             <img 
               src={folderPlusIcon} 
               alt="Folder Plus Icon" 
-              className="h-[195px] w-[230px] mt-12"  title="New Album"
+              className="h-[195px] w-[225px] mt-12"  title="New Album"
               style={{ opacity: isSelected ? 0.5 : 1 }} 
             />
           </button>

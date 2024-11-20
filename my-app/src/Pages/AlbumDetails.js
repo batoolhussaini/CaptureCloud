@@ -163,11 +163,11 @@ function AlbumDetails() {
           onDrop={handleDrop}         
         >
           <div className="text-4xl text-left mt-2 ml-10 flex items-center space-x-4">
-            <img src={folderIcon} alt="Folder Icon" className="w-10 h-10" />
-            <h2 className="text-[#6AABD2] text-3xl">{decodeURIComponent(name)}</h2>
+            <img src={folderIcon} alt="Folder Icon" className="w-8 h-8" />
+            <h2 className="text-[#6AABD2] text-2xl">{decodeURIComponent(name)}</h2>
 
             <button className="ml-4">
-              <img src={editIcon} alt="Edit Icon" className="w-5 h-6 mt-0 cursor-pointer" title="Edit Name" />
+              <img src={editIcon} alt="Edit Icon" className="w-4 h-5 mt-0 cursor-pointer" title="Edit Name" />
             </button>
           </div>
 
@@ -178,7 +178,7 @@ function AlbumDetails() {
               >
                 <img src={photoIcon} alt="pic" className="h-28 w-28" />
                 <div className="flex items-center space-x-2">
-                  <p className="text-black text-3xl mt-6">
+                  <p className="text-black text-2xl mt-6">
                     Drag and drop, or
                   </p>
                   <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-3xl mt-6">
@@ -251,7 +251,7 @@ function AlbumDetails() {
           <img 
             src={uploadIcon} 
             alt="Uploaded Icon" 
-            className="fixed top-1/3 right-12 transform -translate-y-5 w-8 h-8 cursor-pointer" title="Upload Photos"
+            className="fixed top-1/3 right-12 transform -translate-y-5 w-7 h-7 cursor-pointer" title="Upload Photos"
             onClick={handleUploadClick}  
           />
           
@@ -271,7 +271,7 @@ function AlbumDetails() {
         <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 mt-6">
           <Button
             onClick={handleDeleteSelected}
-            color="bg-[#FF0000] hover:bg-[#D70000]"
+            color="bg-[#FF6666] hover:bg-[#e64a19]"
             className="w-36 h-12"
           >
             Delete Photos
@@ -283,7 +283,7 @@ function AlbumDetails() {
         <img
           src={leftArrowIcon}
           alt="Back"
-          className="w-8 h-8 mt-5 cursor-pointer" title="Back to Albums"
+          className="w-7 h-7 mt-5 cursor-pointer" title="Back to Albums"
           onClick={handleBackClick}
         />
       </div>
