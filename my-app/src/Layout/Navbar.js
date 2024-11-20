@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import profileIcon from '../Assets/Icons/account_circle.png';
 import homeIcon from '../Assets/Icons/Home.png';
-import homeSelectedIcon from '../Assets/Icons/Home-selected.png';
+import homeSelectedIcon from '../Assets/Icons/homeselected.png';
 import janeSelectedIcon from '../Assets/Icons/Jane-selected.png';
 import soldIcon from '../Assets/Icons/photo.png';
 import soldSelectedIcon from '../Assets/Icons/Sold-selected.png';
