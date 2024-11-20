@@ -21,13 +21,11 @@ function AlbumDetails() {
   const [isUploadClicked, setIsUploadClicked] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-
   const maxImages = 10;
 
   useEffect(() => {
     const savedImages = getImages(name);
     setImages(savedImages);
-  
     if (savedImages.length > 0) {
       setIsVisible(false); 
       setIsUploadClicked(true); 
@@ -39,27 +37,22 @@ function AlbumDetails() {
     if (files) {
       const fileArray = Array.from(files);
       const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
-
       if (invalidFiles.length > 0) {
         alert("Please upload only image files.");
         return;
       }
-
       if (images.length + fileArray.length > maxImages) {
         alert(`You can only upload a maximum of ${maxImages} images at a time.`);
         return;
       }
-
       const newImages = [];
       for (let file of fileArray) {
         const base64 = await imageToString(file); 
         newImages.push(base64);
       }
-
       const updatedImages = [...images, ...newImages];
       setImages(updatedImages);
       setIsUploaded(true);
-
       saveImages(name, updatedImages);
     }
   };
@@ -102,13 +95,10 @@ function AlbumDetails() {
   const handleRemoveAll = () => {
     setImages([]);
     setIsUploaded(false);
-
     const fileInput = document.getElementById('fileInput');
     if (fileInput) {
       fileInput.value = ''; 
-    }
-
-    removeImages(name);
+    } removeImages(name);
   };
 
   const handleUploadClick = () => {
@@ -132,14 +122,29 @@ function AlbumDetails() {
     }
   };
 
-  const handleDeleteSelected = () => {
-    const updatedImages = images.filter((image) => !selectedImages.includes(image));
-    setImages(updatedImages);
-    setSelectedImages([]); 
-
-    saveImages(name, updatedImages);
+  const deleteToTrash = (image) => {
+    try {
+      const trashImages = JSON.parse(localStorage.getItem('trash')) || [];
+      trashImages.push(image);  
+      localStorage.setItem('trash', JSON.stringify(trashImages));
+      const updatedImages = images.filter((img) => img !== image);
+      setImages(updatedImages); 
+      saveImages(name, updatedImages); 
+    } catch (e) { //once local storage is maxed out, it deletes any items in trash to free up space
+      if (e.name === 'QuotaExceededError') { 
+        localStorage.removeItem('trash');  
+      } 
+    }
   };
-
+  
+  const handleDeleteSelected = () => {
+    selectedImages.forEach((image) => deleteToTrash(image));  
+    setSelectedImages([]);  
+    const updatedImages = images.filter((img) => !selectedImages.includes(img));
+    setImages(updatedImages);  
+    saveImages(name, updatedImages);  
+  };
+  
   return (
     <div className="flex flex-col">
       <div className="flex justify-center">
@@ -215,7 +220,7 @@ function AlbumDetails() {
                       alt="Checkmark"
                       className="absolute top-3 left-40 w-6 h-5 z-10"  
                     />
-                  )}
+                  )} 
               
                   <img
                     src={image}  
