@@ -36,7 +36,7 @@ function Navbar() {
       <div className="flex items-center justify-center " style={{ paddingTop: '6vh' }}>
         <Link to="/account" className="flex items-center space-x-2 font-bold mr-4">
           {location.pathname === '/account' ? (
-            <div className="bg-selected h-12 w-24 flex items-center justify-center rounded-3xl">
+            <div className="bg-selected h-10 w-24 flex items-center justify-center rounded-3xl">
             <img src={janeSelectedIcon} alt="Profile" className="h-10 w-10" />
             <span className="ml-2 text-white">Jane</span>
           </div>
