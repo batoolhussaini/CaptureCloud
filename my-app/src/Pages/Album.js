@@ -61,11 +61,11 @@ function Album() {
         <Navbar />
       </div>
       <div className="flex justify-center">
-        <img src={logo} alt="Logo" className="mt-2 w-32" />
+        <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6">Albums</h1>  
+      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
 
-      <div className="flex flex-wrap mt-7 ml-40 justify-start gap-15">
+      <div className="flex flex-wrap mt-7 ml-40 justify-start gap-15 ">
         <div className="flex flex-col items-center space-y-2 w-1/4"> 
           <button 
             onClick={handlePlusClick} 
@@ -132,7 +132,7 @@ function Album() {
         <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 mt-6">
           <Button
             onClick={handleDeleteSelected}
-            color="bg-[#FF0000] hover:bg-[#D70000]" 
+            color="bg-[#FF6666] hover:bg-[#e64a19]" 
             className="w-36 h-12"
           >
             Delete Albums

@@ -9,7 +9,7 @@ function Statistics() {
        <Navbar /> 
      </div>
      <div className="flex justify-center">
-       <img src={logo} alt="Logo" className="mt-2 w-32" />
+       <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
      </div>
     
    </div>

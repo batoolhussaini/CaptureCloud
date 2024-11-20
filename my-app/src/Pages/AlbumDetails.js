@@ -181,14 +181,14 @@ function AlbumDetails() {
                   <p className="text-black text-2xl mt-6">
                     Drag and drop, or
                   </p>
-                  <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-3xl mt-6">
+                  <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-2xl mt-6">
                     select
                   </label>
                   <input id="fileInput" type="file" name="image" className="hidden" onChange={handleImageChange} multiple accept="image/*"/>
                 </div>
 
                 {images.length > 0 && (
-                <button onClick={handleRemoveAll} className="fixed bottom-1 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6 z-50">
+                <button onClick={handleRemoveAll} className="fixed bottom-1 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6 z-50">
                   Remove All
                 </button>
                 )}

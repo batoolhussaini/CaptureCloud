@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import profileIcon from '../Assets/Icons/account_circle.png';
 import homeIcon from '../Assets/Icons/Home.png';
-import homeSelectedIcon from '../Assets/Icons/homeselected.png';
-import janeSelectedIcon from '../Assets/Icons/Jane-selected.png';
+import homeSelectedIcon from '../Assets/Icons/home-s.png';
+import janeSelectedIcon from '../Assets/Icons/jane-s.png';
 import soldIcon from '../Assets/Icons/photo.png';
-import soldSelectedIcon from '../Assets/Icons/Sold-selected.png';
+import soldSelectedIcon from '../Assets/Icons/sold-s.png';
 import uploadIcon from '../Assets/Icons/Upload cloud.png';
-import uploadSelectedIcon from '../Assets/Icons/Upload-selected.png';
+import uploadSelectedIcon from '../Assets/Icons/upload-s.png';
 import trashIcon from '../Assets/Icons/Trash 3.png';
-import trashSelectedIcon from '../Assets/Icons/Trash-selected.png';
+import trashSelectedIcon from '../Assets/Icons/trash-s.png';
 import statsIcon from '../Assets/Icons/Pie chart.png';
-import statsSelectedIcon from '../Assets/Icons/Stats-selected.png';
+import statsSelectedIcon from '../Assets/Icons/stats-s.png';
 import albumsIcon from '../Assets/Icons/folder_filled.png';
-import albumsSelectedIcon from '../Assets/Icons/Album-selected.png';
+import albumsSelectedIcon from '../Assets/Icons/album-s.png';
 import logoutIcon from '../Assets/Icons/Log out.png';
 import line from '../Assets/Icons/Line 7.png';
 import chevronRightIcon from '../Assets/Icons/Chevron right.png';  
@@ -37,7 +37,7 @@ function Navbar() {
         <Link to="/account" className="flex items-center space-x-2 font-bold mr-4">
           {location.pathname === '/account' ? (
             <div className="bg-selected h-10 w-24 flex items-center justify-center rounded-3xl">
-            <img src={janeSelectedIcon} alt="Profile" className="h-10 w-10" />
+            <img src={janeSelectedIcon} alt="Profile" style={{ height: '5vh', width: '5vh' }}/>
             <span className="ml-2 text-white">Jane</span>
           </div>
           ) : (
@@ -53,7 +53,7 @@ function Navbar() {
       <Link to="/home" className="flex items-center space-x-2 ml-8 hover:font-bold">
       {location.pathname === '/home' ? (
         <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
-          <img src={homeSelectedIcon} alt="Home" className="h-6 w-6" />
+          <img src={homeSelectedIcon} alt="Home" style={{ height: '3vh', width: '3vh' }} />
           <span className="ml-2 text-white">Home</span>
         </div>
       ) : (
@@ -68,7 +68,7 @@ function Navbar() {
         <Link to="/sold" className="flex items-center space-x-2 ml-8 hover:font-bold">
           {location.pathname === '/sold' ? (
             <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
-            <img src={soldSelectedIcon} alt="Sold" className="h-6 w-6" />
+            <img src={soldSelectedIcon} alt="Sold" style={{ height: '3vh', width: '3vh' }}/>
             <span className="ml-2 text-white">Sold</span>
           </div>
           ) : (
@@ -82,7 +82,7 @@ function Navbar() {
         <Link to="/upload" className="flex items-center space-x-2 ml-8 hover:font-bold">
           {location.pathname === '/upload' ? (
             <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
-            <img src={uploadSelectedIcon} alt="Upload" className="h-6 w-6" />
+            <img src={uploadSelectedIcon} alt="Upload" style={{ height: '3vh', width: '3vh' }} />
             <span className="ml-2 text-white">Upload</span>
           </div>
           ) : (
@@ -106,7 +106,7 @@ function Navbar() {
                   }}                
                 />
                 <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl">
-                  <img src={albumsSelectedIcon} alt="Album" className="h-6 w-6" />
+                  <img src={albumsSelectedIcon} alt="Album" style={{ height: '3vh', width: '3vh' }} />
                   <span className="ml-2 text-white">Albums</span>
                 </div>
               </div>
@@ -119,14 +119,14 @@ function Navbar() {
           </Link>
 
 
-        <div className="flex items-center justify-center hover:font-bold">
+        <div className="flex items-center justify-center hover:font-bold ml-2">
           <img src={line} alt="Separator" />
         </div>
 
         <Link to="/statistics" className="flex items-center space-x-2 ml-8 hover:font-bold">
           {location.pathname === '/statistics' ? (
             <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-2vh)' }}>
-              <img src={statsSelectedIcon} alt="Statistics" className="h-6 w-6" />
+              <img src={statsSelectedIcon} alt="Statistics" style={{ height: '3vh', width: '3vh' }} />
               <span className="ml-2 text-white">Statistics</span>
             </div>
           ) : (
@@ -140,7 +140,7 @@ function Navbar() {
         <Link to="/trash" className="flex items-center space-x-2 ml-8 hover:font-bold">
           {location.pathname === '/trash' ? (
             <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
-              <img src={trashSelectedIcon} alt="Trash" className="h-6 w-6" />
+              <img src={trashSelectedIcon} alt="Trash" style={{ height: '3vh', width: '3vh' }} />
               <span className="ml-2 text-white">Trash</span>
             </div>
           ) : (
