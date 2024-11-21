@@ -48,8 +48,8 @@ function Trash() {
 
   const handlePermanentDelete = (imageToDelete = null) => {
     const updatedTrash = imageToDelete 
-      ? deletedImages.filter(image => image !== imageToDelete) 
-      : deletedImages.filter(image => !selectedImages.includes(image)); 
+      ? deletedImages.filter(image => image !== imageToDelete)
+      : deletedImages.filter(image => !selectedImages.includes(image));
     localStorage.setItem('trash', JSON.stringify(updatedTrash));
     setDeletedImages(updatedTrash);
     setSelectedImages([]);
@@ -99,9 +99,8 @@ function Trash() {
                   <img
                     src={fullScreenIcon}
                     alt="Expand"
+                    title="View fullscreen" 
                     className="absolute top-2 left-2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
-                    title="Expand photo" 
-
                   />
                 )}
 
