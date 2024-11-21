@@ -268,8 +268,8 @@ function AlbumDetails() {
       )}
 
       {isSelected && selectedImages.length > 0 && (
-        <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 mt-6">
-          <Button
+        <div className="fixed bottom-16 left-[45%] transform -translate-x-1/2 mt-6">
+        <Button
             onClick={handleDeleteSelected}
             color="bg-[#FF6666] hover:bg-[#e64a19]"
             className="w-36 h-12"
