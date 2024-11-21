@@ -118,7 +118,7 @@ function Album() {
 
       </div>
 
-      <div className="fixed top-12 right-40 mt-6 mr-6">
+      <div className="fixed top-12 right-40 mt-14 mr-6">
         <Button
           onClick={handleButtonClick}
           color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 

@@ -144,15 +144,17 @@ function AlbumDetails() {
     setImages(updatedImages);  
     saveImages(name, updatedImages);  
   };
+  
   return (
     <div className="flex flex-col">
-      <div className="flex justify-center">
-        <img src={logo} alt="Logo" className="mt-2 w-32" />
-      </div>
       <div className='fixed'>
         <Navbar />
       </div>
-      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6">Albums</h1>
+      <div className="flex justify-center">
+        <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
+      </div>
+      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
+
       <div className="flex">
         <div className="flex justify-center">
           <img src={logo} alt="Logo" className="mt-2 w-32" />

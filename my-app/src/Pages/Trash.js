@@ -120,7 +120,7 @@ function Trash() {
         <p className="ml-32 text-center">No deleted images.</p>
       )}
 
-      <div className="absolute top-12 right-40 mt-6 mr-6">
+      <div className="absolute top-12 right-40 mt-14 mr-6">
         <Button
           onClick={handleButtonClick}
           color="bg-[#D9D9D9] hover:bg-[#B0B0B0]"

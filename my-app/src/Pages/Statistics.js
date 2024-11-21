@@ -72,12 +72,12 @@ function Statistics() {
         <Navbar /> 
       </div>
 
-      <div className="flex justify-center mt-2">
-        <img src={logo} alt="Logo" className="w-32" />
+      <div className="flex justify-center">
+        <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
 
-      <div className="flex flex-col items-center justify-center w-full p-8 mt-2">
-        <h1 className="text-7xl text-center mb-2 text-[#6AABD2] font-[Anek Bangla]">Statistics</h1>
+      <div className="flex flex-col items-center justify-center w-full p-2 ml-20"> 
+        <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-4 ml-25">Statistics</h1>
 
         <div className="text-2xl font-semibold mb-2 font-[Anek Bangla]">{chartTitles[currentChart]}</div>
 
