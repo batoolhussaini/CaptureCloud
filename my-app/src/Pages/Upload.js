@@ -8,11 +8,13 @@ import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
 import Button from '../UI/button.js';
 import Popup from '../UI/Popup.js'; 
+import Confirmation from '../UI/Confirmation.js'; // Make sure the path is correct
 
 function Upload() {
   const [images, setImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false); // State to control Confirmation popup
   const [currentImage, setCurrentImage] = useState(null);
   const maxImages = 10;
   const navigate = useNavigate();
@@ -43,7 +45,12 @@ function Upload() {
   };
 
   const handleUpload = () => {
-    setImages([]);
+    setIsConfirmationOpen(true); // Open the confirmation popup
+  };
+
+  const handleConfirmationClose = () => {
+    setIsConfirmationOpen(false);
+    setImages([]); // Clear images and navigate after closing the popup
     navigate('/home');
   };
 
@@ -79,6 +86,7 @@ function Upload() {
 
       <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
 
+      {/* Image Drop Zone */}
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
           className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
@@ -104,6 +112,7 @@ function Upload() {
         </div>
       </div>
 
+      {/* Image Previews */}
       <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12">
         {images.map((image, index) => (
           <div key={index} className="relative grid grid-cols-6 gap-2">
@@ -127,6 +136,7 @@ function Upload() {
         ))}
       </div>
 
+      {/* Control Buttons */}
       {images.length > 0 && (
         <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
           Remove All
@@ -143,13 +153,21 @@ function Upload() {
         />
       )}
 
-    <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
-      <img 
-        src={currentImage ? URL.createObjectURL(currentImage) : ''} 
-        alt="Current" 
-        className=""
-      />
-    </Popup>
+      {/* Popups */}
+      <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
+        <img 
+          src={currentImage ? URL.createObjectURL(currentImage) : ''} 
+          alt="Current" 
+          className=""
+        />
+      </Popup>
+
+      {isConfirmationOpen && (
+        <Confirmation 
+          message="Photo(s) Successfully Uploaded" 
+          onConfirm={handleConfirmationClose}
+        />
+      )}
 
     </div>
   );
