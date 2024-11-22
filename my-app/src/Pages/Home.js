@@ -18,19 +18,19 @@ function Home() {
     {
       url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
       caption: '',
-      tags: [],
+      tags: ['cat'],
       isStarred: false,
     },
     {
       url: 'https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68',
       caption: '',
-      tags: [],
+      tags: ['nature'],
       isStarred: false,
     },
     {
       url: 'https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s',
       caption: '',
-      tags: [],
+      tags: ['nature', 'water'],
       isStarred: false,
     }
     // Add more dummy images as needed
@@ -113,7 +113,7 @@ function Home() {
         </div>
 
         {/* Image Boxes */}
-        <div className="mt-10 grid grid-cols-5 gap-3 justify-items-center">
+        <div className="flex flex-row mt-8 items-start justify-center gap-5">
           {images.map((image, index) => (
             <div
               key={index}
