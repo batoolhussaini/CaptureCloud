@@ -10,7 +10,10 @@ function Home() {
   const [showModal, setShowModal] = useState(false); // Initial popup modal state
   const [showEditPopup, setShowEditPopup] = useState(false); // Edit popup state
   const [selectedImage, setSelectedImage] = useState(null); // Selected image details
-  const [showSoldMessage, setShowSoldMessage] = useState(false);
+  const [showSoldMessage, setShowSoldMessage] = useState(false); 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+
   // Dummy image data for demonstration
   const dummyImage = {
     url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
@@ -50,6 +53,10 @@ function Home() {
     setShowEditPopup(false); // Close the EditPopup after deleting
   };
 
+  const handleToggleExpand = () => {
+    setIsExpanded((prev) => !prev); // Toggle expand state
+  };
+  
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -115,7 +122,7 @@ function Home() {
         {/* Initial Popup Modal */}
         {showModal && (
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg w-96 shadow-lg relative">
+            <div className="bg-white p-10 rounded-lg w-100 shadow-lg relative">
               {/* Close Button */}
               <button
                 onClick={() => setShowModal(false)}
@@ -128,7 +135,7 @@ function Home() {
       <img
         src={selectedImage.url}
         alt="Photo details"
-        className="w-full rounded-lg mb-4"
+        className="max-w-full max-h-[80vh] object-contain rounded-lg mb-4"
       />
       <div className="flex items-center mb-4">
         {selectedImage.isStarred && (
@@ -142,13 +149,13 @@ function Home() {
               <div className="flex justify-between">
                 <button
                   onClick={handleOpenEditPopup} // Open EditPopup
-                  className="bg-ccBlue px-4 py-2 rounded-lg"
+                  className="bg-ccBlue px-4 py-2 rounded-full font-medium"
                 >
                   Edit
                 </button>
                 <button 
                   onClick={() => setShowSoldMessage(true)}
-                  className="bg-ccBlue px-4 py-2 rounded-lg">
+                  className="bg-ccBlue px-4 py-2 rounded-full font-medium">
                   Sold
                 </button>
               </div>
