@@ -1,94 +1,84 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import photoIcon from '../Assets/Icons/Photo symbol.png';
 import infoIcon from '../Assets/Icons/Info icon.png';
 import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
-import Button from '../UI/button.js'; // Import the Button component
+import Button from '../UI/button.js';
+import Popup from '../UI/Popup.js'; 
 
 function Upload() {
-  const [images, setImages] = useState([]); // Store file objects
-  const [dragOver, setDragOver] = useState(false); // State to track drag over
+  const [images, setImages] = useState([]);
+  const [dragOver, setDragOver] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
   const maxImages = 10;
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
-  // Modify handleImageChange to accept files directly
   const handleImageChange = (files) => {
     if (files) {
       const fileArray = Array.from(files);
-      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
+      const invalidFiles = fileArray.filter(file => !file.type.startsWith('image/'));
 
       if (invalidFiles.length > 0) {
         alert("Please upload only image files.");
         return;
       }
       if (images.length + fileArray.length > maxImages) {
-        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+        alert(`You can only upload a maximum of ${maxImages} images.`);
         return;
       }
-
-      // Add new files to the images state
-      setImages((prevImages) => [...prevImages, ...fileArray]);
-
-      // Reset the file input after handling the change
-      const fileInput = document.getElementById('fileInput');
-      if (fileInput) {
-        fileInput.value = ''; // Reset the file input so the same file can be uploaded again
-      }
+      setImages(prevImages => [...prevImages, ...fileArray]);
     }
   };
 
   const handleDelete = (imageToDelete) => {
-    setImages((prevImages) => prevImages.filter((image) => image !== imageToDelete));
+    setImages(prevImages => prevImages.filter(image => image !== imageToDelete));
   };
 
   const handleRemoveAll = () => {
-    setImages([]); 
-    // Reset the file input when removing all images
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput) {
-      fileInput.value = ''; // Reset the file input
-    }
+    setImages([]);
   };
 
   const handleUpload = () => {
-    // Clear images first
     setImages([]);
-    // Then navigate to the home page
-    navigate('/home'); // Directly navigate to home without delay
+    navigate('/home');
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-    setDragOver(true); // Set dragOver to true when dragging over
+    setDragOver(true);
   };
 
   const handleDragLeave = () => {
-    setDragOver(false); // Revert dragOver to false when dragging leaves
+    setDragOver(false);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     const files = e.dataTransfer.files;
-    handleImageChange(files); // Pass the files directly to handleImageChange
-    setDragOver(false); // Reset dragOver to false after drop
+    handleImageChange(files);
+    setDragOver(false);
+  };
+
+  const togglePopup = (image) => {
+    setCurrentImage(image);
+    setIsPopupOpen(!isPopupOpen);
   };
 
   return (
     <div className="flex flex-col">
       <div className='fixed'>
-        <Navbar /> 
+        <Navbar />
       </div>
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
 
       <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
-      
+
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
           className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
@@ -127,7 +117,7 @@ function Upload() {
 
             <div className="col-span-1 flex justify-center items-start">
               <button 
-                onClick={() => handleDelete(image)} 
+                onClick={() => togglePopup(image)} 
                 className="text-black bg-white p-2 rounded-full hover:bg-gray-200"
               >
                 <img src={editIcon} alt="Edit Icon" className="h-4 w-4"/>
@@ -137,10 +127,8 @@ function Upload() {
         ))}
       </div>
 
-      <div className="h-28"></div> 
-
       {images.length > 0 && (
-        <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6">
+        <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
           Remove All
         </button>
       )}
@@ -150,12 +138,21 @@ function Upload() {
           color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
           icon={uploadIcon} 
           children="Upload" 
-          className="bottom-8 right-10"
-          onClick={handleUpload} // Trigger the handleUpload function when clicked
+          className="fixed bottom-8 right-10"
+          onClick={handleUpload}
         />
       )}
+
+    <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
+      <img 
+        src={currentImage ? URL.createObjectURL(currentImage) : ''} 
+        alt="Current" 
+        className=""
+      />
+    </Popup>
+
     </div>
-  );  
+  );
 }
 
 export default Upload;
