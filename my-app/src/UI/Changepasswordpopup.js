@@ -25,7 +25,7 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3}) => {
             <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-1/2 h-1/2 relative ml-32"> 
                 <h1 className="text-3xl text-center mb-4 mt-6">{title}</h1>
                 
-                <div className="mb-2 flex justify-center items-center mt-10">
+                <div className="mb-2 flex justify-center items-center mt-10 ">
                     <p className="text-m mr-4">{sub1}</p>
                     <input 
                         type="password"
