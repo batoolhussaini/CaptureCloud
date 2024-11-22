@@ -28,7 +28,7 @@ function Popup({ isOpen, handleClose, image }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg max-w-lg w-full mx-4 relative">
+      <div className="bg-white p-6 rounded-lg max-w-4xl w-full mx-4 relative">
         <button
           onClick={handleClose}
           className="absolute -right-5 -top-2 text-3xl text-white transform translate-x-full"
@@ -59,7 +59,7 @@ function Popup({ isOpen, handleClose, image }) {
               id="Tags"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              className="flex-1 px-3 py-2 border-2 border-[#6AABD2] rounded-3xl shadow-lg focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              className="w-2/3 px-3 py-2  border-2 border-[#6AABD2] rounded-3xl shadow-lg focus:outline-none focus:ring-indigo-500 sm:text-sm "
               placeholder="Add tags..."
             />
           </div>
@@ -76,7 +76,7 @@ function Popup({ isOpen, handleClose, image }) {
               maxLength="60"
             />
           </div>
-          <div className="flex justify-center space-x-32 mt-4">
+          <div className="flex justify-center space-x-32 mt-8">
             <button 
               onClick={handleSave}
               className="text-black rounded-3xl shadow-md bg-[#B1DEA5] hover:bg-[#8CBF7B] transition-color w-32 h-10"
