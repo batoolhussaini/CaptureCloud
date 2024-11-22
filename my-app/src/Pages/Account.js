@@ -15,7 +15,7 @@ function Account() {
   };
 
   const handleCloseValidation = () => {
-    setShowPopup(false); // This will set the popup's visibility to false, closing it.
+    setShowPopup(false); 
   };
 
   return (
@@ -58,8 +58,8 @@ function Account() {
           {showPopup && 
             <Popup 
               title="Change Password" 
-              sub1="Change Password" 
-              sub2="Current Password" 
+              sub1="Current Password" 
+              sub2="New Password" 
               sub3="New Password" 
               button="Confirm"
               onConfirm={handleCloseValidation}
