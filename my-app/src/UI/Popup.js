@@ -5,9 +5,8 @@ import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 function Popup({ isOpen, handleClose, image }) {
   const [tags, setTags] = useState('');
   const [caption, setCaption] = useState('');
-  const imageRef = useRef(null);  // Ref to hold the image element
-
-  // Example function handlers for Save and Delete buttons
+  const imageRef = useRef(null);  
+  
   const handleSave = () => {
     console.log("Saving data with Tags:", tags, "and Caption:", caption);
   };

@@ -3,9 +3,8 @@ import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 
 function Soldpopup({ isOpen, handleClose, image }) {
   const [caption, setCaption] = useState('');
-  const imageRef = useRef(null);  // Ref to hold the image element
+  const imageRef = useRef(null); 
 
-  // Example function handlers for Save and Delete buttons
   const handleSave = () => {
     console.log("Saving data with Caption:", caption);
   };

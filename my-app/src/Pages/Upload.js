@@ -8,13 +8,15 @@ import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
 import Button from '../UI/button.js';
 import Popup from '../UI/Popup.js'; 
-import Confirmation from '../UI/Confirmation.js'; // Make sure the path is correct
+import Confirmation from '../UI/Confirmation.js';
+import Validation from '../UI/Validation.js';
 
 function Upload() {
   const [images, setImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false); // State to control Confirmation popup
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isValidationOpen, setIsValidationOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const maxImages = 10;
   const navigate = useNavigate();
@@ -41,16 +43,23 @@ function Upload() {
   };
 
   const handleRemoveAll = () => {
+    if (images.length > 0) {
+      setIsValidationOpen(true); 
+    }
+  };
+
+  const confirmRemoveAll = () => {
     setImages([]);
+    setIsValidationOpen(false); 
   };
 
   const handleUpload = () => {
-    setIsConfirmationOpen(true); // Open the confirmation popup
+    setIsConfirmationOpen(true);
   };
 
   const handleConfirmationClose = () => {
     setIsConfirmationOpen(false);
-    setImages([]); // Clear images and navigate after closing the popup
+    setImages([]);
     navigate('/home');
   };
 
@@ -73,6 +82,10 @@ function Upload() {
   const togglePopup = (image) => {
     setCurrentImage(image);
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const handleCloseValidation = () => {
+    setIsValidationOpen(false);
   };
 
   return (
@@ -136,7 +149,7 @@ function Upload() {
         ))}
       </div>
 
-      {/* Control Buttons */}
+ 
       {images.length > 0 && (
         <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
           Remove All
@@ -168,6 +181,17 @@ function Upload() {
           onConfirm={handleConfirmationClose}
         />
       )}
+
+    {isValidationOpen && (
+        <Validation 
+            title="Remove All Photos?"
+            message="Are you sure you want to remove all photos on this page? The photos will be permanently removed."
+            onRed={confirmRemoveAll}
+            button1Text = "Resume Upload"
+            button2Text = "Remove"
+            onBlue = {handleCloseValidation}
+        />
+    )}
 
     </div>
   );
