@@ -78,14 +78,35 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
           alt="Edit Image"
           className="w-full rounded-lg mb-5"
         />
+
+
         {/* Star Image */}
-        <div className="mb-2">
+        <div className="mb-2 flex items-center justify-between">
           <button
             onClick={() => setIsStarred(!isStarred)}
             className={`text-3xl ${isStarred ? 'text-text-c' : 'text-gray-400'}`}
           >
             &#9733; {/* Star icon */}
           </button>
+
+        {/* Album Label and Dropdown */}
+        <form className="max-w-sm flex items-center space-x-2 m-3">
+          <label htmlFor="albums" className="text-gray-700 font-medium mt-1">
+            Album
+          </label>
+          <select
+            id="albums"
+            className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
+          >
+            <option value="" disabled selected>
+                Select an Album
+            </option>
+            <option value="2020">2020</option>
+            <option value="CA">Canada</option>
+            <option value="CAT">Cats</option>
+            <option value="OU">Outdoors</option>
+          </select>
+        </form>
         </div>
 
         {/* Tags and Caption Input */}
@@ -103,8 +124,11 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         </div>
 
         {/* Tags Input */}
+        <label className="block text-gray-700 font-medium">
+            Add Tags
+        </label>
         <div className="flex items-center mb-4">
-          <input
+        <input
             className="w-full border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
             placeholder="Add tags..."
             value={newTag}
