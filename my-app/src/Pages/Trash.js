@@ -152,7 +152,7 @@ function Trash() {
             </Button>
           </div>
 
-          <div className="absolute top-12 left-60 mt-10">
+          <div className="absolute top-20 left-60 mt-10">
             <span
               onClick={handleSelectAll}
               className={`cursor-pointer underline text-blue-500 text-2xl ${isSelectAllActive ? 'font-bold' : 'hover:font-bold'}`}

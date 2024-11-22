@@ -10,7 +10,7 @@ import uploadIcon from '../Assets/Icons/Upload.png';
 import Button from '../UI/button';
 import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import checkIcon from '../Assets/Icons/white_check.png';
-import { imageToString, getImages, saveImages, removeImages } from '../UI/photos'; 
+import { imageToString, getImages, saveImages, removeImages } from '../UI/photos';
 
 function AlbumDetails() {
   const { name } = useParams();
@@ -21,6 +21,8 @@ function AlbumDetails() {
   const [isUploadClicked, setIsUploadClicked] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState(0); 
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
   const maxImages = 10;
 
   useEffect(() => {
@@ -31,6 +33,19 @@ function AlbumDetails() {
       setIsUploadClicked(true); 
     }
   }, [name]);
+
+  const simulateUploadProgress = () => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (progress < 100) {
+        progress += 10;
+        setUploadProgress(progress);
+      } else {
+        clearInterval(interval);
+        setIsUploadComplete(true); 
+      }
+    }, 300); 
+  };
 
   const handleImageChange = async (e) => {
     const files = e.target.files;
@@ -46,10 +61,14 @@ function AlbumDetails() {
         return;
       }
       const newImages = [];
+
+      simulateUploadProgress();
+
       for (let file of fileArray) {
         const base64 = await imageToString(file); 
         newImages.push(base64);
       }
+
       const updatedImages = [...images, ...newImages];
       setImages(updatedImages);
       setIsUploaded(true);
@@ -79,6 +98,9 @@ function AlbumDetails() {
       }
 
       const newImages = [];
+
+      simulateUploadProgress();
+
       for (let file of fileArray) {
         const base64image = await imageToString(file); 
         newImages.push(base64image);
@@ -130,7 +152,7 @@ function AlbumDetails() {
       const updatedImages = images.filter((img) => img !== image);
       setImages(updatedImages); 
       saveImages(name, updatedImages); 
-    } catch (e) { //once local storage is maxed out, it deletes any items in trash to free up space
+    } catch (e) { 
       if (e.name === 'QuotaExceededError') { 
         localStorage.removeItem('trash');  
       } 
@@ -144,26 +166,26 @@ function AlbumDetails() {
     setImages(updatedImages);  
     saveImages(name, updatedImages);  
   };
-  
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative">
+      {uploadProgress > 0 && uploadProgress < 100 && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 z-50"></div>
+      )}
       <div className='fixed'>
         <Navbar />
       </div>
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
+      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>
 
       <div className="flex">
         <div className="flex justify-center">
           <img src={logo} alt="Logo" className="mt-2 w-32" />
         </div>
 
-        <div className="flex-1 p-6" 
-          onDragOver={handleDragOver}  
-          onDrop={handleDrop}         
-        >
+        <div className="flex-1 p-6" onDragOver={handleDragOver} onDrop={handleDrop}>
           <div className="text-4xl text-left mt-2 ml-10 flex items-center space-x-4">
             <img src={folderIcon} alt="Folder Icon" className="w-8 h-8" />
             <h2 className="text-[#6AABD2] text-2xl">{decodeURIComponent(name)}</h2>
@@ -175,9 +197,7 @@ function AlbumDetails() {
 
           <div className="flex-grow flex items-center justify-center mt-6">
             {isVisible && (
-              <div
-                className="border-2 border-dashed border-black rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center bg-[#F5F5F5]"
-              >
+              <div className="border-2 border-dashed border-black rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center bg-[#F5F5F5]">
                 <img src={photoIcon} alt="pic" className="h-28 w-28" />
                 <div className="flex items-center space-x-2">
                   <p className="text-black text-2xl mt-6">
@@ -186,13 +206,13 @@ function AlbumDetails() {
                   <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-2xl mt-6">
                     select
                   </label>
-                  <input id="fileInput" type="file" name="image" className="hidden" onChange={handleImageChange} multiple accept="image/*"/>
+                  <input id="fileInput" type="file" name="image" className="hidden" onChange={handleImageChange} multiple accept="image/*" />
                 </div>
 
                 {images.length > 0 && (
-                <button onClick={handleRemoveAll} className="fixed bottom-1 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6 z-50">
-                  Remove All
-                </button>
+                  <button onClick={handleRemoveAll} className="fixed bottom-2 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6 z-50">
+                    Remove All
+                  </button>
                 )}
                 <div className="flex items-center space-x-2">
                   <img src={infoIcon} alt="Information Icon" className="h-7 w-7" />
@@ -222,7 +242,7 @@ function AlbumDetails() {
                       className="absolute top-3 left-40 w-6 h-5 z-10"  
                     />
                   )}
-              
+
                   <img
                     src={image}  
                     alt={`Uploaded ${index + 1}`} 
@@ -231,6 +251,17 @@ function AlbumDetails() {
                       marginLeft: '-1px',  
                     }}
                   />
+
+                  {!isUploadClicked && (
+                    <button className="absolute top-2 right-1/4">
+                      <img
+                        src={editIcon} 
+                        alt="Edit Icon" 
+                        className="w-5 h-5 cursor-pointer" 
+                        title="Edit Photo"
+                      />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -270,7 +301,7 @@ function AlbumDetails() {
       )}
 
       {isSelected && selectedImages.length > 0 && (
-        <div className="fixed bottom-16 left-[45%] transform -translate-x-1/2 mt-6">
+        <div className="fixed bottom-16 left-[48%] transform -translate-x-1/2 mt-6">
         <Button
             onClick={handleDeleteSelected}
             color="bg-[#FF6666] hover:bg-[#e64a19]"
@@ -281,11 +312,26 @@ function AlbumDetails() {
         </div>
       )}
 
+    {uploadProgress > 0 && uploadProgress < 100 && (
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+        <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+          <div
+            className="bg-[#1E5F99] h-full"
+            style={{ width: `${uploadProgress}%` }}
+          />
+        </div>
+        <div className="absolute text-white font-semibold">
+          Uploading... {uploadProgress}%
+        </div>
+      </div>
+    )}
       <div className="fixed left-48 top-20">
         <img
           src={leftArrowIcon}
           alt="Back"
-          className="w-7 h-7 mt-5 cursor-pointer" title="Back to Albums"
+          className="w-7 h-7 mt-5 cursor-pointer"
+          title="Back to Albums"
           onClick={handleBackClick}
         />
       </div>
