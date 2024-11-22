@@ -22,7 +22,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   
   const handleSave = () => {
     const updatedDetails = {
-      caption, isStarred
+      caption, isStarred, tags
     };
     onSave(updatedDetails); // Pass updated details to parent
   };
