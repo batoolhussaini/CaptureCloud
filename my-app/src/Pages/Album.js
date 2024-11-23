@@ -13,7 +13,9 @@ function Album() {
 
   const [albums, setAlbums] = useState(() => {
     const savedAlbums = localStorage.getItem('albums');
-    return savedAlbums ? JSON.parse(savedAlbums) : [];
+    return savedAlbums ? JSON.parse(savedAlbums) : [
+      { name: "Flowers", icon: folderIcon } 
+    ];
   });
 
   const [selectedAlbums, setSelectedAlbums] = useState([]);
@@ -47,13 +49,12 @@ function Album() {
     }
   };
 
- const handleDeleteSelected = () => {
-  const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
-  setAlbums(updatedAlbums);
-  setSelectedAlbums([]); 
-  localStorage.setItem('albums', JSON.stringify(updatedAlbums));
-};
-
+  const handleDeleteSelected = () => {
+    const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
+    setAlbums(updatedAlbums);
+    setSelectedAlbums([]); 
+    localStorage.setItem('albums', JSON.stringify(updatedAlbums));
+  };
 
   return (
     <div className="flex flex-col">
@@ -80,6 +81,19 @@ function Album() {
           </button>
         </div>
 
+        <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
+        <Link to="/flowers">
+            <div className="cursor-pointer rounded-2xl">
+              <img 
+                src={folderIcon} 
+                alt="Flowers Album" 
+                className="h-[180px] w-[230px]" 
+              />
+            </div>
+          </Link>
+          <span className="text-center text-blue-400">Flowers</span>
+        </div>
+
         {albums.map((album) => (
           <div key={album.name} className="flex flex-col items-center space-y-50 p-4 w-1/4">
             <div 
@@ -100,7 +114,7 @@ function Album() {
                   <img 
                     src={album.icon} 
                     alt={album.name} 
-                    className="h-[180px] w-[230px] " 
+                    className="h-[180px] w-[230px]" 
                   />
                 </Link>
               )}
@@ -108,12 +122,12 @@ function Album() {
                 <img 
                   src={album.icon} 
                   alt={album.name} 
-                  className="h-[180px] w-[230px] " 
+                  className="h-[180px] w-[230px]" 
                 />
               )}
             </div>
             <span className="text-center text-blue-400">{album.name}</span> 
-            </div>
+          </div>
         ))}
 
       </div>

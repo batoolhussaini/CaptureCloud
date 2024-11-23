@@ -10,6 +10,7 @@ import Trash from './Pages/Trash';
 import Sold from './Pages/Sold';
 import Upload from './Pages/Upload';
 import AlbumDetails from './Pages/AlbumDetails';  
+import Flowers from './Pages/Flowers';
 
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
         <Route path="/sold" element={<Sold />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/album/:name" element={<AlbumDetails />} />  
+        <Route path="/Flowers" element={<Flowers />} />
+
       </Routes>
     </Router>
   );

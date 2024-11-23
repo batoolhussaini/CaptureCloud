@@ -6,11 +6,9 @@ function Soldpopup({ isOpen, handleClose, image }) {
   const imageRef = useRef(null); 
 
   const handleSave = () => {
-    console.log("Saving data with Caption:", caption);
   };
 
   const handleDelete = () => {
-    console.log("Deleting data");
   };
 
   const handleFullScreen = () => {

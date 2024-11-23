@@ -8,11 +8,9 @@ function Popup({ isOpen, handleClose, image }) {
   const imageRef = useRef(null);  
   
   const handleSave = () => {
-    console.log("Saving data with Tags:", tags, "and Caption:", caption);
   };
 
   const handleDelete = () => {
-    console.log("Deleting data");
   };
 
   const handleFullScreen = () => {
