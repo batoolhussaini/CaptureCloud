@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import phone from '../Assets/Icons/Phone.png';
 import uploadCloud from '../Assets/Icons/Upload cloud black.png';
-
+import Popup from '../UI/Changepasswordpopup.js'; 
 
 function Account() {
-  const name = "Jane Doe";
-  const email = "janedoe@gmail.com";
+  const [name] = useState("Jane Doe");
+  const [email] = useState("janedoe@gmail.com");
+  const [showPopup, setShowPopup] = useState(false);
 
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
-  return (  
+  const handleCloseValidation = () => {
+    setShowPopup(false); 
+  };
+
+  return (
     <div className="flex flex-col">
-       <div className='fixed'>
+      <div className='fixed'>
         <Navbar /> 
       </div>
       <div className="flex justify-center">
@@ -22,36 +30,47 @@ function Account() {
       <h1 className="text-5xl text-center mb-6 ml-32 text-[#6AABD2] mt-6">My Account</h1>  
 
       <div className="ml-32">
-      <div className="p-12 rounded-3xl border-2 border-black w-2/4 mx-auto  flex flex-col  justify-between min-h-[400px] mt-6 relative">
-        <div className="flex items-center mb-4">
-          <label htmlFor="name" className="mr-10 w-16 text-xl font-medium">
-            Name
-          </label>
-          <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-gray-700 drop-shadow-2xl border border-black">
-            {name}
+        <div className="p-12 rounded-3xl border-2 border-black w-2/4 mx-auto flex flex-col justify-between min-h-[400px] mt-6 relative">
+          <div className="flex items-center mb-4">
+            <label htmlFor="name" className="mr-10 w-16 text-xl font-medium">
+              Name
+            </label>
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-gray-700 drop-shadow-2xl border border-black">
+              {name}
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center mb-4">
-          <label htmlFor="email" className="mr-10 w-16 text-xl mt-4 font-medium">
-            Email
-          </label>
-          <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-gray-700 drop-shadow-2xl border border-black mt-6">
-            {email}
+          <div className="flex items-center mb-4">
+            <label htmlFor="email" className="mr-10 w-16 text-xl mt-4 font-medium">
+              Email
+            </label>
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-gray-700 drop-shadow-2xl border border-black mt-6">
+              {email}
+            </div>
           </div>
+
+          <button type="button"
+                  className="w-[280px] h-12 bg-[#CEECF5] hover:bg-[#B6D8E7] text-l rounded-2xl shadow-lg block mx-auto mt-6"
+                  onClick={togglePopup}>
+              Change Password
+          </button>
+
+          {showPopup && 
+            <Popup 
+              title="Change Password" 
+              sub1="Current Password" 
+              sub2="New Password" 
+              sub3="New Password" 
+              button="Confirm"
+              onConfirm={handleCloseValidation}
+            />
+          }
+
+          <button type="submit"
+                  className="w-[280px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-l rounded-2xl shadow-lg block mx-auto mt-6">
+              Delete Account
+          </button>
         </div>
-
-        <button type="submit"
-                className="w-[280px] h-12 bg-[#CEECF5] hover:bg-[#B6D8E7] text-l rounded-2xl shadow-lg block mx-auto mt-6">
-            Change Password
-        </button>
-
-        <button type="submit"
-                className="w-[280px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-l rounded-2xl shadow-lg block mx-auto mt-6">
-            Delete Account
-        </button>
-
-      </div>
       </div>
       
       <button className="absolute bottom-10 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline">
@@ -69,6 +88,6 @@ function Account() {
 
     </div>
   );
-  }
-  
-  export default Account;
+}
+
+export default Account;

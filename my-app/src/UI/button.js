@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Button component that accepts props for color, icon, button text, and additional Tailwind CSS classes
 const Button = ({ color, icon, children, onClick, className }) => {
     return (
         <button onClick={onClick} type="submit"
