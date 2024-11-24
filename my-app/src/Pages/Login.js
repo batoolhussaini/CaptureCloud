@@ -10,6 +10,10 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false); 
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [authCode, setAuthCode] = useState("");
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    
+
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -36,16 +40,30 @@ function Login() {
 
         setError("");
 
-        navigate('/home');
+        setIsPopupOpen(true);
     };
+
+    const handleAuthSubmit = () => {
+        if (authCode === "5748332") {
+            setIsPopupOpen(false); // Close popup on success
+            navigate('/home'); // Navigate to Home page
+        } else {
+            setError("Incorrect authentication code.");
+        }
+    };
+
+    const handleClosePopup = () => {
+        setIsPopupOpen(false); // Close the popup
+    };
+    
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8">
-            <div className="z-10 mt-[-109px]">
+            <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
                 <img src={logo} alt="Logo" className="w-36 sm:w-42 md:w-48 lg:w-56 xl:w-60" />
             </div>
-            <div className="sm:pt-6 md:pt-8 lg:pt-10">
-                <h1 className="text-4xl text-center mb-4 mt-[-10px]">LOG IN</h1>
+            <div className="sm:pt-6 md:pt-8 lg:pt-10 mt-32">
+                <h1 className="text-4xl text-center mb-3">LOG IN</h1>
             </div>
             <div className="bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between h-[280px]">
                 <form className="space-y-7" onSubmit={handleLogin} noValidate>
@@ -57,7 +75,7 @@ function Login() {
                             type="email"
                             id="email"
                             placeholder="Type email address"
-                            className={`w-full p-2 border ${(error === "please enter your email." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
+                            className={`w-full p-2 border ${(error === "please enter your email." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -70,7 +88,7 @@ function Login() {
                             type={showPassword ? "text" : "password"} 
                             id="password"
                             placeholder="Type password"
-                            className={`w-full p-2 border ${(error === "please enter your password." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
+                            className={`w-full p-2 border ${(error === "please enter your password." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -105,6 +123,36 @@ function Login() {
             </p>
 
             <div style={{ backgroundColor: '#F0F0F0' }} className="h-8"></div>
+            
+
+            {isPopupOpen && (
+                <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50">
+                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg  w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative">
+                        <button
+                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700"
+                            onClick={handleClosePopup}
+                        >
+                            x
+                        </button> 
+                        <h1 className="text-3xl text-center mb-4 mt-6">Two-Factor Authentication</h1>
+                        <div className="text-lg text-center mb-2">An email has been sent to {email}. Please enter the code from the email below:</div>
+                        <input
+                            type="text"
+                            className="w-full p-2 border rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] mt-4 mb-6"
+                            value={authCode}
+                            onChange={(e) => setAuthCode(e.target.value)}
+                            placeholder="Enter code"
+                        />
+                        <button
+                            onClick={handleAuthSubmit}
+                            className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block"
+                        >
+                            Done
+                        </button>
+                        {error && <p className="text-red-600 text-center mt-4 text-sm">{error}</p>}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -92,11 +92,11 @@ function Signup() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8">
-            <div className="z-10">
+            <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
                 <img src={logo} alt="Logo" className="w-36 sm:w-42 md:w-48 lg:w-56 xl:w-60" />
             </div>
-            <div className="sm:pt-6 md:pt-8 lg:pt-10 mt-[-10px]">
-                <h1 className="text-4xl text-center mb-4">SIGN UP</h1>
+            <div className="sm:pt-6 md:pt-8 lg:pt-10 mt-32">
+                <h1 className="text-4xl text-center mb-3">SIGN UP</h1>
             </div>
             <div
                 className={`bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between transition-all duration-300 ${
@@ -114,7 +114,7 @@ function Signup() {
                             placeholder="Type full name"
                             className={`w-full p-2 border ${
                                 error === "please enter your name." ? "border-red-500" : "border-black"
-                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
+                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
@@ -132,7 +132,7 @@ function Signup() {
                                 error === "please enter your email." || error === "invalid email address."
                                     ? "border-red-500"
                                     : "border-black"
-                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
+                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -149,7 +149,7 @@ function Signup() {
                                 className={`w-full p-2 border ${
                                     error === "please enter a password." || error === "passwords don't match." || error === "password does not meet the criteria."
                                         ? "border-red-500" : "border-black"
-                                } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
+                                } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
                                 value={password1}
                                 onChange={(e) => {
                                     setPassword1(e.target.value);
@@ -209,7 +209,7 @@ function Signup() {
                             className={`w-full p-2 border ${
                                 error === "please re-type your password." || error === "passwords don't match."
                                     ? "border-red-500" : "border-black"
-                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
+                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
                             value={password2}
                             onChange={(e) => setPassword2(e.target.value)}
                         />
