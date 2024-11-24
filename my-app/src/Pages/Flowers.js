@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
@@ -17,6 +17,7 @@ import pic5 from '../Assets/Photos/pic5.jpg';
 import pic6 from '../Assets/Photos/pic6.avif';
 
 function Flowers() {
+  useEffect(() => { document.title = 'Albums';});
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -48,7 +49,10 @@ function Flowers() {
   const handleDeleteSelected = () => {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
     setFlowers(updatedFlowers);
-    setSelectedImages([]); 
+    const currentTrash = JSON.parse(localStorage.getItem('trash')) || [];
+    const newTrash = [...currentTrash, ...selectedImages];
+    localStorage.setItem('trash', JSON.stringify(newTrash));
+    setSelectedImages([]);
   };
 
   return (
@@ -59,7 +63,7 @@ function Flowers() {
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
 
 
       <div className="flex">
@@ -152,8 +156,12 @@ function Flowers() {
             alt="Uploaded Icon" 
             className="fixed top-1/3 right-12 transform -translate-y-5 w-7 h-7 cursor-pointer" title="Upload Photos" onClick={handleUploadClick}  
           />
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 text-medium">
+          Total Photos: {flowers.length}
+        </div>
       </div>
     </div>
+    
   );
 }
 

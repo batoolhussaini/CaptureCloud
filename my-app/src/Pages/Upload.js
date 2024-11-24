@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
@@ -12,19 +12,26 @@ import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation.js';
 
 function Upload() {
+  useEffect(() => {
+    document.title = 'Upload to Home';
+  });
+
   const [images, setImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isValidationOpen, setIsValidationOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false); 
+  const [uploadProgress, setUploadProgress] = useState(0); 
   const [currentImage, setCurrentImage] = useState(null);
+
   const maxImages = 10;
   const navigate = useNavigate();
 
   const handleImageChange = (files) => {
     if (files) {
       const fileArray = Array.from(files);
-      const invalidFiles = fileArray.filter(file => !file.type.startsWith('image/'));
+      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
 
       if (invalidFiles.length > 0) {
         alert("Please upload only image files.");
@@ -34,12 +41,8 @@ function Upload() {
         alert(`You can only upload a maximum of ${maxImages} images.`);
         return;
       }
-      setImages(prevImages => [...prevImages, ...fileArray]);
+      setImages((prevImages) => [...prevImages, ...fileArray]);
     }
-  };
-
-  const handleDelete = (imageToDelete) => {
-    setImages(prevImages => prevImages.filter(image => image !== imageToDelete));
   };
 
   const handleRemoveAll = () => {
@@ -54,13 +57,22 @@ function Upload() {
   };
 
   const handleUpload = () => {
-    setIsConfirmationOpen(true);
-  };
+    setIsUploading(true); 
+    setUploadProgress(0); 
 
-  const handleConfirmationClose = () => {
-    setIsConfirmationOpen(false);
-    setImages([]);
-    navigate('/home');
+    const interval = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval); 
+          setTimeout(() => {
+            setIsUploading(false); 
+            setIsConfirmationOpen(true);
+          }, 500); 
+          return 100;
+        }
+        return prev + 10; 
+      });
+    }, 300); 
   };
 
   const handleDragOver = (e) => {
@@ -88,9 +100,15 @@ function Upload() {
     setIsValidationOpen(false);
   };
 
+  const handleConfirmationClose = () => {
+    setIsConfirmationOpen(false);
+    setImages([]);
+    navigate('/home');
+  };
+
   return (
     <div className="flex flex-col">
-      <div className='fixed'>
+      <div className="fixed">
         <Navbar />
       </div>
       <div className="flex justify-center">
@@ -98,8 +116,6 @@ function Upload() {
       </div>
 
       <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
-
-      {/* Image Drop Zone */}
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
           className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
@@ -125,7 +141,6 @@ function Upload() {
         </div>
       </div>
 
-      {/* Image Previews */}
       <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
         {images.map((image, index) => (
           <div key={index} className="relative grid grid-cols-6 gap-2">
@@ -165,7 +180,21 @@ function Upload() {
         />
       )}
 
-      {/* Popups */}
+      {uploadProgress > 0 && uploadProgress < 100 && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+              <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+                <div
+                  className="bg-[#1E5F99] h-full"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+              <div className="absolute text-white font-semibold">
+                Uploading... {uploadProgress}%
+              </div>
+            </div>
+            )}
+
       <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
         <img 
           src={currentImage ? URL.createObjectURL(currentImage) : ''} 
@@ -183,12 +212,12 @@ function Upload() {
 
       {isValidationOpen && (
         <Validation 
-            title="Remove All Photos?"
-            message="Are you sure you want to remove all photos on this page? The photos will be permanently removed."
-            onRed={confirmRemoveAll}
-            button1Text = "Resume Upload"
-            button2Text = "Remove"
-            onBlue = {handleCloseValidation}
+          title="Remove All Photos?"
+          message="Are you sure you want to remove all photos on this page? The photos will be permanently removed."
+          onRed={confirmRemoveAll}
+          button1Text="Resume Upload"
+          button2Text="Remove"
+          onBlue={handleCloseValidation}
         />
       )}
     </div>

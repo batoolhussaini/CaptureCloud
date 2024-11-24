@@ -22,6 +22,7 @@ function Album() {
 
   useEffect(() => {
     localStorage.setItem('albums', JSON.stringify(albums));
+    document.title = 'Albums'; 
   }, [albums]);
 
   const handleButtonClick = () => {
@@ -64,7 +65,7 @@ function Album() {
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
 
       <div className="flex flex-wrap mt-7 ml-40 justify-start gap-15 ">
         <div className="flex flex-col items-center space-y-2 w-1/4"> 

@@ -20,9 +20,8 @@ function Statistics() {
   const navigate = useNavigate();
   const [currentChart, setCurrentChart] = useState(0);
   const [chartData, setChartData] = useState(null);
-
-  useEffect(() => {
-    const fixedData = () => {
+  useEffect(() => {document.title = 'Statistics'; 
+  const fixedData = () => {
       const labels1 = ['Sold', 'Unsold'];
       const data1 = [37, 63];
       const labels2 = ['Nature', 'Wedding', 'Flower', 'Sunset', 'Garden'];

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../Assets/Logo/Logo.png';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
 function Signup() {
+    useEffect(() => {document.title = 'Sign Up';});
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
