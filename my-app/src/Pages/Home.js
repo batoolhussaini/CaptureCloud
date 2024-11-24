@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../Layout/Navbar.js';
 import Searchbar from '../Layout/Searchbar.js';
 import logo from '../Assets/Logo/Logo.png';
-import EditPopup from '../Layout/EditPopup.js';
+import EditPopup from '../UI/EditPopup.js';
 import InfoIcon from '../Assets/Icons/Info icon.png';
 
 function Home() {
