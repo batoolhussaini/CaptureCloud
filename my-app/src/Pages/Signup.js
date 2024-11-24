@@ -66,6 +66,11 @@ function Signup() {
             return;
         }
 
+        if (!passwordValidation.hasMinLength || !passwordValidation.hasNumber || !passwordValidation.hasSpecialChar || !passwordValidation.hasUppercase) {
+            setError("password does not meet the criteria.");
+            return;
+        }
+
         if (password2 === "") {
             setError("please re-type your password.");
             return;
@@ -142,7 +147,7 @@ function Signup() {
                                 id="password1"
                                 placeholder="Type password"
                                 className={`w-full p-2 border ${
-                                    error === "please enter a password." || error === "passwords don't match."
+                                    error === "please enter a password." || error === "passwords don't match." || error === "password does not meet the criteria."
                                         ? "border-red-500" : "border-black"
                                 } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5]`}
                                 value={password1}
