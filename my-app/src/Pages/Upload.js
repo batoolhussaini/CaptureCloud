@@ -97,28 +97,28 @@ function Upload() {
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
 
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
+      <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
 
       {/* Image Drop Zone */}
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
-          className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
+          className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
           onDragOver={handleDragOver} 
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}>
-          <img src={photoIcon} alt="Photo Icon" className="h-28 w-28" />
+          <img src={photoIcon} alt="Photo Icon" className="h-20 w-20" />
           <div className="flex items-center space-x-2">
-            <p className="text-black text-2xl mt-6">
+            <p className="text-black text-lg mt-4">
                 Drag and drop, or  
             </p>
-            <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-2xl mt-6 ">
+            <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-lg mt-4">
               select
             </label>
             <input id="fileInput" type="file" name="image" className="hidden" onChange={(e) => handleImageChange(e.target.files)} multiple accept="image/*"/>
           </div>
           <div className="flex items-center space-x-2">
-            <img src={infoIcon} alt="Information Icon" className="h-7 w-7"/>
-            <p className="text-black-500 text-lg">
+            <img src={infoIcon} alt="Information Icon" className="h-5 w-5"/>
+            <p className="text-black-500 text-sm">
               {maxImages} photos max
             </p>
           </div>
