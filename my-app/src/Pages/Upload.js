@@ -10,6 +10,7 @@ import Button from '../UI/button.js';
 import Popup from '../UI/Popup.js'; 
 import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation.js';
+import { usePhotoContext } from './PhotoContext';
 
 function Upload() {
   useEffect(() => {
@@ -25,6 +26,8 @@ function Upload() {
   const [uploadProgress, setUploadProgress] = useState(0); 
   const [currentImage, setCurrentImage] = useState(null);
 
+  const { addPhotos } = usePhotoContext();
+  
   const maxImages = 10;
   const navigate = useNavigate();
 
@@ -56,23 +59,13 @@ function Upload() {
     setIsValidationOpen(false); 
   };
 
-  const handleUpload = () => {
-    setIsUploading(true); 
-    setUploadProgress(0); 
-
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval); 
-          setTimeout(() => {
-            setIsUploading(false); 
-            setIsConfirmationOpen(true);
-          }, 500); 
-          return 100;
-        }
-        return prev + 10; 
-      });
-    }, 300); 
+  // Handles moving photos to Home page
+  const handleUpload = () => {  
+    setTimeout(() => {
+      addPhotos(images);
+      setImages([]);
+      navigate('/home');
+    }, 1000);
   };
 
   const handleDragOver = (e) => {
@@ -105,6 +98,7 @@ function Upload() {
     setImages([]);
     navigate('/home');
   };
+
 
   return (
     <div className="flex flex-col">
@@ -144,20 +138,24 @@ function Upload() {
       <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
         {images.map((image, index) => (
           <div key={index} className="relative grid grid-cols-6 gap-2">
+            
             <div className="col-span-5">
               <img 
                 src={URL.createObjectURL(image)} 
                 alt={`Uploaded ${index + 1}`} 
-                className="h-40 w-full object-cover rounded-3xl shadow-lg" 
+                className={`h-40 w-48 object-cover rounded-2xl shadow-lg`}
+                    style={{
+                      marginLeft: '-1px',
+                    }}
               />
             </div>
 
-            <div className="col-span-1 flex justify-center items-start">
+            <div className="col-span-1 absolute right-7 flex justify-center items-start">
               <button 
                 onClick={() => togglePopup(image)} 
                 className="text-black bg-white p-2 rounded-full hover:bg-gray-200"
               >
-                <img src={editIcon} alt="Edit Icon" className="h-4 w-4"/>
+                <img src={editIcon} alt="Edit Icon" className="h-5 w-5"/>
               </button>
             </div>
           </div>
@@ -181,19 +179,19 @@ function Upload() {
       )}
 
       {uploadProgress > 0 && uploadProgress < 100 && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-black bg-opacity-50 absolute inset-0"></div>
-              <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
-                <div
-                  className="bg-[#1E5F99] h-full"
-                  style={{ width: `${uploadProgress}%` }}
-                />
-              </div>
-              <div className="absolute text-white font-semibold">
-                Uploading... {uploadProgress}%
-              </div>
-            </div>
-            )}
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+          <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+            <div
+              className="bg-[#1E5F99] h-full"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+          <div className="absolute text-white font-semibold">
+            Uploading... {uploadProgress}%
+          </div>
+        </div>
+        )}
 
       <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
         <img 
