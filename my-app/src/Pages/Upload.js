@@ -10,7 +10,7 @@ import Button from '../UI/button.js';
 import Popup from '../UI/Popup.js'; 
 import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation.js';
-import { usePhotoContext } from './PhotoContext';
+import { usePhotoContext } from './PhotoContext.js';
 
 function Upload() {
   useEffect(() => {
@@ -22,7 +22,6 @@ function Upload() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isValidationOpen, setIsValidationOpen] = useState(false);
-  const [isUploading, setIsUploading] = useState(false); 
   const [uploadProgress, setUploadProgress] = useState(0); 
   const [currentImage, setCurrentImage] = useState(null);
 
@@ -137,45 +136,50 @@ function Upload() {
 
       <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
         {images.map((image, index) => (
-          <div key={index} className="relative grid grid-cols-6 gap-2">
-            
-            <div className="col-span-5">
+          <div key={index} className="relative w-48 h-40">
               <img 
                 src={URL.createObjectURL(image)} 
                 alt={`Uploaded ${index + 1}`} 
-                className={`h-40 w-48 object-cover rounded-2xl shadow-lg`}
-                    style={{
-                      marginLeft: '-1px',
-                    }}
+                className={`w-full h-full object-cover rounded-2xl shadow-lg`}    
               />
-            </div>
-
-            <div className="col-span-1 absolute right-7 flex justify-center items-start">
               <button 
                 onClick={() => togglePopup(image)} 
-                className="text-black bg-white p-2 rounded-full hover:bg-gray-200"
+                className="absolute top-0 -right-10 bg-white p-2 rounded-full hover:bg-gray-200"
               >
                 <img src={editIcon} alt="Edit Icon" className="h-5 w-5"/>
               </button>
-            </div>
           </div>
         ))}
       </div>
 
       {images.length > 0 && (
-        <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
+        <div className="relative group">
+          <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
           Remove All
         </button>
+        
+          <div className="absolute top-24 left-64 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
+            Remove all photos on this page
+          </div>
+        </div>
+        
+  
       )}
       
       {images.length > 0 && (
-        <Button 
-          color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
-          icon={uploadIcon} 
-          children="Upload" 
-          className="fixed bottom-8 right-10"
-          onClick={handleUpload}
-        />
+        <div className="relative group">
+          <Button 
+            color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
+            icon={uploadIcon} 
+            children="Upload" 
+            className="fixed bottom-8 right-10"
+            onClick={handleUpload}
+          />
+
+          <div className="absolute top-16 right-0 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
+            Upload all photos to the Home page
+          </div>
+        </div>
       )}
 
       {uploadProgress > 0 && uploadProgress < 100 && (
