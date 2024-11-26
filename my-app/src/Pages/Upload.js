@@ -18,15 +18,11 @@ function Upload() {
   });
 
   const [images, setImages] = useState([]);
+  const [imageMetadata, setImageMetadata] = useState({}); // Store metadata for each image
   const [dragOver, setDragOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [isValidationOpen, setIsValidationOpen] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0); 
   const [currentImage, setCurrentImage] = useState(null);
 
-  const { addPhotos } = usePhotoContext();
-  
   const maxImages = 10;
   const navigate = useNavigate();
 
@@ -44,60 +40,37 @@ function Upload() {
         return;
       }
       setImages((prevImages) => [...prevImages, ...fileArray]);
+      fileArray.forEach(file => {
+        setImageMetadata(prevMetadata => ({
+          ...prevMetadata,
+          [file.name]: { tags: [], caption: '', isStarClicked: false }
+        }));
+      });
     }
   };
 
-  const handleRemoveAll = () => {
-    if (images.length > 0) {
-      setIsValidationOpen(true); 
-    }
+  const handleImageDelete = (imageToDelete) => {
+    setImages(images.filter(image => image !== imageToDelete));
+    setImageMetadata(prevMetadata => {
+      const updatedMetadata = { ...prevMetadata };
+      delete updatedMetadata[imageToDelete.name];
+      return updatedMetadata;
+    });
+    setIsPopupOpen(false);
   };
 
-  const confirmRemoveAll = () => {
-    setImages([]);
-    setIsValidationOpen(false); 
-  };
-
-  // Handles moving photos to Home page
-  const handleUpload = () => {  
-    setTimeout(() => {
-      addPhotos(images);
-      setImages([]);
-      navigate('/home');
-    }, 1000);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setDragOver(true);
-  };
-
-  const handleDragLeave = () => {
-    setDragOver(false);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    handleImageChange(files);
-    setDragOver(false);
+  const handleSaveMetadata = (image, metadata) => {
+    setImageMetadata(prevMetadata => ({
+      ...prevMetadata,
+      [image.name]: metadata
+    }));
+    setIsPopupOpen(false);
   };
 
   const togglePopup = (image) => {
     setCurrentImage(image);
     setIsPopupOpen(!isPopupOpen);
   };
-
-  const handleCloseValidation = () => {
-    setIsValidationOpen(false);
-  };
-
-  const handleConfirmationClose = () => {
-    setIsConfirmationOpen(false);
-    setImages([]);
-    navigate('/home');
-  };
-
 
   return (
     <div className="flex flex-col">
@@ -112,9 +85,9 @@ function Upload() {
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
           className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
-          onDragOver={handleDragOver} 
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}>
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }} 
+          onDragLeave={() => setDragOver(false)}
+          onDrop={(e) => { e.preventDefault(); handleImageChange(e.dataTransfer.files); setDragOver(false); }}>
           <img src={photoIcon} alt="Photo Icon" className="h-20 w-20" />
           <div className="flex items-center space-x-2">
             <p className="text-black text-lg mt-4">
@@ -152,76 +125,14 @@ function Upload() {
         ))}
       </div>
 
-      {images.length > 0 && (
-        <div className="relative group">
-          <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
-          Remove All
-        </button>
-        
-          <div className="absolute top-24 left-64 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
-            Remove all photos on this page
-          </div>
-        </div>
-        
-  
-      )}
-      
-      {images.length > 0 && (
-        <div className="relative group">
-          <Button 
-            color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
-            icon={uploadIcon} 
-            children="Upload" 
-            className="fixed bottom-8 right-10"
-            onClick={handleUpload}
-          />
-
-          <div className="absolute top-16 right-0 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
-            Upload all photos to the Home page
-          </div>
-        </div>
-      )}
-
-      {uploadProgress > 0 && uploadProgress < 100 && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-black bg-opacity-50 absolute inset-0"></div>
-          <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
-            <div
-              className="bg-[#1E5F99] h-full"
-              style={{ width: `${uploadProgress}%` }}
-            />
-          </div>
-          <div className="absolute text-white font-semibold">
-            Uploading... {uploadProgress}%
-          </div>
-        </div>
-        )}
-
-      <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
-        <img 
-          src={currentImage ? URL.createObjectURL(currentImage) : ''} 
-          alt="Current" 
-          className=""
-        />
-      </Popup>
-
-      {isConfirmationOpen && (
-        <Confirmation 
-          message="Photo(s) Successfully Uploaded" 
-          onConfirm={handleConfirmationClose}
-        />
-      )}
-
-      {isValidationOpen && (
-        <Validation 
-          title="Remove All Photos?"
-          message="Are you sure you want to remove all photos on this page? The photos will be permanently removed."
-          onRed={confirmRemoveAll}
-          button1Text="Resume Upload"
-          button2Text="Remove"
-          onBlue={handleCloseValidation}
-        />
-      )}
+      <Popup 
+        isOpen={isPopupOpen} 
+        handleClose={() => togglePopup(null)} 
+        image={currentImage} 
+        metadata={currentImage ? imageMetadata[currentImage.name] : null}
+        onDelete={handleImageDelete}
+        onSave={handleSaveMetadata}
+      />
     </div>
   );
 }
