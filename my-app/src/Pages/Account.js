@@ -1,22 +1,58 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import phone from '../Assets/Icons/Phone.png';
 import uploadCloud from '../Assets/Icons/Upload cloud black.png';
 import Popup from '../UI/Changepasswordpopup.js'; 
+import CUPopup from '../UI/ConactUsPopup.js';
+import Confirmation from '../UI/Confirmation.js';
+import Validation from '../UI/Validation';
+
 
 function Account() {
   useEffect(() => { document.title = 'My Account'; });
   const [name] = useState("Jane Doe");
   const [email] = useState("janedoe@gmail.com");
   const [showPopup, setShowPopup] = useState(false);
+  const [showCUPopup, setShowCUPopup] = useState(false)
+  const [showConfPopup, setShowConfPopup] = useState(false)
+  const [showValidationPopup, setShowValidationPopup] = useState(false);
+  const navigate = useNavigate();
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
 
+  const toggleCUPopup = () => {
+    setShowCUPopup(!showCUPopup); 
+  };
+
+  const toggleValidationPopup = () => {
+    setShowValidationPopup(!showValidationPopup);
+  };
+  
+
   const handleCloseValidation = () => {
     setShowPopup(false); 
+  };
+
+  const handleCUPopupConfirm = () => {
+    setShowCUPopup(false); 
+    setShowConfPopup(true); 
+  };
+
+  const handleConfPopupConfirm = () => {
+    setShowConfPopup(false); 
+  };
+
+  const handleDeleteAccountConfirm = () => {
+    setShowValidationPopup(false); 
+  };
+
+  const handleConfirmDelete = () => {
+    setShowValidationPopup(false);
+    navigate('/login'); 
   };
 
   return (
@@ -69,16 +105,48 @@ function Account() {
           }
 
           <button type="submit"
-                  className="w-[280px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-l rounded-2xl shadow-lg block mx-auto mt-6">
+                  className="w-[280px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-l rounded-2xl shadow-lg block mx-auto mt-6" onClick={toggleValidationPopup}>
               Delete Account
           </button>
         </div>
       </div>
       
-      <button className="absolute bottom-10 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline">
+      <button className="absolute bottom-10 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline" onClick={toggleCUPopup}>
         <img src={phone} alt="Phone Icon" className="w-6 h-6 mr-2" />
         Contact Us
       </button> 
+
+      {showCUPopup && 
+        <CUPopup 
+          title="Contact Us" 
+          sub1="Name" 
+          sub2="Email" 
+          sub3="Message" 
+          button="Submit"
+          onConfirm={handleCUPopupConfirm}
+          handleClose={() => setShowCUPopup(false)}
+        />
+      }
+
+      {showConfPopup && 
+        <Confirmation 
+          message="Your inquiry has been received by our team. We’ll get back to you as soon as possible." 
+          onConfirm={handleConfPopupConfirm}
+        />
+      }
+
+      {showValidationPopup && 
+        <Validation 
+          title="Delete Account?" 
+          message="Are you sure you want to permanently delete your account? This action cannot be undone." 
+          button1Text="Cancel" 
+          button2Text="Delete"
+          onBlue={handleDeleteAccountConfirm} 
+          onRed={handleConfirmDelete} 
+        />
+      }
+
+
 
       <div className="absolute bottom-16 left-[14rem] flex items-center text text-black">
         <img src={uploadCloud} alt="Upload Cloud Icon" className="w-8 h-8 mr-2" />
