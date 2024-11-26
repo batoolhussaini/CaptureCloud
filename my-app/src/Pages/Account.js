@@ -36,7 +36,7 @@ function Account() {
             <label htmlFor="name" className="mr-10 w-16 text-xl font-medium">
               Name
             </label>
-            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-blue-500 drop-shadow-2xl border border-black">
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black">
               {name}
             </div>
           </div>
@@ -45,7 +45,7 @@ function Account() {
             <label htmlFor="email" className="mr-10 w-16 text-xl mt-4 font-medium">
               Email
             </label>
-            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-blue-500 drop-shadow-2xl border border-black mt-6">
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black mt-6">
               {email}
             </div>
           </div>
@@ -64,6 +64,7 @@ function Account() {
               sub3="New Password" 
               button="Confirm"
               onConfirm={handleCloseValidation}
+              handleClose={handleCloseValidation}
             />
           }
 

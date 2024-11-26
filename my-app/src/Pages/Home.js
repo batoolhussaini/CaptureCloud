@@ -17,7 +17,7 @@ function Home() {
 
 
       <div>
-        <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6">Home</h1>
+        <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Home</h1>
         <div className="grid grid-cols-4 gap-6">
 
           {photos.map((photo, index) => (
