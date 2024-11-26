@@ -161,6 +161,7 @@ function Login() {
                     <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-[375px] overflow-y-auto">
                         <button
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
+                            title="Close"
                             onClick={handleClosePopup}>
                             x
                         </button> 
@@ -189,6 +190,7 @@ function Login() {
                     <div className={`bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto ${successMessage ? 'h-auto' : 'h-[300px] overflow-y-auto'}`}>
                         <button
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
+                            title="Close"
                             onClick={handleClosePopup}>
                             x
                         </button> 

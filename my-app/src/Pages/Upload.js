@@ -175,9 +175,11 @@ function Upload() {
               <button 
                 onClick={() => togglePopup(image)} 
                 className="absolute top-0 -right-10 bg-white p-2 rounded-full hover:bg-gray-200"
+                title="Edit photo details"
               >
                 <img src={editIcon} alt="Edit Icon" className="h-5 w-5"/>
               </button>
+              
           </div>
         ))}
       </div>
@@ -187,10 +189,6 @@ function Upload() {
           <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
           Remove All
         </button>
-        
-          <div className="absolute top-24 left-64 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
-            Remove all photos on this page
-          </div>
         </div>
       )}
 
@@ -203,10 +201,6 @@ function Upload() {
                   className="fixed bottom-8 right-10"
                   onClick={handleUpload}
                 />
-
-                <div className="absolute top-16 right-0 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
-                  Upload all photos to the Home page
-                </div>
               </div>
             )}
 

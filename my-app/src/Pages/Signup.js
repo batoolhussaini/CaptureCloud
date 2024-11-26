@@ -236,9 +236,13 @@ function Signup() {
 
                     <label className="flex items-center ml-36 text-sm">
                         <input type="checkbox" className={"form-checkbox accent-black"} checked={isChecked} onChange={handleCheckboxChange} />
-                        <span className="ml-2">
-                            I agree to the <span className="text-sky-500 cursor-pointer hover:text-sky-600" onClick={handleTermsClick}>terms and conditions</span>
-                        </span>
+                        <p className="ml-2">
+                            I agree to the&nbsp;  
+                        </p>
+                        <label className="text-sky-500 cursor-pointer hover:text-sky-600" onClick={handleTermsClick}>
+                            terms and conditions
+                        </label>
+          
                     </label>
 
                     <div className="flex flex-col items-center">
@@ -262,6 +266,7 @@ function Signup() {
                     <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-auto overflow-y-auto">
                         <button
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
+                            title="Close"
                             onClick={() => setIsTermsPopupOpen(false)}>
                             x
                         </button> 
