@@ -36,7 +36,7 @@ function Album() {
     if (!isSelected) {  
       setAlbums([ 
         ...albums, 
-        { name: `NewAlbum ${albums.length + 1}`, icon: folderIcon }
+        { name: `New Album ${albums.length + 1}`, icon: folderIcon }
       ]);
     }
   };

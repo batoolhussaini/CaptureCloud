@@ -13,6 +13,7 @@ import logo from '../Assets/Logo/Logo.png';
 import exportIcon from '../Assets/Icons/export_icon.png';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
+import Button from '../UI/button.js'; // Update the path as needed
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend);
 
@@ -20,8 +21,10 @@ function Statistics() {
   const navigate = useNavigate();
   const [currentChart, setCurrentChart] = useState(0);
   const [chartData, setChartData] = useState(null);
-  useEffect(() => {document.title = 'Statistics'; 
-  const fixedData = () => {
+
+  useEffect(() => {
+    document.title = 'Statistics'; 
+    const fixedData = () => {
       const labels1 = ['Sold', 'Unsold'];
       const data1 = [37, 63];
       const labels2 = ['Nature', 'Wedding', 'Flower', 'Sunset', 'Garden'];
@@ -64,6 +67,10 @@ function Statistics() {
     <>Sold vs Unsold Photos of December 6, 2024</>,
     <>Most Sold Photos by Tags As of December 6, 2024</>
   ];
+
+  const handleExport = () => {
+    alert('Under development. Tune back soon!'); 
+  };
 
   return (
     <div className="flex flex-col">
@@ -127,17 +134,18 @@ function Statistics() {
         </div>
       </div>
 
-      <div className="fixed bottom-8 right-8">
-        <button
-          className="flex items-center justify-center bg-[#CEECF5] text-black font-[Anek Bangla] text-lg p-3 rounded-full shadow-lg hover:bg-[#A3D3E0] focus:outline-none transition"
-          aria-label="Export"
+      <div className="fixed bottom-16 right-[190px]">
+        <Button 
+          color="bg-[#CEECF5] hover:bg-[#A3D3E0] text-black"
+          icon={exportIcon}
+          onClick={handleExport}
+          className="text-lg font-[Anek Bangla]"
         >
-          <img src={exportIcon} alt="Export Icon" className="w-6 h-6 ml-2 mr-2" />
-          Export <span className="ml-3"></span>
-        </button>
+          Export
+        </Button>
       </div>
 
-      <div className="absolute bottom-8 left-8 text-sm text-black font-[Anek Bangla] ml-36">
+      <div className="absolute bottom-4 left-8 text-medium text-black ml-36">
         Total photos: 82
       </div>
     </div>
