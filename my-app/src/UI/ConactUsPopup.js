@@ -69,6 +69,7 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
         <button
           onClick={handleClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl"
+          title="Close"
         >
           x
         </button>
