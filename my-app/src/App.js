@@ -6,6 +6,7 @@ import Home from './Pages/Home';
 import Account from './Pages/Account';
 import Album from './Pages/Album';
 import Statistics from './Pages/Statistics';
+import TagsList from './Pages/TagsList';
 import Trash from './Pages/Trash';
 import Sold from './Pages/Sold';
 import Upload from './Pages/Upload';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/albums" element={<Album />} />
         <Route path="/statistics" element={<Statistics />} />
+        <Route path="/tagslist" element={<TagsList />} />
         <Route path="/trash" element={<Trash />} />
         <Route path="/sold" element={<Sold />} />
         <Route path="/upload" element={<Upload />} />
