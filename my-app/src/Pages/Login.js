@@ -75,7 +75,7 @@ function Login() {
     };
 
     const handleForgotSubmit = () => {
-        setForgotError(""); // Clear any existing errors
+        setForgotError(""); 
         if (forgotEmail === "") {
             setForgotError("Please enter your email.");
             return;
@@ -91,10 +91,10 @@ function Login() {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8">
             <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
-                <img src={logo} alt="Logo" className="w-36 sm:w-42 md:w-48 lg:w-56 xl:w-60" />
+                <img src={logo} alt="Logo" className="w-32 sm:w-36 md:w-40 lg:w-48 xl:w-52" />
             </div>
             <div className="sm:pt-6 md:pt-8 lg:pt-10 mt-32">
-                <h1 className="text-4xl text-center mb-3">LOG IN</h1>
+                <h1 className="text-3xl text-center mb-3">LOG IN</h1>
             </div>
             <div className="bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between h-[280px]">
                 <form className="space-y-7" onSubmit={handleLogin} noValidate>
