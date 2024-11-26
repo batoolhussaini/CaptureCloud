@@ -15,6 +15,7 @@ const Confirmation = ({ message, onConfirm }) => {
         <button
           onClick={onConfirm} 
           className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
+          title="Close"
         >
           x
         </button>
