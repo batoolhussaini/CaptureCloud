@@ -106,7 +106,7 @@ function Login() {
                             type="email"
                             id="email"
                             placeholder="Type email address"
-                            className={`w-full p-2 border ${(error === "please enter your email." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
+                            className={`w-full p-2 border ${(error === "please enter your email." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA] placeholder:italic`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -119,7 +119,7 @@ function Login() {
                             type={showPassword ? "text" : "password"} 
                             id="password"
                             placeholder="Type password"
-                            className={`w-full p-2 border ${(error === "please enter your password." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
+                            className={`w-full p-2 border ${(error === "please enter your password." || error === "incorrect email or password.") ? "border-red-500" : "border-black"} rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA] placeholder:italic`}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -158,9 +158,9 @@ function Login() {
 
             {isAuthPopupOpen && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50">
-                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-[375px] overflow-y-auto">
+                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-[375px] overflow-y-auto">
                         <button
-                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700"
+                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             onClick={handleClosePopup}>
                             x
                         </button> 
@@ -168,7 +168,7 @@ function Login() {
                         <div className="text-lg text-center mb-2">An email has been sent to {email}. Please enter the code from the email below:</div>
                         <input
                             type="text"
-                            className="w-full p-2 border rounded-2xl shadow-lg text-xs bg-[#F5F5F5] mt-4 mb-6"
+                            className="block w-full p-2 border-2 border-[#6AABD2] rounded-full focus:outline-none placeholder:italic placeholder:text-sm mb-4"
                             value={authCode}
                             onChange={(e) => setAuthCode(e.target.value)}
                             placeholder="Enter code"
@@ -186,9 +186,9 @@ function Login() {
 
             {isForgotPopupOpen && (
                 <div className={`fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50 `}>
-                    <div className={`bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto ${successMessage ? 'h-auto' : 'h-[310px] overflow-y-auto'}`}>
+                    <div className={`bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto ${successMessage ? 'h-auto' : 'h-[300px] overflow-y-auto'}`}>
                         <button
-                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700"
+                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             onClick={handleClosePopup}>
                             x
                         </button> 
@@ -208,7 +208,7 @@ function Login() {
                                 <div className="text-lg text-center mb-2">Enter your email to reset your password:</div>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border rounded-2xl shadow-lg text-xs bg-[#F5F5F5] mt-4 mb-6"
+                                    className="block w-full p-2 border-2 border-[#6AABD2] rounded-full focus:outline-none placeholder:italic placeholder:text-sm mb-4"
                                     value={forgotEmail}
                                     onChange={(e) => setForgotEmail(e.target.value)}
                                     placeholder="Enter email"

@@ -122,7 +122,7 @@ function Signup() {
                             placeholder="Type full name"
                             className={`w-full p-2 border ${
                                 error === "please enter your name." ? "border-red-500" : "border-black"
-                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
+                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA] placeholder:italic`}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
@@ -140,7 +140,7 @@ function Signup() {
                                 error === "please enter your email." || error === "invalid email address."
                                     ? "border-red-500"
                                     : "border-black"
-                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
+                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA] placeholder:italic`}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -157,7 +157,7 @@ function Signup() {
                                 className={`w-full p-2 border ${
                                     error === "please enter a password." || error === "passwords don't match." || error === "password does not meet the criteria."
                                         ? "border-red-500" : "border-black"
-                                } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
+                                } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA] placeholder:italic`}
                                 value={password1}
                                 onChange={(e) => {
                                     setPassword1(e.target.value);
@@ -217,7 +217,7 @@ function Signup() {
                             className={`w-full p-2 border ${
                                 error === "please re-type your password." || error === "passwords don't match."
                                     ? "border-red-500" : "border-black"
-                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA]`}
+                            } rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#FAFAFA] placeholder:italic`}
                             value={password2}
                             onChange={(e) => setPassword2(e.target.value)}
                         />
@@ -259,9 +259,9 @@ function Signup() {
 
             {isTermsPopupOpen && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50">
-                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-auto overflow-y-auto">
+                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-auto overflow-y-auto">
                         <button
-                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700"
+                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             onClick={() => setIsTermsPopupOpen(false)}>
                             x
                         </button> 
