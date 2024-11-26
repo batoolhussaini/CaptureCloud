@@ -7,7 +7,7 @@ import infoIcon from '../Assets/Icons/Info icon.png';
 import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
 import Button from '../UI/button.js';
-import Popup from '../UI/Popup.js'; 
+import Popup from '../UI/Popup.js';
 import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation.js';
 import { usePhotoContext } from './PhotoContext.js';
@@ -18,10 +18,15 @@ function Upload() {
   });
 
   const [images, setImages] = useState([]);
-  const [imageMetadata, setImageMetadata] = useState({}); // Store metadata for each image
+  const [imageMetadata, setImageMetadata] = useState({});
   const [dragOver, setDragOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isValidationOpen, setIsValidationOpen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const { addPhotos } = usePhotoContext();
 
   const maxImages = 10;
   const navigate = useNavigate();
@@ -59,17 +64,69 @@ function Upload() {
     setIsPopupOpen(false);
   };
 
+  const confirmRemoveAll = () => {
+    setImages([]);
+    setImageMetadata({});
+    setIsValidationOpen(false);
+  };
+
+  const handleRemoveAll = () => {
+    if (images.length > 0) {
+      setIsValidationOpen(true);
+    }
+  };
+
+  const handleUpload = () => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      setUploadProgress(progress);
+
+      if (progress >= 100) {
+        clearInterval(interval);
+        setIsConfirmationOpen(true);
+      }
+    }, 100);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    handleImageChange(files);
+    setDragOver(false);
+  };
+
+  const handleConfirmationClose = () => {
+    setIsConfirmationOpen(false);
+    addPhotos(images);
+    setImages([]);
+    navigate('/home');
+  };
+
+  const togglePopup = (image) => {
+    setCurrentImage(image);
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  const handleCloseValidation = () => {
+    setIsValidationOpen(false);
+  };
+
   const handleSaveMetadata = (image, metadata) => {
     setImageMetadata(prevMetadata => ({
       ...prevMetadata,
       [image.name]: metadata
     }));
     setIsPopupOpen(false);
-  };
-
-  const togglePopup = (image) => {
-    setCurrentImage(image);
-    setIsPopupOpen(!isPopupOpen);
   };
 
   return (
@@ -81,13 +138,13 @@ function Upload() {
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
 
-      <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
+      <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
           className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }} 
-          onDragLeave={() => setDragOver(false)}
-          onDrop={(e) => { e.preventDefault(); handleImageChange(e.dataTransfer.files); setDragOver(false); }}>
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}>
           <img src={photoIcon} alt="Photo Icon" className="h-20 w-20" />
           <div className="flex items-center space-x-2">
             <p className="text-black text-lg mt-4">
@@ -124,6 +181,67 @@ function Upload() {
           </div>
         ))}
       </div>
+
+      {images.length > 0 && (
+        <div className="relative group">
+          <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
+          Remove All
+        </button>
+        
+          <div className="absolute top-24 left-64 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
+            Remove all photos on this page
+          </div>
+        </div>
+      )}
+
+      {images.length > 0 && (
+              <div className="relative group">
+                <Button 
+                  color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
+                  icon={uploadIcon} 
+                  children="Upload" 
+                  className="fixed bottom-8 right-10"
+                  onClick={handleUpload}
+                />
+
+                <div className="absolute top-16 right-0 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
+                  Upload all photos to the Home page
+                </div>
+              </div>
+            )}
+
+        {uploadProgress > 0 && uploadProgress < 100 && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+                  <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+                    <div
+                      className="bg-[#1E5F99] h-full"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                  <div className="absolute text-white font-semibold">
+                    Uploading... {uploadProgress}%
+                  </div>
+                </div>
+              )}
+
+      {isValidationOpen && (
+        <Validation
+          title="Remove All Photos?"
+          message="Are you sure you want to remove all photos? This action is irreversible."
+          onRed={confirmRemoveAll}
+          onBlue={() => setIsValidationOpen(false)}
+          button1Text="Cancel"
+          button2Text="Remove"
+        />
+      )}
+
+      {isConfirmationOpen && (
+        <Confirmation 
+          message="Photo(s) Successfully Uploaded" 
+          onConfirm={handleConfirmationClose}
+        />
+      )}
 
       <Popup 
         isOpen={isPopupOpen} 
