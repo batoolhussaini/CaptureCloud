@@ -9,14 +9,23 @@ function Login() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false); 
     const [error, setError] = useState("");
-    const navigate = useNavigate();
     const [authCode, setAuthCode] = useState("");
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
+    const [isForgotPopupOpen, setIsForgotPopupOpen] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState("");
+    const [forgotError, setForgotError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [authError, setAuthError] = useState("");
+    const navigate = useNavigate();
+
     
 
 
     const handleLogin = (e) => {
         e.preventDefault();
+
+        setError("");
+        setAuthError("");
 
         if (email === "") {
             setError("please enter your email.");
@@ -38,23 +47,45 @@ function Login() {
             return;
         }
 
-        setError("");
-
-        setIsPopupOpen(true);
+        setIsAuthPopupOpen(true);
     };
 
     const handleAuthSubmit = () => {
         if (authCode === "5748332") {
-            setIsPopupOpen(false); // Close popup on success
-            navigate('/home'); // Navigate to Home page
+            setIsAuthPopupOpen(false); 
+            navigate('/home'); 
         } else {
-            setError("Incorrect authentication code.");
+            setAuthError("Incorrect authentication code.");
         }
     };
 
     const handleClosePopup = () => {
-        setIsPopupOpen(false); // Close the popup
+        setIsAuthPopupOpen(false); 
+        setIsForgotPopupOpen(false);
+        setError(""); 
+        setForgotError(""); 
+        setForgotEmail("");
+        setAuthError("");
     };
+
+    const handleForgotPassword = () => {
+        setForgotEmail("");
+        setSuccessMessage("");
+        setIsForgotPopupOpen(true);
+    };
+
+    const handleForgotSubmit = () => {
+        setForgotError(""); // Clear any existing errors
+        if (forgotEmail === "") {
+            setForgotError("Please enter your email.");
+            return;
+        }
+    
+        setSuccessMessage(`A password reset link has been sent to ${forgotEmail}. Please check your inbox.`);
+        setForgotEmail(""); 
+    };
+    
+
     
 
     return (
@@ -113,8 +144,8 @@ function Login() {
                         </button>
                     </div>
                 </form>
-                <p className="text-center relative top-4 text-sky-500 text-sm hover:text-sky-600 underline cursor-pointer">
-                    <a className="text-black hover:text-black-600 underline">Forgot Password?</a>
+                <p onClick={handleForgotPassword} className="text-center relative top-4 text-black text-sm cursor-pointer">
+                    <a className="text-black hover:text-gray-700 underline">Forgot Password?</a>
                 </p>
                 {error && <p className="text-red-600 text-center mt-8 text-sm">{error}</p>}
             </div>
@@ -125,20 +156,19 @@ function Login() {
             <div style={{ backgroundColor: '#F0F0F0' }} className="h-8"></div>
             
 
-            {isPopupOpen && (
+            {isAuthPopupOpen && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50">
-                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg  w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative">
+                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-[375px] overflow-y-auto">
                         <button
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700"
-                            onClick={handleClosePopup}
-                        >
+                            onClick={handleClosePopup}>
                             x
                         </button> 
                         <h1 className="text-3xl text-center mb-4 mt-6">Two-Factor Authentication</h1>
                         <div className="text-lg text-center mb-2">An email has been sent to {email}. Please enter the code from the email below:</div>
                         <input
                             type="text"
-                            className="w-full p-2 border rounded-2xl shadow-lg text-xs focus:outline-none focus:ring-black focus:border-black bg-[#F5F5F5] mt-4 mb-6"
+                            className="w-full p-2 border rounded-2xl shadow-lg text-xs bg-[#F5F5F5] mt-4 mb-6"
                             value={authCode}
                             onChange={(e) => setAuthCode(e.target.value)}
                             placeholder="Enter code"
@@ -147,9 +177,51 @@ function Login() {
                             onClick={handleAuthSubmit}
                             className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block"
                         >
-                            Done
+                            Submit
                         </button>
-                        {error && <p className="text-red-600 text-center mt-4 text-sm">{error}</p>}
+                        {authError && <p className="text-red-600 text-center mt-2 text-sm">{authError}</p>}
+                    </div>
+                </div>
+            )}
+
+            {isForgotPopupOpen && (
+                <div className={`fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50 `}>
+                    <div className={`bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto ${successMessage ? 'h-auto' : 'h-[310px] overflow-y-auto'}`}>
+                        <button
+                            className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700"
+                            onClick={handleClosePopup}>
+                            x
+                        </button> 
+                        {successMessage ? ( // If a success message exists, display it
+                            <div>
+                                <p className="text-lg text-center mb-6">{successMessage}</p>
+                                <button
+                                    onClick={handleClosePopup}
+                                    className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block"
+                                >
+                                    Done
+                                </button>
+                            </div>
+                        ) : ( // Otherwise, prompt user to fill forgot password form
+                            <div>
+                                <h1 className="text-3xl text-center mb-4 mt-6">Forgot Password</h1>
+                                <div className="text-lg text-center mb-2">Enter your email to reset your password:</div>
+                                <input
+                                    type="text"
+                                    className="w-full p-2 border rounded-2xl shadow-lg text-xs bg-[#F5F5F5] mt-4 mb-6"
+                                    value={forgotEmail}
+                                    onChange={(e) => setForgotEmail(e.target.value)}
+                                    placeholder="Enter email"
+                                />
+                                <button
+                                    onClick={handleForgotSubmit}
+                                    className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block"
+                                >
+                                    Submit
+                                </button>
+                                {forgotError && <p className="text-red-600 text-center mt-2 text-sm">{forgotError}</p>}
+                            </div>
+                         )}
                     </div>
                 </div>
             )}
