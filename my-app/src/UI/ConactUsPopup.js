@@ -28,7 +28,7 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
                 value={input1}
                 onChange={(e) => setInput1(e.target.value)}
                 placeholder="Type name"
-                className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2"
+                className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
             />
           </div>
 
@@ -39,7 +39,7 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
                 value={input2}
                 onChange={(e) => setInput2(e.target.value)}
                 placeholder="Type email address"
-                className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2"
+                className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
             />
           </div>
 
@@ -50,7 +50,7 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
                 value={input3}
                 onChange={(e) => setInput3(e.target.value)}
                 placeholder="Type message"
-                className="border-2 border-gray-300 rounded-3xl h-44 w-64 shadow-lg placeholder:italic pl-2 pb-36"
+                className="border-2 border-gray-300 rounded-3xl h-48 w-64 shadow-lg placeholder:italic pl-2 pb-40 text-sm"
             />
           </div>
 

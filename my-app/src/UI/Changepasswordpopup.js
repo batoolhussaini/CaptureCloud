@@ -58,7 +58,7 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
               value={input1}
               onChange={(e) => setInput1(e.target.value)}
               placeholder="Type current password"
-              className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2"
+              className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
             />
             <button
                 type="button"
@@ -80,7 +80,7 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
               value={input2}
               onChange={(e) => setInput2(e.target.value)}
               placeholder="Type new password"
-              className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2"
+              className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
             />
             <button
                 type="button"
@@ -102,7 +102,7 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
               value={input3}
               onChange={(e) => setInput3(e.target.value)}
               placeholder="Re-type new password"
-              className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2"
+              className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
             />
             <button
                 type="button"
