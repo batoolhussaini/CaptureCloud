@@ -1,104 +1,229 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import photoIcon from '../Assets/Icons/Photo symbol.png';
 import infoIcon from '../Assets/Icons/Info icon.png';
 import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
-import Button from '../UI/button.js'; // Import the Button component
+import Button from '../UI/button.js';
+import Popup from '../UI/Popup.js'; 
+import Confirmation from '../UI/Confirmation.js';
+import Validation from '../UI/Validation.js';
+import { usePhotoContext } from './PhotoContext.js';
 
 function Upload() {
-  const [images, setImages] = useState([]);
-  const maxImages = 10;
+  useEffect(() => {
+    document.title = 'Upload to Home';
+  });
 
-  const handleImageChange = (e) => {
-    const files = e.target.files;
+  const [images, setImages] = useState([]);
+  const [dragOver, setDragOver] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isValidationOpen, setIsValidationOpen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0); 
+  const [currentImage, setCurrentImage] = useState(null);
+
+  const { addPhotos } = usePhotoContext();
+  
+  const maxImages = 10;
+  const navigate = useNavigate();
+
+  const handleImageChange = (files) => {
     if (files) {
-      const fileArray = Array.from(files); 
+      const fileArray = Array.from(files);
       const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
+
       if (invalidFiles.length > 0) {
         alert("Please upload only image files.");
         return;
       }
       if (images.length + fileArray.length > maxImages) {
-        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+        alert(`You can only upload a maximum of ${maxImages} images.`);
+        return;
       }
-      const allowableFiles = fileArray.slice(0, maxImages - images.length);
-      const newImages = allowableFiles.map((file) => {
-        const reader = new FileReader();
-        return new Promise((resolve) => {
-          reader.onloadend = () => {
-            resolve(reader.result);
-          };
-          reader.readAsDataURL(file);
-        });
-      });
-      Promise.all(newImages).then((loadedImages) => {
-        setImages((prevImages) => [...prevImages, ...loadedImages]);
-      });
+      setImages((prevImages) => [...prevImages, ...fileArray]);
     }
   };
 
-  const handleDelete = (imageToDelete) => {
-    setImages((prevImages) => prevImages.filter((image) => image !== imageToDelete));
+  const handleRemoveAll = () => {
+    if (images.length > 0) {
+      setIsValidationOpen(true); 
+    }
   };
 
-  const handleRemoveAll = () => {
-    setImages([]); 
+  const confirmRemoveAll = () => {
+    setImages([]);
+    setIsValidationOpen(false); 
   };
+
+  // Handles moving photos to Home page
+  const handleUpload = () => {  
+    setTimeout(() => {
+      addPhotos(images);
+      setImages([]);
+      navigate('/home');
+    }, 1000);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    handleImageChange(files);
+    setDragOver(false);
+  };
+
+  const togglePopup = (image) => {
+    setCurrentImage(image);
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  const handleCloseValidation = () => {
+    setIsValidationOpen(false);
+  };
+
+  const handleConfirmationClose = () => {
+    setIsConfirmationOpen(false);
+    setImages([]);
+    navigate('/home');
+  };
+
 
   return (
     <div className="flex flex-col">
-      <div className='fixed'>
-        <Navbar /> 
+      <div className="fixed">
+        <Navbar />
       </div>
       <div className="flex justify-center">
-        <img src={logo} alt="Logo" className="mt-2 w-32" />
+        <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6">Upload to Home</h1>  
-      <div className="flex-grow flex items-center justify-center">
-        <div className="border-2 border-dashed border-black rounded-2xl w-[38rem] h-64 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]">
-          <img src={photoIcon} alt="Photo Icon" className="h-28 w-28" />
+
+      <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>  
+      <div className="flex-grow flex items-center justify-center ml-32">
+        <div 
+          className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}
+          onDragOver={handleDragOver} 
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}>
+          <img src={photoIcon} alt="Photo Icon" className="h-20 w-20" />
           <div className="flex items-center space-x-2">
-            <p className="text-black text-2xl mt-6">
+            <p className="text-black text-lg mt-4">
                 Drag and drop, or  
             </p>
-            <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-2xl mt-6">
+            <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-lg mt-4">
               select
             </label>
-            <input id="fileInput" type="file" name="image" className="hidden" onChange={handleImageChange} multiple accept="image/*"/>
+            <input id="fileInput" type="file" name="image" className="hidden" onChange={(e) => handleImageChange(e.target.files)} multiple accept="image/*"/>
           </div>
           <div className="flex items-center space-x-2">
-            <img src={infoIcon} alt="Information Icon" className="h-7 w-7"/>
-            <p className="text-black-500 text-lg">
+            <img src={infoIcon} alt="Information Icon" className="h-5 w-5"/>
+            <p className="text-black-500 text-sm">
               {maxImages} photos max
             </p>
           </div>
         </div>
       </div>
-      <div className="mt-12 grid grid-cols-5 gap-6 ml-[250px] gap-y-12">
+
+      <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
         {images.map((image, index) => (
-          <div key={index} className="relative">
-            <img src={image} alt={`Uploaded ${index + 1}`} className="h-40 w-48 object-cover rounded-3xl ml-2 shadow-lg" />
-            <button onClick={() => handleDelete(image)} className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 text-black bg-white p-2 rounded-full hover:bg-gray-200" style={{ top: '0px', right: '70px' }} >
-              <img src={editIcon} alt="Edit Icon" className="h-5 w-5"/>
-            </button>
+          <div key={index} className="relative w-48 h-40">
+              <img 
+                src={URL.createObjectURL(image)} 
+                alt={`Uploaded ${index + 1}`} 
+                className={`w-full h-full object-cover rounded-2xl shadow-lg`}    
+              />
+              <button 
+                onClick={() => togglePopup(image)} 
+                className="absolute top-0 -right-10 bg-white p-2 rounded-full hover:bg-gray-200"
+              >
+                <img src={editIcon} alt="Edit Icon" className="h-5 w-5"/>
+              </button>
           </div>
         ))}
       </div>
+
       {images.length > 0 && (
-        <button onClick={handleRemoveAll} className="fixed bottom-6 left-[12rem] text-red-600 text-2xl underline hover:font-medium mr-6">
+        <div className="relative group">
+          <button onClick={handleRemoveAll} className="fixed bottom-8 left-[12rem] text-red-600 text-l underline hover:font-medium mr-6">
           Remove All
         </button>
+        
+          <div className="absolute top-24 left-64 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
+            Remove all photos on this page
+          </div>
+        </div>
+        
+  
       )}
-       <Button 
-                color="bg-[#CEECF5] hover:bg-[#B6D8E7]"
-                icon={uploadIcon}
-                children="Upload"
-                className="bottom-10 right-10" // Specify positioning here
+      
+      {images.length > 0 && (
+        <div className="relative group">
+          <Button 
+            color="bg-[#CEECF5] hover:bg-[#B6D8E7]" 
+            icon={uploadIcon} 
+            children="Upload" 
+            className="fixed bottom-8 right-10"
+            onClick={handleUpload}
+          />
+
+          <div className="absolute top-16 right-0 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-sm py-1 px-2 rounded transition-opacity duration-300">
+            Upload all photos to the Home page
+          </div>
+        </div>
+      )}
+
+      {uploadProgress > 0 && uploadProgress < 100 && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+          <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+            <div
+              className="bg-[#1E5F99] h-full"
+              style={{ width: `${uploadProgress}%` }}
             />
+          </div>
+          <div className="absolute text-white font-semibold">
+            Uploading... {uploadProgress}%
+          </div>
+        </div>
+        )}
+
+      <Popup isOpen={isPopupOpen} handleClose={() => togglePopup(null)} image={currentImage}>
+        <img 
+          src={currentImage ? URL.createObjectURL(currentImage) : ''} 
+          alt="Current" 
+          className=""
+        />
+      </Popup>
+
+      {isConfirmationOpen && (
+        <Confirmation 
+          message="Photo(s) Successfully Uploaded" 
+          onConfirm={handleConfirmationClose}
+        />
+      )}
+
+      {isValidationOpen && (
+        <Validation 
+          title="Remove All Photos?"
+          message="Are you sure you want to remove all photos on this page? The photos will be permanently removed."
+          onRed={confirmRemoveAll}
+          button1Text="Resume Upload"
+          button2Text="Remove"
+          onBlue={handleCloseValidation}
+        />
+      )}
     </div>
-  );  
+  );
 }
 
 export default Upload;
