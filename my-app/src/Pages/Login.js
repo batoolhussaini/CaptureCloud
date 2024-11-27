@@ -151,7 +151,7 @@ function Login() {
                 Don’t have an account? <a href="/signup" className="text-sky-500 hover:text-sky-600 underline">Sign up here!</a>
             </p>
 
-            <div style={{ backgroundColor: '#F0F0F0' }} className="h-8"></div>
+            <div style={{ backgroundColor: '#F0F0F0' }} className="h-24"></div>
             
 
             {isAuthPopupOpen && (
