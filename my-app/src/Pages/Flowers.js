@@ -9,6 +9,8 @@ import Button from '../UI/button';
 import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
 import ARpopup from '../UI/ARpopup';
+import EditPopup from '../UI/EditPopup.js';
+import PhotoDetails from '../UI/PhotoDetails.js';
 
 import pic1 from '../Assets/Photos/pic1.jpg';
 import pic2 from '../Assets/Photos/pic2.jpg';
@@ -27,6 +29,15 @@ function Flowers() {
   const [isUploadClicked, setIsUploadClicked] = useState(false);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const [albumName, setAlbumName] = useState('Flowers'); 
+  const [hovered, setHovered] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Initial popup modal state
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
+
+    // Open the first popup (Photo Details)
+  const handleOpenPhotoDetails = (index) => {
+    setSelectedImageIndex(index);
+    setShowModal(true);
+  };
 
   const handleBackClick = () => {
     navigate('/albums');
@@ -142,11 +153,13 @@ function Flowers() {
                     isSelected && selectedImages.includes(image)
                       ? 'border-4 border-yellow-200 rounded-2xl'
                       : 'rounded-2xl'
-                  }`}
+                  } relative` }
                   style={{
                     width: '12rem',
                     height: '10.5rem',
                   }}
+                  onMouseEnter={() => setHovered(index)}
+                  onMouseLeave={() => setHovered(null)}
                 >
                   {isSelected && selectedImages.includes(image) && (
                     <img
@@ -166,10 +179,30 @@ function Flowers() {
                       marginLeft: '-1px',
                     }}
                   />
+                  {/* Photo Details Button on Hover */}
+                  {hovered === index && !isSelected && (
+                  <button
+                  onClick={() => handleOpenPhotoDetails(index)}
+                  className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20">
+                  Photo Details
+                  </button>
+              )}
                 </div>
               </div>
             ))}
           </div>
+
+        {/* Initial Popup Modal */}
+        {showModal && selectedImageIndex !== null && (
+          <PhotoDetails
+            image={flowers[selectedImageIndex]}
+            isStarred={flowers[selectedImageIndex].isStarred}
+            caption={flowers[selectedImageIndex].caption}
+            onClose={() => setShowModal(false)}
+            //onEdit={handleOpenEditPopup}
+            //onMarkSold={() => setShowSoldMessage(true)}
+          />
+        )}
         </div>
       </div>
 
