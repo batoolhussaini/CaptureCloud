@@ -148,10 +148,10 @@ function Upload() {
           <img src={photoIcon} alt="Photo Icon" className="h-20 w-20" />
           <div className="flex items-center space-x-2">
             <p className="text-black text-lg mt-4">
-                Drag and drop, or  
+                Drag and drop, or
             </p>
             <label htmlFor="fileInput" className="font-bold text-[#069DFA] hover:underline cursor-pointer text-lg mt-4">
-              select
+             select
             </label>
             <input id="fileInput" type="file" name="image" className="hidden" onChange={(e) => handleImageChange(e.target.files)} multiple accept="image/*"/>
           </div>

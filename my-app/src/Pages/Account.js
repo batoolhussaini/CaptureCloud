@@ -67,27 +67,27 @@ function Account() {
       <h1 className="text-5xl text-center mb-6 ml-32 text-[#6AABD2] mt-6">My Account</h1>  
 
       <div className="ml-32">
-        <div className="p-12 rounded-3xl border-2 border-black w-2/4 mx-auto flex flex-col justify-between min-h-[400px] mt-6 relative">
+        <div className="p-12 rounded-3xl border-2 border-black w-2/5 mx-auto flex flex-col justify-between min-h-[400px] mt-6 relative">
           <div className="flex items-center mb-4">
-            <label htmlFor="name" className="mr-10 w-16 text-xl font-medium">
+            <label htmlFor="name" className="mr-10 w-16 text-m font-medium">
               Name
             </label>
-            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black">
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-sm text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black">
               {name}
             </div>
           </div>
 
           <div className="flex items-center mb-4">
-            <label htmlFor="email" className="mr-10 w-16 text-xl mt-4 font-medium">
+            <label htmlFor="email" className="mr-10 w-16 text-m mt-4 font-medium">
               Email
             </label>
-            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-large text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black mt-6">
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-sm text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black mt-6">
               {email}
             </div>
           </div>
 
           <button type="button"
-                  className="w-[280px] h-12 bg-[#CEECF5] hover:bg-[#B6D8E7] text-l rounded-2xl shadow-lg block mx-auto mt-6"
+                  className="w-[220px] h-12 bg-[#CEECF5] hover:bg-[#B6D8E7] text-sm rounded-2xl shadow-lg block mx-auto mt-6"
                   onClick={togglePopup}>
               Change Password
           </button>
@@ -105,13 +105,13 @@ function Account() {
           }
 
           <button type="submit"
-                  className="w-[280px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-l rounded-2xl shadow-lg block mx-auto mt-6" onClick={toggleValidationPopup}>
+                  className="w-[220px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-sm rounded-2xl shadow-lg block mx-auto mt-6 transition-colors" onClick={toggleValidationPopup}>
               Delete Account
           </button>
         </div>
       </div>
       
-      <button className="absolute bottom-10 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline" onClick={toggleCUPopup}>
+      <button className="absolute bottom-10 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline transition-colors" onClick={toggleCUPopup}>
         <img src={phone} alt="Phone Icon" className="w-6 h-6 mr-2" />
         Contact Us
       </button> 

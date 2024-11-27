@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
-
 const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) => {
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
@@ -10,9 +9,6 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   const [showNewPassword, setShowNewPassword] = useState(false); 
   const [showPassword, setShowPassword] = useState(false); 
-
-
-
 
   // Password validation function
   const validatePassword = (password) => {
@@ -46,13 +42,13 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-1/2 relative ml-32">
         <h1 className="text-3xl text-center mb-8 mt-6">{title}</h1>
 
         <div className="flex flex-col items-center">
           <div className="flex items-center relative mb-6">
-            <p className="text-m mr-4 w-40 text-right">{sub1}</p>
+            <p className="text-m mr-4 w-40 text-left">{sub1}</p>  
             <input
               type={showConfirmPassword ? "text" : "password"} 
               value={input1}
@@ -74,7 +70,7 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
           </div>
 
           <div className="flex items-center relative mb-6">
-            <p className="text-m mr-4 w-40 text-right">{sub2}</p>
+            <p className="text-m mr-4 w-40 text-left">{sub2}</p>
             <input
               type={showNewPassword ? "text" : "password"} 
               value={input2}
@@ -96,7 +92,7 @@ const CPPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
           </div>
 
           <div className="flex items-center relative mb-6">
-            <p className="text-m mr-4 w-40 text-right">{sub3}</p>
+            <p className="text-m mr-4 w-40 text-left">{sub3}</p> 
             <input
               type={showPassword ? "text" : "password"} 
               value={input3}
