@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import InfoIcon from '../Assets/Icons/Info icon.png';
+import i from '../Assets/Icons/i.png';
+import Validation from './Validation';
 
 function EditPopup({ image, onClose, onSave, onDelete }) {
   const [caption, setCaption] = useState(image.caption || '');
@@ -44,34 +45,16 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         </button>
         {/* Exit Warning Dialog */}
         {showExitWarning && (
-          <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg max-w-4xl w-full mx-4 relative">
-            
-              <h2 className="text-lg font-bold mb-4 flex items-center justify-center gap-3">
-              <img src={InfoIcon} className="w-10 h-10" alt="Info Icon" />
-                Exit Edit Screen?
-              </h2>
-              <p className="text-lg font-bold mb-4 flex items-center justify-center gap-3">
-                Are you sure you want to exit?<br />
-                Edits will not be saved.
-              </p>
-              <div className="flex justify-between">
-                <button
-                  onClick={() => setShowExitWarning(false)} // Resume editing
-                  className="bg-[#BDD9E2] px-4 py-2 rounded-full font-medium"
-                >
-                  Resume Edit
-                </button>
-                <button
-                  onClick={handleExitWithoutSaving} // Exit without saving
-                  className="bg-red-500 px-4 py-2 rounded-full text-white font-medium"
-                >
-                  Exit Edit
-                </button>
-              </div>
-            </div>
-          </div>
+          <Validation
+            title="Exit Edit Screen?"
+            message="Are you sure you want to exit? Edits will not be saved."
+            onBlue={() => setShowExitWarning(false)} // Resume editing
+            onRed={handleExitWithoutSaving} // Exit without saving
+            button1Text="Resume Edit"
+            button2Text="Exit"
+          />
         )}
+
         {/* Image Preview */}
         <img
           src={image.url}
