@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Layout/Navbar.js';
 import Searchbar from '../Layout/Searchbar.js';
 import logo from '../Assets/Logo/Logo.png';
@@ -15,6 +15,9 @@ function Home() {
   const [isExpanded, setIsExpanded] = useState(false); // Expand state for any additional UI
   const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
   
+  
+  useEffect(() => {document.title = 'Home';});
+    
   // list of hardcoded images
   const [images, setImages] = useState([
     {
@@ -38,7 +41,6 @@ function Home() {
     // Add more dummy images as needed
   ]);
 
-  
   // Using the context to get photos from the Upload page
   const { photos } = usePhotoContext();
   // Combine hardcoded images and uploaded photos into one list

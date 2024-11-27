@@ -277,11 +277,7 @@ function AlbumDetails() {
           />
         )}
 
-            
-
-        
-
-        {image instanceof File && (
+         {image instanceof File && (
             <div className="relative w-48 h-40">
               <img
                 src={URL.createObjectURL(image)}
@@ -295,22 +291,11 @@ function AlbumDetails() {
                   marginLeft: '-1px',
                 }}
               />
-              <button 
-                onClick={() => handleEditClick(image)}
-                className="absolute top-0 -right-10 bg-white p-2 rounded-full hover:bg-gray-200"
-                title="Edit photo details"
-                >
-                <img
-                  src={editIcon}
-                  alt="Edit Icon"
-                  className="h-5 w-5"
-                />
-              </button>
             </div>
-        )}
-        
-      </div>
-    </div>
+            )}
+              
+            </div>
+          </div>
 
             ))}
           </div>
@@ -399,6 +384,14 @@ function AlbumDetails() {
         onSave={handleSave}
         onDelete={handleDelete}
       />
+
+      {isUploadClicked && (
+        <div className="fixed bottom-0 left-60 transform text-center">
+          <p className="text-black font-small">
+            Total Photos: {images.length}
+          </p>
+        </div>
+      )}
               
     </div>
   );
