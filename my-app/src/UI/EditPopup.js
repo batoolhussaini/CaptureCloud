@@ -70,7 +70,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
             alt="Edit Image"
             className="w-full rounded-lg mb-5"
           />
-          <button onClick={handleFullScreen} className="absolute top-2 right-2 h-6 w-6" title="Full Screen">
+          <button onClick={handleFullScreen} className="absolute top-2 left-2 h-6 w-6" title="Full Screen">
             <img src={fullScreenIcon} alt="Full Screen" />
           </button>
         </div>
@@ -147,7 +147,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               {tag}
               <button
                 onClick={() => handleRemoveTag(tag)}
-                className="ml-1 text-purple-600"
+                className="ml-1 text-black"
               >
                 &times;
               </button>
