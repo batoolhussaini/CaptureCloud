@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import i from '../Assets/Icons/i.png';
 import Validation from './Validation';
 
@@ -8,8 +9,8 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [newTag, setNewTag] = useState('');
   const [isStarred, setIsStarred] = useState(image.isStarred || false);
   const [showExitWarning, setShowExitWarning] = useState(false);
+  const imageRef = useRef(null);
 
-  
   const handleAddTag = () => {
     if (newTag && !tags.includes(newTag)) {
       setTags([...tags, newTag]);
@@ -20,22 +21,28 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const handleRemoveTag = (tagToRemove) => {
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
-  
+
   const handleSave = () => {
     const updatedDetails = {
       caption, isStarred, tags
     };
-    onSave(updatedDetails); // Pass updated details to parent
+    onSave(updatedDetails);
   };
 
   const handleExitWithoutSaving = () => {
     setShowExitWarning(false);
     onClose();
-  }
+  };
+
+  const handleFullScreen = () => {
+    if (imageRef.current && imageRef.current.requestFullscreen) {
+      imageRef.current.requestFullscreen();
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-100 shadow-lg relative w-full max-w-lg sm:w-100 sm:p-8">
+      <div className="bg-white p-6 rounded-lg w-full max-w-lg sm:p-8 relative">
         {/* Close Button */}
         <button
           onClick={() => setShowExitWarning(true)}
@@ -56,12 +63,17 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         )}
 
         {/* Image Preview */}
-        <img
-          src={image.url}
-          alt="Edit Image"
-          className="w-full rounded-lg mb-5"
-        />
-
+        <div className="relative">
+          <img
+            ref={imageRef}
+            src={image.url}
+            alt="Edit Image"
+            className="w-full rounded-lg mb-5"
+          />
+          <button onClick={handleFullScreen} className="absolute top-2 right-2 h-6 w-6" title="Full Screen">
+            <img src={fullScreenIcon} alt="Full Screen" />
+          </button>
+        </div>
 
         {/* Star Image */}
         <div className="mb-2 flex items-center justify-between">
@@ -72,24 +84,24 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
             &#9733; {/* Star icon */}
           </button>
 
-        {/* Album Label and Dropdown */}
-        <form className="max-w-sm flex items-center space-x-2 m-3">
-          <label htmlFor="albums" className="text-gray-700 font-medium mt-1">
-            Album
-          </label>
-          <select
-            id="albums"
-            className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
-          >
-            <option value="" disabled selected>
+          {/* Album Label and Dropdown */}
+          <form className="max-w-sm flex items-center space-x-2 m-3">
+            <label htmlFor="albums" className="text-gray-700 font-medium mt-1">
+              Album
+            </label>
+            <select
+              id="albums"
+              className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
+            >
+              <option value="" disabled selected>
                 Select an Album
-            </option>
-            <option value="2020">2020</option>
-            <option value="CA">Canada</option>
-            <option value="CAT">Cats</option>
-            <option value="OU">Outdoors</option>
-          </select>
-        </form>
+              </option>
+              <option value="2020">2020</option>
+              <option value="CA">Canada</option>
+              <option value="CAT">Cats</option>
+              <option value="OU">Outdoors</option>
+            </select>
+          </form>
         </div>
 
         {/* Tags and Caption Input */}
@@ -108,10 +120,10 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
 
         {/* Tags Input */}
         <label className="block text-gray-700 font-medium">
-            Add Tags
+          Add Tags
         </label>
         <div className="flex items-center mb-4">
-        <input
+          <input
             className="w-full border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
             placeholder="Add tags..."
             value={newTag}
@@ -142,8 +154,6 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
             </span>
           ))}
         </div>
-
-
 
         {/* Save and Delete Buttons */}
         <div className="flex justify-between">
