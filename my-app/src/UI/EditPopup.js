@@ -33,7 +33,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   }
 
   return (
-    <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-100 shadow-lg relative w-full max-w-lg sm:w-100 sm:p-8">
         {/* Close Button */}
         <button
@@ -45,13 +45,13 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         {/* Exit Warning Dialog */}
         {showExitWarning && (
           <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm text-center">
+            <div className="bg-white p-6 rounded-lg max-w-4xl w-full mx-4 relative">
             
               <h2 className="text-lg font-bold mb-4 flex items-center justify-center gap-3">
               <img src={InfoIcon} className="w-10 h-10" alt="Info Icon" />
                 Exit Edit Screen?
               </h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-lg font-bold mb-4 flex items-center justify-center gap-3">
                 Are you sure you want to exit?<br />
                 Edits will not be saved.
               </p>
