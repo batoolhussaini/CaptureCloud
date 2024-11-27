@@ -22,35 +22,35 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
 
         <div className="flex flex-col items-center">
           <div className="flex items-center mb-6">
-            <p className="text-m mr-4 w-40 text-right">{sub1}</p>
+            <p className="text-m mr-4 w-20 text-left">{sub1}</p>
             <input
                 type="text"
                 value={input1}
                 onChange={(e) => setInput1(e.target.value)}
                 placeholder="Type name"
-                className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
+                className="border-2 border-gray-300 rounded-3xl h-10 w-80 shadow-lg placeholder:italic pl-2 text-sm"
             />
           </div>
 
           <div className="flex items-center mb-6">
-            <p className="text-m mr-4 w-40 text-right">{sub2}</p>
+            <p className="text-m mr-4 w-20 text-left">{sub2}</p>
             <input
                 type="email"
                 value={input2}
                 onChange={(e) => setInput2(e.target.value)}
                 placeholder="Type email address"
-                className="border-2 border-gray-300 rounded-3xl h-10 w-64 shadow-lg placeholder:italic pl-2 text-sm"
+                className="border-2 border-gray-300 rounded-3xl h-10 w-80 shadow-lg placeholder:italic pl-2 text-sm"
             />
           </div>
 
           <div className="flex items-start mb-6">
-            <p className="text-m mr-4 w-40 text-right">{sub3}</p>
+            <p className="text-m mr-4 w-20 text-left">{sub3}</p>
             <input
                 type="text"
                 value={input3}
                 onChange={(e) => setInput3(e.target.value)}
-                placeholder="Type message"
-                className="border-2 border-gray-300 rounded-3xl h-48 w-64 shadow-lg placeholder:italic pl-2 pb-40 text-sm"
+                placeholder="100 characters max"
+                className="border-2 border-gray-300 rounded-3xl h-40 w-80 shadow-lg placeholder:italic pl-2 pb-32 text-sm" 
             />
           </div>
 
