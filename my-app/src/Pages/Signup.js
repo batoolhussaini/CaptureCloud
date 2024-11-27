@@ -100,16 +100,15 @@ function Signup() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8">
-            <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
+            <div className="flex justify-center">
                 <img src={logo} alt="Logo" className="w-32 sm:w-36 md:w-40 lg:w-48 xl:w-52" />
             </div>
-            <div className="sm:pt-6 md:pt-8 lg:pt-10 mt-32">
+            <div className="sm:pt-6 md:pt-8 lg:pt-10">
                 <h1 className="text-3xl text-center mb-3">SIGN UP</h1>
             </div>
             <div
-                className={`bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between transition-all duration-300 ${
-                    password1 ? "max-h-[510px]" : "max-h-[410px]"
-                }`}
+                className={`bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between transition-all duration-300 
+                `}
             >
                 <form className="space-y-6" onSubmit={handleCreateAccount} noValidate>
                     <div className="flex items-center">
@@ -234,7 +233,7 @@ function Signup() {
                         </button>
                     </div>
 
-                    <label className="flex items-center ml-36 text-sm">
+                    <label className="flex items-center ml-36 text-sm h-2">
                         <input type="checkbox" className={"form-checkbox accent-black"} checked={isChecked} onChange={handleCheckboxChange} />
                         <p className="ml-2">
                             I agree to the&nbsp;  
@@ -245,6 +244,8 @@ function Signup() {
           
                     </label>
 
+                    {error && <p className="text-red-600 text-center mt-4 text-sm h-1">{error}</p>}
+
                     <div className="flex flex-col items-center">
                         <button
                             type="submit"
@@ -254,7 +255,6 @@ function Signup() {
                         </button>
                     </div>
                 </form>
-                {error && <p className="text-red-600 text-center mt-4 text-sm relative bottom-3">{error}</p>}
             </div>
             <p className="mt-6 text-center">
                 Already have an account? <a href="/login" className="text-sky-500 hover:text-sky-600 underline">Login here!</a>
