@@ -138,7 +138,7 @@ function Upload() {
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
 
-      <h1 className="text-4xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Upload to Home</h1>
       <div className="flex-grow flex items-center justify-center ml-32">
         <div 
           className={`border-2 ${dragOver ? 'border-[#069DFA]' : 'border-black'} border-dashed rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center mt-6 bg-[#F5F5F5]`}

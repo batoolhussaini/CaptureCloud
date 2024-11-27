@@ -67,21 +67,21 @@ function Account() {
       <h1 className="text-5xl text-center mb-6 ml-32 text-[#6AABD2] mt-6">My Account</h1>  
 
       <div className="ml-32">
-        <div className="p-12 rounded-3xl border-2 border-black w-2/5 mx-auto flex flex-col justify-between min-h-[400px] mt-6 relative">
-          <div className="flex items-center mb-4">
+        <div className="p-12 rounded-3xl border-2 border-black w-2/5 mx-auto flex flex-col justify-between mt-6 relative">
+          <div className="flex items-center">
             <label htmlFor="name" className="mr-10 w-16 text-m font-medium">
               Name
             </label>
-            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-sm text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black">
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-sm text-[#3D7292] text-zinc-600 drop-shadow-lg border border-black">
               {name}
             </div>
           </div>
 
-          <div className="flex items-center mb-4">
+          <div className="flex items-center">
             <label htmlFor="email" className="mr-10 w-16 text-m mt-4 font-medium">
               Email
             </label>
-            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-sm text-[#3D7292] text-zinc-600 drop-shadow-2xl border border-black mt-6">
+            <div className="w-full bg-[#F5F5F5] p-3 rounded-2xl text-sm text-[#3D7292] text-zinc-600 drop-shadow-lg border border-black mt-6">
               {email}
             </div>
           </div>
@@ -105,7 +105,7 @@ function Account() {
           }
 
           <button type="submit"
-                  className="w-[220px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-sm rounded-2xl shadow-lg block mx-auto mt-6 transition-colors" onClick={toggleValidationPopup}>
+                  className="w-[220px] h-12 bg-[#ED6B6D] hover:bg-[#D45A55] text-sm rounded-2xl shadow-lg block mx-auto mt-5 transition-colors" onClick={toggleValidationPopup}>
               Delete Account
           </button>
         </div>

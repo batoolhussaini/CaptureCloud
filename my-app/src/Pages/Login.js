@@ -86,8 +86,6 @@ function Login() {
     };
     
 
-    
-
     return (
         <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8">
             <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
@@ -96,7 +94,7 @@ function Login() {
             <div className="sm:pt-6 md:pt-8 lg:pt-10 mt-32">
                 <h1 className="text-3xl text-center mb-3">LOG IN</h1>
             </div>
-            <div className="bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between h-[280px]">
+            <div className="bg-ccBlue p-12 rounded-3xl border border-black w-5/12 mx-auto shadow-lg flex flex-col justify-between">
                 <form className="space-y-7" onSubmit={handleLogin} noValidate>
                     <div className="flex items-center">
                         <label htmlFor="email" className="mr-10 w-32">
@@ -135,7 +133,8 @@ function Login() {
                             )}
                         </button>
                     </div>
-                    <div className="flex flex-col items-center relative bottom-4 relative top-2 ">
+                    {error && <p className="text-red-600 text-center text-sm h-1">{error}</p>}
+                    <div className="flex flex-col items-center relative">
                         <button
                             type="submit"
                             className="w-1/4 h-8 bg-zinc-100 hover:bg-zinc-200 rounded-2xl border border-black shadow-lg"
@@ -144,10 +143,9 @@ function Login() {
                         </button>
                     </div>
                 </form>
-                <p onClick={handleForgotPassword} className="text-center relative top-4 text-black text-sm cursor-pointer">
+                <p onClick={handleForgotPassword} className="text-center relative top-2 text-black text-sm cursor-pointer">
                     <a className="text-black hover:text-gray-700 underline">Forgot Password?</a>
                 </p>
-                {error && <p className="text-red-600 text-center mt-8 text-sm">{error}</p>}
             </div>
             <p className="mt-6 text-center">
                 Don’t have an account? <a href="/signup" className="text-sky-500 hover:text-sky-600 underline">Sign up here!</a>
@@ -158,7 +156,7 @@ function Login() {
 
             {isAuthPopupOpen && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50">
-                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative h-[375px] overflow-y-auto">
+                    <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto">
                         <button
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             title="Close"
@@ -174,20 +172,21 @@ function Login() {
                             onChange={(e) => setAuthCode(e.target.value)}
                             placeholder="Enter code"
                         />
+                        {authError && <p className="text-red-600 text-center mt-4 text-sm">{authError}</p>}
+
                         <button
                             onClick={handleAuthSubmit}
-                            className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block"
+                            className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block mt-2"
                         >
                             Submit
                         </button>
-                        {authError && <p className="text-red-600 text-center mt-2 text-sm">{authError}</p>}
                     </div>
                 </div>
             )}
 
             {isForgotPopupOpen && (
                 <div className={`fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50 `}>
-                    <div className={`bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto ${successMessage ? 'h-auto' : 'h-[300px] overflow-y-auto'}`}>
+                    <div className={`bg-[#FAFAFA] p-6 rounded-2xl shadow-lg border-2 border-black w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto relative overflow-y-auto`}>
                         <button
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             title="Close"
@@ -215,13 +214,14 @@ function Login() {
                                     onChange={(e) => setForgotEmail(e.target.value)}
                                     placeholder="Enter email"
                                 />
+                                {forgotError && <p className="text-red-600 text-center mt-4 text-sm">{forgotError}</p>}
+
                                 <button
                                     onClick={handleForgotSubmit}
-                                    className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block"
+                                    className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block mt-2"
                                 >
                                     Submit
                                 </button>
-                                {forgotError && <p className="text-red-600 text-center mt-2 text-sm">{forgotError}</p>}
                             </div>
                          )}
                     </div>
