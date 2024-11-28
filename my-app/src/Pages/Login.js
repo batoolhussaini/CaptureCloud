@@ -133,7 +133,7 @@ function Login() {
                             )}
                         </button>
                     </div>
-                    {error && <p className="text-red-600 text-center text-sm h-1">{error}</p>}
+                    {error && <p className="text-red-600 text-center text-sm h-0">{error}</p>}
                     <div className="flex flex-col items-center relative">
                         <button
                             type="submit"
