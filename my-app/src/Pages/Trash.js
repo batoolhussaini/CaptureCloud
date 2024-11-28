@@ -17,8 +17,6 @@ function Trash() {
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isRestoreValidationVisible, setRestoreValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
-  const [imageToDelete, setImageToDelete] = useState(null);
-  const [imageToRestore, setImageToRestore] = useState(null);
   const [actionType, setActionType] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(null);
 
@@ -87,7 +85,6 @@ function Trash() {
   };
 
   const handleExpandedRestore = () => {
-    setImageToRestore(expandedImage);
     setRestoreValidationVisible(true);
   };
 
@@ -95,14 +92,21 @@ function Trash() {
     const updatedTrash = deletedImages.filter(image => image !== expandedImage);
     localStorage.setItem('trash', JSON.stringify(updatedTrash));
     setDeletedImages(updatedTrash);
-    setExpandedImage(null);
+
+    if (updatedTrash.length > 0) {
+      const nextIndex = (currentImageIndex + 1) % updatedTrash.length;
+      setCurrentImageIndex(nextIndex);
+      setExpandedImage(updatedTrash[nextIndex]);
+    } else {
+      setExpandedImage(null);
+    }
+
     setRestoreValidationVisible(false);
     setActionType('restore');
     setConfirmationVisible(true);
   };
 
   const handleExpandedDelete = () => {
-    setImageToDelete(expandedImage);
     setValidationVisible(true);
   };
 
@@ -110,7 +114,15 @@ function Trash() {
     const updatedTrash = deletedImages.filter(image => image !== expandedImage);
     localStorage.setItem('trash', JSON.stringify(updatedTrash));
     setDeletedImages(updatedTrash);
-    setExpandedImage(null);
+
+    if (updatedTrash.length > 0) {
+      const nextIndex = currentImageIndex % updatedTrash.length;
+      setCurrentImageIndex(nextIndex);
+      setExpandedImage(updatedTrash[nextIndex]);
+    } else {
+      setExpandedImage(null);
+    }
+
     setValidationVisible(false);
     setActionType('delete');
     setConfirmationVisible(true);
@@ -147,6 +159,7 @@ function Trash() {
     setExpandedImage(deletedImages[prevIndex]);
   };
 
+  
   return (
     <div className="flex flex-col">
       <div className="flex justify-center">
@@ -244,7 +257,7 @@ function Trash() {
       {expandedImage && (
         <>
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
-            <div className="p-4 rounded-lg relative">
+            <div className="p-4 ml-[50px] rounded-lg relative">
               <button
                 className="absolute top-2 -right-8 text-3xl text-white"
                 title="Close"
@@ -258,14 +271,14 @@ function Trash() {
                 className="max-w-full max-h-[80vh] object-contain"
               />
               <button
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-10 w-10 flex items-center justify-center shadow-md hover:shadow-lg"
+                className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
                 onClick={handlePreviousImage}
                 title="Previous"
               >
                 &#8249;
               </button>
               <button
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-10 w-10 flex items-center justify-center shadow-md hover:shadow-lg"
+                className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
                 onClick={handleNextImage}
                 title="Next"
               >
@@ -361,6 +374,12 @@ function Trash() {
           onConfirm={() => setConfirmationVisible(false)}
         />
       )}
+
+          <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+          <p className="text-black font-small">
+            Total Photos: {deletedImages.length}
+          </p>
+      </div>
     </div>
   );
 }

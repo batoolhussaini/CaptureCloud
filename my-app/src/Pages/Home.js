@@ -14,10 +14,11 @@ function Home() {
   const [showSoldMessage, setShowSoldMessage] = useState(false); // Sold confirmation popup state
   const [isExpanded, setIsExpanded] = useState(false); // Expand state for any additional UI
   const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
-  
-  
-  useEffect(() => {document.title = 'Home';});
-    
+
+  useEffect(() => {
+    document.title = 'Home';
+  });
+
   // list of hardcoded images
   const [images, setImages] = useState([
     {
@@ -46,9 +47,14 @@ function Home() {
   // Combine hardcoded images and uploaded photos into one list
   const combinedImages = [
     ...images, // Hardcoded images
-    ...photos.map((photo) => ({ url: URL.createObjectURL(photo), caption: '', tags: [], isStarred: false })), // Uploaded photos
+    ...photos.map((photo) => ({
+      url: URL.createObjectURL(photo),
+      caption: '',
+      tags: [],
+      isStarred: false,
+    })), // Uploaded photos
   ];
-  
+
   // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
@@ -83,10 +89,12 @@ function Home() {
 
   // Delete an image
   const handleDeleteImage = () => {
-    setImages((prevImages) => prevImages.filter((_, index) => index !== selectedImageIndex));
+    setImages((prevImages) =>
+      prevImages.filter((_, index) => index !== selectedImageIndex)
+    );
     setShowEditPopup(false); // Close the EditPopup after deleting
   };
-  
+
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -100,24 +108,38 @@ function Home() {
           <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
         </div>
 
-        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Home</h1>
+        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">
+          Home
+        </h1>
 
         {/* Searchbar */}
         <div className="mt-4 flex flex-col items-center ml-32">
           <Searchbar />
         </div>
 
-        {/* Top Tags - HARDCODEDDDD FIX THISS */}
+        {/* Top Tags */}
         <div className="flex flex-row mt-8 items-start justify-center gap-5">
-          <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">Top Tags</h2>
+          <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">
+            Top Tags
+          </h2>
           <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
             &#9733; Favourites
           </button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Nature</button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Summer</button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Beach</button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Animal</button>
-          <button className="mb-4 text-xl text-[#016AC7] font-bold">All Tags &#10230;</button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Nature
+          </button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Summer
+          </button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Beach
+          </button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Animal
+          </button>
+          <button className="mb-4 text-xl text-[#016AC7] font-bold">
+            All Tags &#10230;
+          </button>
         </div>
 
         {/* Image Boxes */}
@@ -157,7 +179,6 @@ function Home() {
             caption={combinedImages[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
             onEdit={handleOpenEditPopup}
-            //onMarkSold={() => setShowSoldMessage(true)}
           />
         )}
         {/* EditPopup Component */}
@@ -169,6 +190,11 @@ function Home() {
             onDelete={handleDeleteImage}
           />
         )}
+      </div>
+
+      {/* Photo Count */}
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+      <p className="text-black font-small">Total Photos: {combinedImages.length}</p>
       </div>
     </div>
   );

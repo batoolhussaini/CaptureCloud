@@ -9,8 +9,9 @@ import Button from '../UI/button';
 import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
 import ARpopup from '../UI/ARpopup';
-import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
+import Validation from '../UI/Validation';
+import Confirmation from '../UI/Confirmation';
 
 import pic1 from '../Assets/Photos/pic1.jpg';
 import pic2 from '../Assets/Photos/pic2.jpg';
@@ -25,15 +26,15 @@ function Flowers() {
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [flowers, setFlowers] = useState([pic1, pic2, pic3, pic4, pic5, pic6]);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isUploadClicked, setIsUploadClicked] = useState(false);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const [albumName, setAlbumName] = useState('Flowers'); 
   const [hovered, setHovered] = useState(null);
-  const [showModal, setShowModal] = useState(false); // Initial popup modal state
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [isValidationVisible, setValidationVisible] = useState(false);
+  const [isConfirmationVisible, setConfirmationVisible] = useState(false);
 
-    // Open the first popup (Photo Details)
+  // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
     setShowModal(true);
@@ -55,22 +56,23 @@ function Flowers() {
     }
   };
 
-  const handleUploadClick = () => {
-    setIsVisible(false);
-    setIsUploadClicked(true);
-  };
-
-  const uploadIconClick = () => {
-    alert('Under development. Tune back soon!');
-  };
-
   const handleDeleteSelected = () => {
+    setValidationVisible(true);
+  };
+
+  const confirmDelete = () => {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
     setFlowers(updatedFlowers);
     const currentTrash = JSON.parse(localStorage.getItem('trash')) || [];
     const newTrash = [...currentTrash, ...selectedImages];
     localStorage.setItem('trash', JSON.stringify(newTrash));
     setSelectedImages([]);
+    setValidationVisible(false);
+    setConfirmationVisible(true);
+  };
+
+  const cancelDelete = () => {
+    setValidationVisible(false);
   };
 
   const handleEditAlbumName = () => {
@@ -179,7 +181,6 @@ function Flowers() {
                       marginLeft: '-1px',
                     }}
                   />
-                  {/* Photo Details Button on Hover */}
                   {hovered === index && !isSelected && (
                   <button
                   onClick={() => handleOpenPhotoDetails(index)}
@@ -192,15 +193,12 @@ function Flowers() {
             ))}
           </div>
 
-        {/* Initial Popup Modal */}
         {showModal && selectedImageIndex !== null && (
           <PhotoDetails
             image={flowers[selectedImageIndex]}
             isStarred={flowers[selectedImageIndex].isStarred}
             caption={flowers[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
-            //onEdit={handleOpenEditPopup}
-            //onMarkSold={() => setShowSoldMessage(true)}
           />
         )}
         </div>
@@ -219,12 +217,29 @@ function Flowers() {
           alt="Uploaded Icon"
           className="fixed top-1/3 right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
           title="Upload Photos"
-          onClick={uploadIconClick}
         />
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
           Total Photos: {flowers.length}
         </div>
       </div>
+
+      {isValidationVisible && (
+        <Validation
+          title="Delete Photos?"
+          message="Are you sure you want to delete the selected photo(s)?"
+          button1Text="Cancel"
+          button2Text="Delete"
+          onBlue={cancelDelete}
+          onRed={confirmDelete}
+        />
+      )}
+
+      {isConfirmationVisible && (
+        <Confirmation
+          message="Photo(s) successfully deleted."
+          onConfirm={() => setConfirmationVisible(false)}
+        />
+      )}
     </div>
   );
 }

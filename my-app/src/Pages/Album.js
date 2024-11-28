@@ -7,10 +7,14 @@ import { Link } from 'react-router-dom';
 import Button from '../UI/button';  
 import checkIcon from '../Assets/Icons/Check.png'; 
 import ARpopup from '../UI/ARpopup';
+import Validation from '../UI/Validation';
+import Confirmation from '../UI/Confirmation';
 
 function Album() {
   const [isSelected, setIsSelected] = useState(false); 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isValidationVisible, setValidationVisible] = useState(false);
+  const [isConfirmationVisible, setConfirmationVisible] = useState(false);
   const [albums, setAlbums] = useState(() => {
     const savedAlbums = localStorage.getItem('albums');
     return savedAlbums ? JSON.parse(savedAlbums) : [
@@ -48,10 +52,20 @@ function Album() {
   };
 
   const handleDeleteSelected = () => {
+    setValidationVisible(true);
+  };
+
+  const confirmDelete = () => {
     const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
     setAlbums(updatedAlbums);
     setSelectedAlbums([]); 
     localStorage.setItem('albums', JSON.stringify(updatedAlbums));
+    setValidationVisible(false);
+    setConfirmationVisible(true);
+  };
+
+  const cancelDelete = () => {
+    setValidationVisible(false);
   };
 
   const handlePopupConfirm = (newAlbumName) => {
@@ -164,6 +178,28 @@ function Album() {
       {isPopupOpen && (
         <ARpopup onConfirm={handlePopupConfirm} onClose={handlePopupClose} />
       )}
+
+      {isValidationVisible && (
+        <Validation
+          title="Delete Albums?"
+          message="Are you sure you want to delete the selected album(s)?"
+          button1Text="Cancel"
+          button2Text="Delete"
+          onBlue={cancelDelete}
+          onRed={confirmDelete}
+        />
+      )}
+
+      {isConfirmationVisible && (
+        <Confirmation
+          message="Album(s) successfully deleted."
+          onConfirm={() => setConfirmationVisible(false)}
+        />
+      )}
+
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+        <p className="text-black font-small">Total Albums: {1+ albums.length}</p>
+      </div>
     </div>
   );
 }

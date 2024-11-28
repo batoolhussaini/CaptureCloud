@@ -3,7 +3,7 @@ import i from '../Assets/Icons/i.png';
 
 const Validation = ({ title, message, onRed, onBlue, button1Text, button2Text }) => {
     return (
-      <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+      <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50" title="Close">
         <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-black w-auto min-w-[600px] max-w-xl relative ml-32">
           <div className="flex items-center justify-center mb-4">
             <img src={i} alt="Icon" className="mr-4 h-10 w-8" />
