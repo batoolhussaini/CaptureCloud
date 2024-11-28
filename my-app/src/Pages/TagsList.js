@@ -3,7 +3,15 @@ import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 
 function TagsList() {
-  const tags = ['Animal','Bear', 'Campus',  'Cloud', 'Garden', 'Nature', 'Red','Sunset', 'Wedding'];
+  const tags = ['Animal', 'Bear', 'Campus', 'Cloud', 'Garden', 'Nature', 'Red', 'Sunset', 'Wedding'];
+
+  const handleTagClick = (tag) => {
+    if (tag === 'Animal') {
+      window.location.href = '/animaltag'; // Navigate to the AnimalTag page
+    } else {
+      console.log(`Clicked on tag: ${tag}`);
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -25,7 +33,7 @@ function TagsList() {
             <div key={index}>
               <span
                 className="underline text-black hover:text-[#6AABD2] cursor-pointer"
-                onClick={() => console.log(`Clicked on tag: ${tag}`)} 
+                onClick={() => handleTagClick(tag)}
               >
                 {tag}
               </span>

@@ -49,7 +49,7 @@ function Searchbar() {
         {/* Search Input */}
         <input
           type="text"
-          placeholder="doesnt fully work hehe"
+          placeholder=""
           value={searchTerm}
           onChange={handleSearchChange}
           className="w-96 h-full border-2 text-gray-500 rounded-full px-5 py-1 border-text-c items-center justify-center text-center"

@@ -13,6 +13,7 @@ import Upload from './Pages/Upload';
 import AllTags from './Pages/AllTags';
 import AlbumDetails from './Pages/AlbumDetails';  
 import Flowers from './Pages/Flowers';
+import Animaltag from './Pages/Animaltag';
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/albums" element={<Album />} />
         <Route path="/statistics" element={<Statistics />} />
         <Route path="/tagslist" element={<TagsList />} />
+        <Route path="/animaltag" element={<Animaltag />} />
         <Route path="/trash" element={<Trash />} />
         <Route path="/sold" element={<Sold />} />
         <Route path="/upload" element={<Upload />} />
