@@ -9,12 +9,13 @@ function PhotoDetails({
   onMarkSold,
 }) {
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-10 rounded-lg w-100 shadow-lg relative">
         {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
+          title= "Close"
         >
           &times;
         </button>

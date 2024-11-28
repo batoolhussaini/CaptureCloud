@@ -277,27 +277,36 @@ function AlbumDetails() {
           />
         )}
 
-         {image instanceof File && (
-            <div className="relative w-48 h-40">
-              <img
-                src={URL.createObjectURL(image)}
-                alt={`Uploaded ${index + 1}`}
-                className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
-                  isSelected && selectedImages.includes(image)
-                    ? 'filter brightness-50'
-                    : ''
-                }`}
-                style={{
-                  marginLeft: '-1px',
-                }}
-              />
-            </div>
+        {image instanceof File && (
+          <div className="relative w-48 h-40">
+            <img
+              src={URL.createObjectURL(image)}
+              alt={`Uploaded ${index + 1}`}
+              className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
+                isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
+              }`}
+              style={{
+                marginLeft: '-1px',
+              }}
+            />
+            {!isUploadClicked && (
+              <button 
+                onClick={() => handleEditClick(image)}
+                className="absolute top-0 -right-10 bg-white p-2 rounded-full hover:bg-gray-200"
+                title="Edit photo details"
+              >
+                <img
+                  src={editIcon}
+                  alt="Edit Icon"
+                  className="h-5 w-5"
+                />
+              </button>
             )}
-              
-            </div>
           </div>
-
-            ))}
+        )}           
+        </div>
+        </div>
+         ))}
           </div>
         </div>
       </div>
@@ -318,7 +327,7 @@ function AlbumDetails() {
             src={uploadIcon}
             alt="Uploaded Icon"
             onClick={handleUploadIconClick}
-            className="fixed top-1/3 right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
+            className="fixed top-[220px] right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
             title="Upload Photos"
           />
 

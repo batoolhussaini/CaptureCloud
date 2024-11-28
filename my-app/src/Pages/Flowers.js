@@ -9,6 +9,7 @@ import Button from '../UI/button';
 import editIcon from '../Assets/Icons/Edit pencil.png';
 import uploadIcon from '../Assets/Icons/Upload.png';
 import ARpopup from '../UI/ARpopup';
+import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
@@ -59,6 +60,10 @@ function Flowers() {
   const handleDeleteSelected = () => {
     setValidationVisible(true);
   };
+  
+  const handleUploadIconClick = () => {
+    alert('Under development. Tune back soon!'); 
+  }
 
   const confirmDelete = () => {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
@@ -199,6 +204,8 @@ function Flowers() {
             isStarred={flowers[selectedImageIndex].isStarred}
             caption={flowers[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
+            //onEdit={handleOpenEditPopup}
+            //onMarkSold={() => setShowSoldMessage(true)}
           />
         )}
         </div>
@@ -215,7 +222,8 @@ function Flowers() {
         <img
           src={uploadIcon}
           alt="Uploaded Icon"
-          className="fixed top-1/3 right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
+          className="fixed top-[220px] right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
+          onClick={handleUploadIconClick}
           title="Upload Photos"
         />
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">

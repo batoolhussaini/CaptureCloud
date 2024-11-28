@@ -119,7 +119,7 @@ function Navbar() {
           )}
         </Link>
 
-        <Link to="/trash" className="flex items-center space-x-2 ml-10 hover:font-bold">
+        <Link to="/trash" className="flex items-center space-x-2 ml-8 hover:font-bold">
           {location.pathname === '/trash' ? (
             <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
               <img src={trashSelectedIcon} alt="Trash" style={{ height: '3vh', width: '3vh' }} />

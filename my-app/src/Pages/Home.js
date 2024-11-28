@@ -55,6 +55,16 @@ function Home() {
     })), // Uploaded photos
   ];
 
+  const handleNextImage = () => {
+    const nextIndex = (selectedImageIndex + 1) % combinedImages.length;
+    setSelectedImageIndex(nextIndex);
+  };
+
+  const handlePreviousImage = () => {
+    const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
+    setSelectedImageIndex(prevIndex);
+  };
+
   // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
@@ -156,12 +166,12 @@ function Home() {
               {/* Image Element */}
               <img
                 src={image.url}
-                alt={`Preview ${index}`} //with index now
+                alt={`Preview ${index}`}
                 className="w-full h-full object-cover rounded-2xl shadow-lg"
               />
               {hovered === index && (
                 <button
-                  onClick={() => handleOpenPhotoDetails(index)} // Show the initial popup
+                  onClick={() => handleOpenPhotoDetails(index)}
                   className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
                 >
                   Photo Details
@@ -173,14 +183,32 @@ function Home() {
 
         {/* Initial Popup Modal */}
         {showModal && selectedImageIndex !== null && (
-          <PhotoDetails
-            image={combinedImages[selectedImageIndex].url}
-            isStarred={combinedImages[selectedImageIndex].isStarred}
-            caption={combinedImages[selectedImageIndex].caption}
-            onClose={() => setShowModal(false)}
-            onEdit={handleOpenEditPopup}
-          />
+          <>
+            <PhotoDetails
+              image={combinedImages[selectedImageIndex].url}
+              isStarred={combinedImages[selectedImageIndex].isStarred}
+              caption={combinedImages[selectedImageIndex].caption}
+              onClose={() => setShowModal(false)}
+              onEdit={handleOpenEditPopup}
+            />
+            {/* Navigation Buttons */}
+            <button
+                className="absolute left-[210px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9] z-50"
+                onClick={handlePreviousImage}
+              title="Previous"
+            >
+              &#8249;
+            </button>
+            <button
+                className="absolute right-[210px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9] z-50"
+                onClick={handleNextImage}
+              title="Next"
+            >
+              &#8250;
+            </button>
+          </>
         )}
+
         {/* EditPopup Component */}
         {showEditPopup && selectedImageIndex !== null && (
           <EditPopup
@@ -194,7 +222,7 @@ function Home() {
 
       {/* Photo Count */}
       <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
-      <p className="text-black font-small">Total Photos: {combinedImages.length}</p>
+        <p className="text-black font-small">Total Photos: {combinedImages.length}</p>
       </div>
     </div>
   );
