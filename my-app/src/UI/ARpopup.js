@@ -12,6 +12,8 @@ const ARpopup = ({ onConfirm, onClose }) => {
       setError('name cannot be empty.');
     } else if (duplicate) {
       setError('name already exists.');
+    } else if (inputValue.trim() === "Flowers") {
+      setError('name already exists.');
     } else if (inputValue.trim().length > 50) {
       setError('cannot exceed 30 characters.');
     } else {

@@ -91,8 +91,9 @@ function Statistics() {
           {currentChart > 0 && (
             <button
               onClick={showFirstChart}
-              className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
+              className="text-black-800 border border-grey-300 p-3 rounded-full hover:bg-[#D9D9D9] hover:text-black active:bg-[#ffffff] active:text-black focus:outline-none transition"
               aria-label="Show First Chart"
+              title = "Previous"
             >
               &lt;
             </button>
@@ -125,8 +126,9 @@ function Statistics() {
           {currentChart < 1 && (
             <button
               onClick={showSecondChart}
-              className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
+              className="text-black-800 border border-grey-300 p-3 rounded-full hover:bg-[#D9D9D9] hover:text-black active:bg-[#ffffff] active:text-black focus:outline-none transition"
               aria-label="Show Second Chart"
+              title = "Next"
             >
               &gt;
             </button>

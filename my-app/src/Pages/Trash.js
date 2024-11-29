@@ -276,14 +276,14 @@ function Trash() {
                 onClick={handlePreviousImage}
                 title="Previous"
               >
-                &#8249;
+                &lt;
               </button>
               <button
                 className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
                 onClick={handleNextImage}
                 title="Next"
               >
-                &#8250;
+                &gt;
               </button>
             </div>
           </div>

@@ -9,15 +9,15 @@ import CUPopup from '../UI/ConactUsPopup.js';
 import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation';
 
-
 function Account() {
   useEffect(() => { document.title = 'My Account'; });
   const [name] = useState("Jane Doe");
   const [email] = useState("janedoe@gmail.com");
   const [showPopup, setShowPopup] = useState(false);
-  const [showCUPopup, setShowCUPopup] = useState(false)
-  const [showConfPopup, setShowConfPopup] = useState(false)
+  const [showCUPopup, setShowCUPopup] = useState(false);
+  const [showConfPopup, setShowConfPopup] = useState(false);
   const [showValidationPopup, setShowValidationPopup] = useState(false);
+  const [showPasswordChangeConf, setShowPasswordChangeConf] = useState(false);
   const navigate = useNavigate();
 
   const togglePopup = () => {
@@ -31,10 +31,10 @@ function Account() {
   const toggleValidationPopup = () => {
     setShowValidationPopup(!showValidationPopup);
   };
-  
 
   const handleCloseValidation = () => {
-    setShowPopup(false); 
+    setShowPopup(false);
+    setShowPasswordChangeConf(true);
   };
 
   const handleCUPopupConfirm = () => {
@@ -53,6 +53,10 @@ function Account() {
   const handleConfirmDelete = () => {
     setShowValidationPopup(false);
     navigate('/login'); 
+  };
+
+  const handlePasswordChangeConfClose = () => {
+    setShowPasswordChangeConf(false);
   };
 
   return (
@@ -100,7 +104,7 @@ function Account() {
               sub3="New Password" 
               button="Confirm"
               onConfirm={handleCloseValidation}
-              handleClose={handleCloseValidation}
+              handleClose={() => setShowPopup(false)}
             />
           }
 
@@ -138,7 +142,7 @@ function Account() {
       {showValidationPopup && 
         <Validation 
           title="Delete Account?" 
-          message="Are you sure you want to permanently delete your account? This action cannot be undone." 
+          message="Are you sure you want to permanently delete your account? You will lose access too all your uploaded photos." 
           button1Text="Cancel" 
           button2Text="Delete"
           onBlue={handleDeleteAccountConfirm} 
@@ -146,7 +150,12 @@ function Account() {
         />
       }
 
-
+      {showPasswordChangeConf && 
+        <Confirmation 
+          message="Password has been changed successfully." 
+          onConfirm={handlePasswordChangeConfClose}
+        />
+      }
 
       <div className="absolute bottom-16 left-[14rem] flex items-center text text-black">
         <img src={uploadCloud} alt="Upload Cloud Icon" className="w-8 h-8 mr-2" />

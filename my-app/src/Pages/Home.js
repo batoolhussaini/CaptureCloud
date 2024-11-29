@@ -68,16 +68,6 @@ function Home() {
     })), // Uploaded photos
   ];
 
-  const handleNextImage = () => {
-    const nextIndex = (selectedImageIndex + 1) % combinedImages.length;
-    setSelectedImageIndex(nextIndex);
-  };
-
-  const handlePreviousImage = () => {
-    const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
-    setSelectedImageIndex(prevIndex);
-  };
-
   // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
@@ -118,6 +108,15 @@ function Home() {
     setShowEditPopup(false); // Close the EditPopup after deleting
   };
 
+  const handleNextImage = () => {
+    const nextIndex = (selectedImageIndex + 1) % combinedImages.length;
+    setSelectedImageIndex(nextIndex);
+  };
+
+  const handlePreviousImage = () => {
+    const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
+    setSelectedImageIndex(prevIndex);
+  };
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -194,31 +193,18 @@ function Home() {
           ))}
         </div>
 
-        {/* Initial Popup Modal */}
-        {showModal && selectedImageIndex !== null && (
-          <>
+          {/* Initial Popup Modal */}
+          {showModal && selectedImageIndex !== null && (
+            <>
             <PhotoDetails
               image={combinedImages[selectedImageIndex].url}
               isStarred={combinedImages[selectedImageIndex].isStarred}
               caption={combinedImages[selectedImageIndex].caption}
               onClose={() => setShowModal(false)}
               onEdit={handleOpenEditPopup}
-            />
-            {/* Navigation Buttons */}
-            <button
-                className="absolute left-[210px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9] z-50"
-                onClick={handlePreviousImage}
-              title="Previous"
-            >
-              &#8249;
-            </button>
-            <button
-                className="absolute right-[210px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9] z-50"
-                onClick={handleNextImage}
-              title="Next"
-            >
-              &#8250;
-            </button>
+              onPrevious={handlePreviousImage}
+              onNext={handleNextImage} 
+            />  
           </>
         )}
 
