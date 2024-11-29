@@ -191,7 +191,7 @@ function Login() {
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             title="Close"
                             onClick={handleClosePopup}>
-                            x
+                            ×
                         </button> 
                         {successMessage ? ( // If a success message exists, display it
                             <div>
@@ -205,11 +205,11 @@ function Login() {
                             </div>
                         ) : ( // Otherwise, prompt user to fill forgot password form
                             <div>
-                                <h1 className="text-3xl text-center mb-4 mt-6">Forgot Password</h1>
-                                <div className="text-lg text-center mb-2">Enter your email to reset your password:</div>
+                                <h1 className="text-2xl text-center mb-2 mt-6">Forgot Password?</h1>
+                                <div className="text-md text-center mb-2">Enter your email to reset your password:</div>
                                 <input
                                     type="text"
-                                    className="block w-full p-2 border-2 border-[#6AABD2] rounded-full focus:outline-none placeholder:italic placeholder:text-sm mb-4"
+                                    className="block w-full p-2 border-2 border-[#6AABD2] rounded-full focus:outline-none placeholder:italic placeholder:text-sm mb-4 mt-8"
                                     value={forgotEmail}
                                     onChange={(e) => setForgotEmail(e.target.value)}
                                     placeholder="Enter email"

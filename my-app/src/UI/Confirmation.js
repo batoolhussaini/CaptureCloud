@@ -17,7 +17,7 @@ const Confirmation = ({ message, onConfirm }) => {
           className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
           title="Close"
         >
-          x
+          ×
         </button>
       </div>
     </div>
