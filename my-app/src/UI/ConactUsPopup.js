@@ -47,8 +47,9 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
             />
           </div>
 
-          <div className="flex items-start mb-6">
+          <div className="flex items-start mb-1">
             <p className="text-m mr-4 w-20 text-left">{sub3}</p>
+            
             <textarea
               value={input3}
               onChange={(e) => setInput3(e.target.value)}
@@ -56,7 +57,11 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
               placeholder="500 characters max"
               className="border-2 border-[#6AABD2] rounded-3xl h-40 w-80 shadow-lg placeholder:italic pl-3 pt-1 text-sm resize-none"
               style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+            
             />
+          </div>
+          <div className="text-sm text-gray-600 self-end mr-24 mb-4">
+            {input3.length}/500
           </div>
 
           {errorMessage && (
