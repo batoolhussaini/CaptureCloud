@@ -5,7 +5,13 @@ import logo from '../Assets/Logo/Logo.png';
 import EditPopup from '../UI/EditPopup.js';
 import InfoIcon from '../Assets/Icons/Info icon.png';
 import PhotoDetails from '../UI/PhotoDetails.js';
-import { usePhotoContext } from './PhotoContext'; // Importing the PhotoContext
+import { usePhotoContext } from './PhotoContext'; 
+import pic1 from '../Assets/Photos/pic1.jpg';
+import pic2 from '../Assets/Photos/pic2.jpg';
+import pic3 from '../Assets/Photos/pic3.jpeg';
+import pic4 from '../Assets/Photos/pic4.jpg';
+import pic5 from '../Assets/Photos/pic5.jpg';
+import pic6 from '../Assets/Photos/pic6.avif';
 
 function Home() {
   const [hovered, setHovered] = useState(false); // Hover state for image box
@@ -38,7 +44,14 @@ function Home() {
       caption: '',
       tags: ['nature', 'water'],
       isStarred: false,
+      
     },
+    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
+    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers"  },
     // Add more dummy images as needed
   ]);
 
