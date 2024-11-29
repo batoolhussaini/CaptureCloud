@@ -209,14 +209,15 @@ function Trash() {
         <p className="ml-32 text-center">No deleted images.</p>
       )}
 
-      <div className="absolute top-12 right-40 mt-14 mr-6">
+      <div className="absolute top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
+      >
         {deletedImages.length > 0 && (
           <Button
             onClick={handleButtonClick}
             color="bg-[#D9D9D9] hover:bg-[#B0B0B0]"
             className="w-36 h-12"
           >
-            <span>{isSelected ? 'Cancel' : 'Select'}</span>
+            <span>{isSelected ? 'Cancel' : 'Select' }</span>
           </Button>
         )}
       </div>
