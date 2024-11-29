@@ -117,10 +117,6 @@ function Upload() {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const handleCloseValidation = () => {
-    setIsValidationOpen(false);
-  };
-
   const handleSaveMetadata = (image, metadata) => {
     setImageMetadata(prevMetadata => ({
       ...prevMetadata,
@@ -146,7 +142,7 @@ function Upload() {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}>
           <img src={photoIcon} alt="Photo Icon" className="h-20 w-20" />
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             <p className="text-black text-lg mt-4">
                 Drag and drop, or
             </p>

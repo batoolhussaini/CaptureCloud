@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+import Validation from './Validation.js'
 
 function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const [tags, setTags] = useState(metadata?.tags || []);
@@ -7,6 +8,7 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const [isStarClicked, setIsStarClicked] = useState(metadata?.isStarClicked || false);
   const imageRef = useRef(null);
   const [newTag, setNewTag] = useState('');
+  const [showValidation, setShowValidation] = useState(false);
 
   const handleAddTag = () => {
     if (newTag && !tags.includes(newTag)) {
@@ -87,9 +89,24 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
         
         <div className="flex justify-center space-x-32 mt-8">
           <button onClick={handleSave} className="text-black rounded-3xl shadow-md bg-[#B1DEA5] hover:bg-[#8CBF7B] transition-color w-32 h-10">Save</button>
-          <button onClick={() => onDelete(image)} className="bg-[#FF6666] hover:bg-[#e64a19] text-black rounded-3xl shadow-md transition-color w-32 h-10">Delete Photo</button>
+          <button onClick={() => setShowValidation(true)} className="bg-[#FF6666] hover:bg-[#e64a19] text-black rounded-3xl shadow-md transition-color w-32 h-10">Delete Photo</button>
         </div>
       </div>
+
+      {showValidation && (
+        <Validation
+          title="Delete Photo?"
+          message="Are you sure you want to permanently delete the photo? This action cannot be undone."
+          onRed={() => {
+            onDelete(image); 
+            setShowValidation(false);
+          }}
+          onBlue={() => setShowValidation(false)}
+          button1Text="Cancel"
+          button2Text="Delete"
+        />
+      )}
+
     </div>
   );
 }
