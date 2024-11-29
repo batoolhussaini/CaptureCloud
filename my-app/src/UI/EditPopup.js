@@ -9,6 +9,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [newTag, setNewTag] = useState('');
   const [isStarred, setIsStarred] = useState(image.isStarred || false);
   const [showExitWarning, setShowExitWarning] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState(image.album || '');
   const imageRef = useRef(null);
 
   const handleAddTag = () => {
@@ -24,7 +25,8 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
 
   const handleSave = () => {
     const updatedDetails = {
-      caption, isStarred, tags
+      caption, isStarred, tags, 
+      album: selectedAlbum,
     };
     onSave(updatedDetails);
   };
@@ -91,6 +93,8 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
             </label>
             <select
               id="albums"
+              value={selectedAlbum} 
+              onChange={(e) => setSelectedAlbum(e.target.value)}
               className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
             >
               <option value="" disabled selected>
