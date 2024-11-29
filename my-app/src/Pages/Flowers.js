@@ -26,7 +26,14 @@ function Flowers() {
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [flowers, setFlowers] = useState([pic1, pic2, pic3, pic4, pic5, pic6]);
+  const [flowers, setFlowers] = useState([
+    { url: pic1, caption: '', tags: ['pink'], isStarred: false },
+    { url: pic2, caption: '', tags: [], isStarred: false },
+    { url: pic3, caption: '', tags: [], isStarred: false },
+    { url: pic4, caption: '', tags: [], isStarred: false },
+    { url: pic5, caption: '', tags: [], isStarred: false },
+    { url: pic6, caption: '', tags: [], isStarred: false },
+  ]);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const [albumName, setAlbumName] = useState('Flowers'); 
   const [hovered, setHovered] = useState(null);
@@ -34,11 +41,39 @@ function Flowers() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false); // Edit popup state
 
   // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
     setShowModal(true);
+  };
+
+  // Open the EditPopup
+  const handleOpenEditPopup = () => {
+    setShowModal(false); // Close the first popup
+    setShowEditPopup(true); // Open EditPopup
+  };
+    
+  // Save edits from the EditPopup
+  const handleSaveEdits = (updatedDetails) => {
+    setFlowers((prevImages) =>
+      prevImages.map((image, index) =>
+        index === selectedImageIndex
+          ? { ...image, ...updatedDetails } // Update selected image
+          : image
+      )
+    );
+    setShowEditPopup(false); // Close EditPopup
+    setShowModal(true); // Reopen the first popup to show updated details
+  };
+  
+  // Delete an image
+  const handleDeleteImage = () => {
+    setFlowers((prevImages) =>
+      prevImages.filter((_, index) => index !== selectedImageIndex)
+    );
+    setShowEditPopup(false); // Close the EditPopup after deleting
   };
 
   const handleBackClick = () => {
@@ -177,7 +212,7 @@ function Flowers() {
                   )}
 
                   <img
-                    src={image}
+                    src={image.url}
                     alt={`Flower ${index + 1}`}
                     className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
                       isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
@@ -204,8 +239,18 @@ function Flowers() {
             isStarred={flowers[selectedImageIndex].isStarred}
             caption={flowers[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
-            //onEdit={handleOpenEditPopup}
+            onEdit={handleOpenEditPopup}
             //onMarkSold={() => setShowSoldMessage(true)}
+          />
+        )}
+
+        {/* EditPopup Component */}
+        {showEditPopup && selectedImageIndex !== null && (
+          <EditPopup
+            image={flowers[selectedImageIndex]}
+            onClose={() => setShowEditPopup(false)}
+            onSave={handleSaveEdits}
+            onDelete={handleDeleteImage}
           />
         )}
         </div>

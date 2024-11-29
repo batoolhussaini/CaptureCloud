@@ -196,7 +196,7 @@ function Trash() {
                 )}
 
                 <img
-                  src={image}
+                  src={typeof image === "string" ? image : image.url} 
                   alt={`Deleted ${index + 1}`}
                   className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''}`}
                   style={{ marginLeft: '-1px' }}

@@ -66,7 +66,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         <div className="relative">
           <img
             ref={imageRef}
-            src={image.url}
+            src={typeof image === "string" ? image : image.url} 
             alt="Edit Image"
             className="w-full rounded-lg mb-5"
           />
@@ -96,6 +96,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               <option value="" disabled selected>
                 Select an Album
               </option>
+              <option value="Flowers">Flowers</option>
               <option value="2020">2020</option>
               <option value="CA">Canada</option>
               <option value="CAT">Cats</option>

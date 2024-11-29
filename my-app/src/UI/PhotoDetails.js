@@ -22,7 +22,7 @@ function PhotoDetails({
 
         {/* Image and Caption */}
         <img
-          src={image}
+          src={typeof image === "string" ? image : image.url} 
           alt="Photo details"
           className="max-w-full max-h-[80vh] object-contain rounded-lg mb-4"
         />
