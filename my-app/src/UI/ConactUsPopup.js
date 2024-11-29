@@ -11,8 +11,8 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
       setErrorMessage('all fields must be filled out.');
       return;
     }
-    if (input3.length > 100) {
-      setErrorMessage('message cannot exceed 100 characters.');
+    if (input3.length > 500) {
+      setErrorMessage('message cannot exceed 500 characters.');
       return;
     }
     setErrorMessage('');
@@ -21,7 +21,7 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-1/2 relative ml-32 border-2 border-black">
+      <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-lg w-2/5 relative ml-32 border-2 border-black">
         <h1 className="text-3xl text-center mb-8 mt-6">{title}</h1>
 
         <div className="flex flex-col items-center">
@@ -52,7 +52,8 @@ const CUPopup = ({ title, button, onConfirm, sub1, sub2, sub3, handleClose }) =>
             <textarea
               value={input3}
               onChange={(e) => setInput3(e.target.value)}
-              placeholder="100 characters max"
+              maxLength={500}
+              placeholder="500 characters max"
               className="border-2 border-[#6AABD2] rounded-3xl h-40 w-80 shadow-lg placeholder:italic pl-3 pt-1 text-sm resize-none"
               style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
             />
