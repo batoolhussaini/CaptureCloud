@@ -130,7 +130,7 @@ function Account() {
 
       {showConfPopup && 
         <Confirmation 
-          message="Your inquiry has been received by our team. We’ll get back to you as soon as possible." 
+          message="Your inquiry has been received by our team. We will get back to you as soon as possible." 
           onConfirm={handleConfPopupConfirm}
         />
       }
