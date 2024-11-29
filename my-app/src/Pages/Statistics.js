@@ -139,7 +139,7 @@ function Statistics() {
       </div>
 
       <div className="absolute bottom-8 left-8 text-sm text-black font-[Anek Bangla] ml-36">
-        Total photos: 82
+        Total photos: 83
       </div>
     </div>
   );
