@@ -112,10 +112,6 @@ function AlbumDetails() {
     progressBar();
   };
 
-  const handleBackClick = () => {
-    navigate('/albums');
-  };
-
   const handleButtonClick = () => {
     setIsSelected(!isSelected);
   };
@@ -188,6 +184,14 @@ function AlbumDetails() {
 
   const handleUploadIconClick = () => {
     alert('Under development. Tune back soon!'); 
+  }
+
+  const handleUploadBackArrowClick = () => {
+    const confirmLeave = window.confirm('Leave page? Any changes you made will not be saved.'); 
+
+    if (confirmLeave) {
+      navigate('/albums');
+    }
   }
 
   return (
@@ -360,7 +364,7 @@ function AlbumDetails() {
           alt="Back"
           className="w-8 h-8 mt-5 cursor-pointer"
           title="Back to Albums"
-          onClick={handleBackClick}
+          onClick={handleUploadBackArrowClick}
         />
       </div>
 
