@@ -10,12 +10,18 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [isStarred, setIsStarred] = useState(image.isStarred || false);
   const [showExitWarning, setShowExitWarning] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState(image.album || '');
+  const [tagErrorMessage, setTagErrorMessage] = useState('');
   const imageRef = useRef(null);
 
   const handleAddTag = () => {
     if (newTag && !tags.includes(newTag)) {
       setTags([...tags, newTag]);
       setNewTag('');
+      setTagErrorMessage(''); // Clear error message when a valid tag is added
+    } else if (tags.includes(newTag)) {
+      setTagErrorMessage('Tag already exists.');
+    } else {
+      setTagErrorMessage('Tag cannot be empty.');
     }
   };
 
@@ -141,6 +147,11 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
             Add
           </button>
         </div>
+
+        {/* Display Error Message */}
+          {tagErrorMessage && (
+          <div className="text-red-500 text-center mt-4">{tagErrorMessage}</div>
+        )}
 
         {/* Tags List */}
         <div className="flex flex-wrap gap-2 mb-4">
