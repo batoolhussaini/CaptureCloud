@@ -26,8 +26,8 @@ function Navbar() {
   const handleNavigation = (event, to) => {
     if (location.pathname.startsWith('/upload')) {
       event.preventDefault();
-      const confirmExit = window.confirm('Exit page? Changes you made will not be saved.');
-      if (confirmExit) {
+      const confirmLeave = window.confirm('Leave page? Any changes you made will not be saved.');
+      if (confirmLeave) {
         navigate(to);
       }
     }
