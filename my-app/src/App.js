@@ -12,6 +12,8 @@ import Upload from './Pages/Upload';
 import AllTags from './Pages/AllTags';
 import AlbumDetails from './Pages/AlbumDetails';  
 import Flowers from './Pages/Flowers';
+import Map from './Pages/Map'
+import MapPhotos from './Pages/MapPhotos'
 
 
 function App() {
@@ -31,7 +33,8 @@ function App() {
         <Route path="/album/:name" element={<AlbumDetails />} />  
         <Route path="/Flowers" element={<Flowers />} />
         <Route path="/all-tags" component={<AllTags />} />
-          
+        <Route path="/map" element={<Map />} />
+        <Route path="/mapPhotos" element={<MapPhotos />} />
       </Routes>
     </Router>
   );

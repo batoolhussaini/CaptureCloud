@@ -12,6 +12,10 @@ import pic3 from '../Assets/Photos/pic3.jpeg';
 import pic4 from '../Assets/Photos/pic4.jpg';
 import pic5 from '../Assets/Photos/pic5.jpg';
 import pic6 from '../Assets/Photos/pic6.avif';
+import Button from '../UI/button';  
+import { useNavigate } from "react-router-dom";
+import globe from '../Assets/Icons/Globe.png';
+
 
 function Home() {
   const [hovered, setHovered] = useState(false); // Hover state for image box
@@ -20,6 +24,7 @@ function Home() {
   const [showSoldMessage, setShowSoldMessage] = useState(false); // Sold confirmation popup state
   const [isExpanded, setIsExpanded] = useState(false); // Expand state for any additional UI
   const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = 'Home';
@@ -117,6 +122,11 @@ function Home() {
     const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
     setSelectedImageIndex(prevIndex);
   };
+
+  const handleMapClick = () => {
+    navigate("/map");
+  };
+
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -133,6 +143,18 @@ function Home() {
         <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">
           Home
         </h1>
+
+        {/* Map BUtton*/}
+        <div className="fixed top-12 left-48 mt-14 mr-6" title="View Map">
+          <Button
+            onClick={handleMapClick}
+            color="bg-[#D9D9D9] hover:bg-[#B0B0B0]"
+            icon={globe}
+            children="Map" 
+            className="w-36 h-12"
+          >
+          </Button>
+        </div>
 
         {/* Searchbar */}
         <div className="mt-4 flex flex-col items-center ml-32">
