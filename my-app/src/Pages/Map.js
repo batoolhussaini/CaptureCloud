@@ -14,10 +14,6 @@ import marker10 from '../Assets/Icons/marker10.png';
 function Map() {
     const navigate = useNavigate();
 
-    const handleBackArrowClick = () => {
-        navigate('/home');
-    }
-
     const handleMarkerClick = () => {
         navigate('/mapPhotos');
     }
@@ -44,15 +40,6 @@ function Map() {
                 <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">
                 Map
                 </h1>
-
-                <div className="fixed left-48 top-20">
-                    <img src={leftArrowIcon}
-                    alt="Back"
-                    className="w-8 h-8 mt-5 cursor-pointer"
-                    title="Back to Home"
-                    onClick={handleBackArrowClick}
-                    />
-                </div>
 
 
                 {/* Map Section */}
