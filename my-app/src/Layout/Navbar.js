@@ -26,6 +26,7 @@ function Navbar() {
   const isAlbumsPage = location.pathname === '/albums' || isAlbumDetailPage;
   const navigate = useNavigate();
 
+
   const handleNavigation = (event, to) => {
     if (location.pathname.startsWith('/upload')) {
       event.preventDefault();
@@ -120,7 +121,7 @@ function Navbar() {
         </div>
 
           <Link to="/map" className="flex items-center space-x-2 ml-3 hover:font-bold" onClick={(event) => handleNavigation(event, '/map')}>
-            {location.pathname === '/map' ? (
+            {location.pathname === '/map' || location.pathname === '/mapPhotos' ? (
               <div className="flex items-center"> 
                 <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl">
                   <img src={globeSelectedIcon} alt="Map" style={{ height: '3vh', width: '3vh' }} />
