@@ -22,7 +22,7 @@ import pic5 from '../Assets/Photos/pic5.jpg';
 import pic6 from '../Assets/Photos/pic6.avif';
 
 function MapPhotos() {
-  useEffect(() => { document.title = 'Albums'; });
+  useEffect(() => { document.title = 'Banff'; });
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -77,7 +77,7 @@ function MapPhotos() {
   };
 
   const handleBackClick = () => {
-    navigate('/albums');
+    navigate('/map');
   };
 
   const handleButtonClick = () => {
@@ -96,9 +96,6 @@ function MapPhotos() {
     setValidationVisible(true);
   };
   
-  const handleUploadIconClick = () => {
-    alert('Under development. Tune back soon!'); 
-  }
 
   const confirmDelete = () => {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
@@ -113,10 +110,6 @@ function MapPhotos() {
 
   const cancelDelete = () => {
     setValidationVisible(false);
-  };
-
-  const handleEditAlbumName = () => {
-    setIsRenamePopupOpen(true);
   };
 
   const handleRenameConfirm = (newName) => {
@@ -136,7 +129,7 @@ function MapPhotos() {
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Banff</h1>
 
       <div className="flex">
         <div className="flex justify-center">
@@ -144,18 +137,7 @@ function MapPhotos() {
         </div>
 
         <div className="flex-1 p-6">
-          <div className="text-2xl text-left mt-2 ml-10 flex items-center space-x-4">
-            <img src={folderIcon} alt="Folder Icon" className="w-9 h-19" />
-            <h2 className="text-[#6AABD2]">{albumName}</h2>
-            <button className="ml-2" onClick={handleEditAlbumName}>
-              <img
-                src={editIcon}
-                alt="Edit Icon"
-                className="w-5 h-5 mt-1 cursor-pointer"
-                title="Edit Album"
-              />
-            </button>
-          </div>
+          
 
           {isRenamePopupOpen && (
             <ARpopup
@@ -263,13 +245,6 @@ function MapPhotos() {
           className="w-8 h-8 mt-5 cursor-pointer"
           title="Back to Albums"
           onClick={handleBackClick}
-        />
-        <img
-          src={uploadIcon}
-          alt="Uploaded Icon"
-          className="fixed top-[220px] right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
-          onClick={handleUploadIconClick}
-          title="Upload Photos"
         />
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
           Total Photos: {flowers.length}
