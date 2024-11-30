@@ -11,16 +11,16 @@ import {
 } from 'chart.js';
 import logo from '../Assets/Logo/Logo.png';
 import exportIcon from '../Assets/Icons/export_icon.png';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
-import Button from '../UI/button.js'; // Update the path as needed
+import Button from '../UI/button.js';
+import Confirmation from '../UI/Confirmation.js'; 
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend);
 
 function Statistics() {
-  const navigate = useNavigate();
   const [currentChart, setCurrentChart] = useState(0);
   const [chartData, setChartData] = useState(null);
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
   useEffect(() => {
     document.title = 'Statistics'; 
@@ -69,7 +69,11 @@ function Statistics() {
   ];
 
   const handleExport = () => {
-    alert('Under development. Tune back soon!'); 
+    setIsConfirmationVisible(true);
+  };
+
+  const closeConfirmation = () => {
+    setIsConfirmationVisible(false);
   };
 
   return (
@@ -150,6 +154,13 @@ function Statistics() {
       <div className="absolute bottom-4 left-8 text-medium text-black ml-36">
         Total photos: 82
       </div>
+
+      {isConfirmationVisible && (
+        <Confirmation 
+          message="Image exported successfully!"
+          onConfirm={closeConfirmation}
+        />
+      )}
     </div>
   );
 }
