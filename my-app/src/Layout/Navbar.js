@@ -16,6 +16,9 @@ import albumsIcon from '../Assets/Icons/folder_filled.png';
 import albumsSelectedIcon from '../Assets/Icons/album-s.png';
 import logoutIcon from '../Assets/Icons/Log out.png';
 import line from '../Assets/Icons/Line 7.png';
+import globe from '../Assets/Icons/Globe.png';
+import globeSelectedIcon from '../Assets/Icons/Globe-s.png';
+
 
 function Navbar() {
   const location = useLocation(); 
@@ -99,7 +102,8 @@ function Navbar() {
             {isAlbumsPage ? (
               <div className="flex items-center"> 
                 <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl">
-                  <img src={albumsSelectedIcon} alt="Album" style={{ height: '3vh', width: '3vh' }} />
+                  <img src={albumsSelectedIcon
+                  } alt="Album" style={{ height: '3vh', width: '3vh' }} />
                   <span className="ml-2 text-white">Albums</span>
                 </div>
               </div>
@@ -111,10 +115,25 @@ function Navbar() {
             )}
           </Link>
 
-
         <div className="flex items-center justify-center hover:font-bold ml-2">
           <img src={line} alt="Separator" />
         </div>
+
+          <Link to="/map" className="flex items-center space-x-2 ml-3 hover:font-bold" onClick={(event) => handleNavigation(event, '/map')}>
+            {location.pathname === '/map' ? (
+              <div className="flex items-center"> 
+                <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl">
+                  <img src={globeSelectedIcon} alt="Map" style={{ height: '3vh', width: '3vh' }} />
+                  <span className="ml-2 text-white">Map</span>
+                </div>
+              </div>
+            ) : (
+              <>
+                <img src={globe} alt="Map" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
+                <span>Map</span>
+              </>
+            )}
+          </Link>
 
         <Link to="/statistics" className="flex items-center space-x-2 ml-8 hover:font-bold" onClick={(event) => handleNavigation(event, '/statistics')}>
           {location.pathname === '/statistics' ? (

@@ -123,9 +123,6 @@ function Home() {
     setSelectedImageIndex(prevIndex);
   };
 
-  const handleMapClick = () => {
-    navigate("/map");
-  };
 
   return (
     <div className="flex flex-col">
@@ -144,18 +141,7 @@ function Home() {
           Home
         </h1>
 
-        {/* Map BUtton*/}
-        <div className="fixed top-12 left-48 mt-14 mr-6" title="View Map">
-          <Button
-            onClick={handleMapClick}
-            color="bg-[#D9D9D9] hover:bg-[#B0B0B0]"
-            icon={globe}
-            children="Map" 
-            className="w-36 h-12"
-          >
-          </Button>
-        </div>
-
+    
         {/* Searchbar */}
         <div className="mt-4 flex flex-col items-center ml-32">
           <Searchbar />
