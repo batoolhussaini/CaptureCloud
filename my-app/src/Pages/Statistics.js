@@ -157,7 +157,7 @@ function Statistics() {
 
       {isConfirmationVisible && (
         <Confirmation 
-          message="Image exported successfully!"
+          message="Image exported successfully."
           onConfirm={closeConfirmation}
         />
       )}

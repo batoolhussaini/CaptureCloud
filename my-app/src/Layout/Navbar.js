@@ -123,7 +123,7 @@ function Navbar() {
           <Link to="/map" className="flex items-center space-x-2 ml-3 hover:font-bold" onClick={(event) => handleNavigation(event, '/map')}>
             {location.pathname === '/map' || location.pathname === '/mapPhotos' ? (
               <div className="flex items-center"> 
-                <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl">
+                <div className="bg-selected -ml-2 h-8 w-28 flex items-center justify-center rounded-3xl">
                   <img src={globeSelectedIcon} alt="Map" style={{ height: '3vh', width: '3vh' }} />
                   <span className="ml-2 text-white">Map</span>
                 </div>
