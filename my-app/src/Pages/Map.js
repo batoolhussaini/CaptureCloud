@@ -1,7 +1,6 @@
 import React from "react";
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
-import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -20,8 +19,8 @@ function Map() {
 
     const customIcon = new L.Icon({
         iconUrl: marker10,
-        iconSize: [25, 41], // Size of the icon
-        iconAnchor: [12, 41] // Anchor point for the icon (centered)
+        iconSize: [25, 41], 
+        iconAnchor: [12, 41] 
     });
 
     return (
@@ -45,7 +44,7 @@ function Map() {
                 {/* Map Section */}
                 <div className="flex justify-center ml-36 mb-12 px-4 sm:px-8 lg:px-12">
                     <MapContainer
-                        center={[51.0447, -114.0719]} // Initial center [latitude, longitude]
+                        center={[51.0447, -114.0719]} 
                         zoom={3}
                         style={{ height: "500px", width: "100%" }}
                     >
@@ -55,6 +54,7 @@ function Map() {
                             attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
                         />
 
+                        {/* Markers */}
                         <Marker 
                             position={[51.0447, -114.0719]} icon={customIcon} eventHandlers={{ click: handleMarkerClick }}>
                         </Marker>
