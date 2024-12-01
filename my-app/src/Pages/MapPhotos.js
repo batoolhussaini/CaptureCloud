@@ -11,12 +11,12 @@ import PhotoDetails from '../UI/PhotoDetails.js';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
 
-import pic1 from '../Assets/Photos/pic1.jpg';
-import pic2 from '../Assets/Photos/pic2.jpg';
-import pic3 from '../Assets/Photos/pic3.jpeg';
-import pic4 from '../Assets/Photos/pic4.jpg';
-import pic5 from '../Assets/Photos/pic5.jpg';
-import pic6 from '../Assets/Photos/pic6.avif';
+import pic1 from '../Assets/Photos/mapPic11.jpg';
+import pic2 from '../Assets/Photos/mapPic12.jpg';
+import pic3 from '../Assets/Photos/mapPic13.webp';
+import pic4 from '../Assets/Photos/mapPic14.jpg';
+import pic5 from '../Assets/Photos/mapPic16.jpg';
+import pic6 from '../Assets/Photos/mapPic17.jpg';
 
 function MapPhotos() {
   useEffect(() => { document.title = 'Banff'; });
