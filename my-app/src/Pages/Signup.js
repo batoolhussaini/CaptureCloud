@@ -259,7 +259,7 @@ function Signup() {
             <p className="mt-6 text-center">
                 Already have an account? <a href="/login" className="text-sky-500 hover:text-sky-600 underline">Login here!</a>
             </p>
-            <div style={{ backgroundColor: '#F0F0F0' }} className="h-8"></div> 
+            <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div> 
 
             {isTermsPopupOpen && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-gray-600 bg-opacity-50">

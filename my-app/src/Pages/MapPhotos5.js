@@ -5,7 +5,6 @@ import logo from '../Assets/Logo/Logo.png';
 import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import checkIcon from '../Assets/Icons/white_check.png';
 import Button from '../UI/button';
-import ARpopup from '../UI/ARpopup';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import Validation from '../UI/Validation';
@@ -25,8 +24,6 @@ function MapPhotos() {
     { url: pic2, caption: '', tags: [], isStarred: false, album: ""  },
     { url: pic3, caption: '', tags: [], isStarred: false, album: ""  },
   ]);
-  const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
-  const [albumName, setAlbumName] = useState('Flowers'); 
   const [hovered, setHovered] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -102,16 +99,6 @@ function MapPhotos() {
   const cancelDelete = () => {
     setValidationVisible(false);
   };
-
-  const handleRenameConfirm = (newName) => {
-    setAlbumName(newName); 
-    setIsRenamePopupOpen(false); 
-  };
-
-  const handleRenameClose = () => {
-    setIsRenamePopupOpen(false); 
-  };
-
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -128,15 +115,6 @@ function MapPhotos() {
         </div>
 
         <div className="flex-1 p-6">
-          
-
-          {isRenamePopupOpen && (
-            <ARpopup
-              onConfirm={handleRenameConfirm} 
-              onClose={handleRenameClose}   
-            />
-          )}
-
           <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
           >
             <Button
@@ -213,7 +191,6 @@ function MapPhotos() {
             caption={flowers[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
             onEdit={handleOpenEditPopup}
-            //onMarkSold={() => setShowSoldMessage(true)}
           />
         )}
 
