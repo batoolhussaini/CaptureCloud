@@ -405,6 +405,7 @@ function AlbumDetails() {
           </p>
         </div>
       )}
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div>
               
     </div>
   );
