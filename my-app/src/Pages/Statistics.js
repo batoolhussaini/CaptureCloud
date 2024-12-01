@@ -83,26 +83,30 @@ function Statistics() {
       </div>
 
       <div className="flex justify-center mt-2">
-        <img src={logo} alt="Logo" className="w-32" />
+      <img src={logo} alt="Logo" className="mt-0 w-32 ml-32" />
       </div>
 
-      <div className="flex flex-col items-center justify-center w-full p-8 mt-2">
-        <h1 className="text-7xl text-center mb-2 text-[#6AABD2] font-[Anek Bangla]">Statistics</h1>
+      <div className="flex flex-col items-center justify-left w-full p-8 ">
+        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] -mt-3 ml-32">Statistics</h1>
 
-        <div className="text-2xl font-semibold mb-2 font-[Anek Bangla]">{chartTitles[currentChart]}</div>
+        <div className="text-xl font-semibold ml-[120px] mb-9 font-[Anek Bangla]">{chartTitles[currentChart]}</div>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4" >
           {currentChart > 0 && (
             <button
               onClick={showFirstChart}
-              className="text-blue-800 border border-blue-800 p-3 rounded-full hover:bg-blue-800 hover:text-white active:bg-blue-900 active:text-white focus:outline-none transition"
+              className="text-black-800 border border-grey-300 p-3 rounded-full hover:bg-[#D9D9D9] hover:text-black active:bg-[#ffffff] active:text-black focus:outline-none transition"
               aria-label="Show First Chart"
+              title = "Previous Chart"
+              style={{
+                position: 'relative', 
+                left: '110px', 
+              }}
             >
               &lt;
             </button>
           )}
-
-          <div className="w-80 h-80">
+          <div className="w-[400px] h-[400px]"style={{ marginLeft: currentChart === 1 ? '120px' : '190px' }}>
             <Pie 
               data={chartData[`chart${currentChart + 1}`]} 
               options={{
@@ -119,7 +123,8 @@ function Statistics() {
                     },
                   },
                   legend: {
-                    position: 'top',
+                    position: 'bottom',
+                    marignLeft: '-75px'
                   },
                 },
               }}
@@ -131,7 +136,7 @@ function Statistics() {
               onClick={showSecondChart}
               className="text-black-800 border border-grey-300 p-3 rounded-full hover:bg-[#D9D9D9] hover:text-black active:bg-[#ffffff] active:text-black focus:outline-none transition"
               aria-label="Show Second Chart"
-              title = "Next"
+              title = "Next Chart"
             >
               &gt;
             </button>
@@ -156,7 +161,7 @@ function Statistics() {
 
       {isConfirmationVisible && (
         <Confirmation 
-          message="Image exported successfully."
+          message="Chart downloaded successfully."
           onConfirm={closeConfirmation}
         />
       )}
@@ -165,5 +170,3 @@ function Statistics() {
 }
 
 export default Statistics;
-
-

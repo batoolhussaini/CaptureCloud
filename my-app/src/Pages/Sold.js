@@ -17,7 +17,7 @@ import checkIcon from '../Assets/Icons/white_check.png';
 function Sold() {
 
   useEffect(() => {
-    document.title = 'Sold';
+    document.title = 'Sold Photos';
   }, []);
 
   const navigate = useNavigate();
