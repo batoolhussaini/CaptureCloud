@@ -275,6 +275,7 @@ function Flowers() {
           Total Photos: {flowers.length}
         </div>
       </div>
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div>
 
       {isValidationVisible && (
         <Validation
