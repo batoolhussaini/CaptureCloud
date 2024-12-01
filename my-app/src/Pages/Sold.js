@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
 import Button from '../UI/button';
 import Searchbar from '../Layout/Searchbar.js';
+import Popup from '../UI/Soldpopup.js';
 import { usePhotoContext } from './PhotoContext'; 
 import pic1 from '../Assets/Photos/pic1.jpg';
 import pic2 from '../Assets/Photos/pic2.jpg';
@@ -11,252 +12,129 @@ import pic3 from '../Assets/Photos/pic3.jpeg';
 import pic4 from '../Assets/Photos/pic4.jpg';
 import pic5 from '../Assets/Photos/pic5.jpg';
 import pic6 from '../Assets/Photos/pic6.avif';
+import checkIcon from '../Assets/Icons/white_check.png';
 
 function Sold() {
+
   useEffect(() => {
-    document.title = 'Albums';
-  });
-  const { name } = useParams();
+    document.title = 'Sold';
+  }, []);
+
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = useState(true);
-  const [isUploaded, setIsUploaded] = useState(false);
-  const [isUploadClicked, setIsUploadClicked] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]); // Array of image IDs
+  const [showModal, setShowModal] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [imageInfo, setImageInfo] = useState({});
-  const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
-
-  const maxImages = 10;
-
-  const progressBar = () => {
-    let progress = 0;
-    const interval = setInterval(() => {
-      if (progress < 100) {
-        progress += 10;
-        setUploadProgress(progress);
-      } else {
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsConfirmationOpen(true); 
-        },); 
-      }
-    }, 300);
-  };
-
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const files = e.dataTransfer.files;
-    if (files) {
-      const fileArray = Array.from(files);
-      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
-      if (invalidFiles.length > 0) {
-        alert('Please upload only image files.');
-        return;
-      }
-      if (images.length + fileArray.length > maxImages) {
-        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
-        return;
-      }
-      setImages((prevImages) => [...prevImages, ...fileArray]);
-      setIsUploaded(true);
-    }
-  };
-
-  const handleUploadClick = () => {
-    setIsVisible(false);
-    setIsUploadClicked(true);
-    progressBar();
-  };
-
-  const handleBackClick = () => {
-    navigate('/albums');
-  };
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [hovered, setHovered] = useState(null); // Hover state for image box
 
   const handleButtonClick = () => {
     setIsSelected(!isSelected);
+    setSelectedImages([]); // Reset selected images when toggling select mode
   };
 
-  const handleImageSelect = (image) => {
-    if (selectedImages.includes(image)) {
-      setSelectedImages(selectedImages.filter((img) => img !== image));
+  const handleImageSelect = (imageId) => {
+    if (selectedImages.includes(imageId)) {
+      setSelectedImages(selectedImages.filter((id) => id !== imageId));
     } else {
-      setSelectedImages([...selectedImages, image]);
+      setSelectedImages([...selectedImages, imageId]);
     }
   };
 
   const handleDeleteSelected = () => {
-    const updatedImages = images.filter((image) => !selectedImages.includes(image));
+    const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
-    selectedImages.forEach((image) => {
-      trash.push(URL.createObjectURL(image));
+    selectedImages.forEach((id) => {
+      const image = combinedImages.find((img) => img.id === id);
+      if (image) {
+        trash.push(image.url);
+      }
     });
     localStorage.setItem('trash', JSON.stringify(trash));
 
-    setImages(updatedImages);
+    setCombinedImages(updatedImages);
     setSelectedImages([]);
   };
 
-  const handleEditClick = (image) => {
-    setCurrentImage(image);
-    setIsPopupOpen(true);
+  const handleDeleteImage = () => {
+    const imageToDelete = combinedImages[selectedImageIndex];
+    const updatedImages = combinedImages.filter((image) => image.id !== imageToDelete.id);
+    setCombinedImages(updatedImages);
+    setShowModal(false); // Close the popup after deleting
   };
 
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-    setCurrentImage(null);
-  };
-
-  const handleConfirmationClose = () => {
-    setIsConfirmationOpen(false);
-  };
-
-  const handleSave = (image, updatedData) => {
-    setImageInfo((prevInfo) => ({
-      ...prevInfo,
-      [image.name]: updatedData, 
-    }));
-    setIsPopupOpen(false); 
-  };
-
-  const handleDelete = (image) => {
-    setImages((prevImages) => prevImages.filter((img) => img !== image));
-    setIsPopupOpen(false); 
-  };
-
-  const handleEditAlbumName = () => {
-    setIsRenamePopupOpen(true);
-  };
-
-  const handleRenameConfirm = (newName) => {
-    const albums = JSON.parse(localStorage.getItem('albums')) || [];
-    const updatedAlbums = albums.map((album) =>
-      album.name === decodeURIComponent(name) ? { ...album, name: newName } : album
-    );
-    localStorage.setItem('albums', JSON.stringify(updatedAlbums));
-
-    setIsRenamePopupOpen(false);
-    navigate(`/album/${encodeURIComponent(newName)}`);
-  };
-
-  const handleRenameClose = () => {
-    setIsRenamePopupOpen(false); 
-  };
-
-  const [hovered, setHovered] = useState(false); // Hover state for image box
-  const [showModal, setShowModal] = useState(false); // Initial popup modal state
-  const [showEditPopup, setShowEditPopup] = useState(false); // Edit popup state
-  const [showSoldMessage, setShowSoldMessage] = useState(false); // Sold confirmation popup state
-  const [isExpanded, setIsExpanded] = useState(false); // Expand state for any additional UI
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
-
-  useEffect(() => {
-    document.title = 'Home';
-  });
-
-  // list of hardcoded images
+  // List of hardcoded images with unique IDs
   const [images, setImages] = useState([
     {
+      id: 1,
       url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
       caption: '',
       tags: ['cat', 'animal'],
       isStarred: false,
     },
     {
+      id: 2,
       url: 'https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68',
       caption: '',
       tags: ['nature'],
       isStarred: false,
     },
     {
+      id: 3,
       url: 'https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s',
       caption: '',
       tags: ['nature', 'water'],
       isStarred: false,
-      
     },
-    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
-    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    // Add more dummy images as needed
+    { id: 4, url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
+    { id: 5, url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers" },
+    { id: 6, url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers" },
+    { id: 7, url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers" },
+    { id: 8, url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers" },
+    { id: 9, url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers" },
   ]);
 
   // Using the context to get photos from the Upload page
   const { photos } = usePhotoContext();
-  // Combine hardcoded images and uploaded photos into one list
-  const combinedImages = [
-    ...images, // Hardcoded images
-    ...photos.map((photo) => ({
-      url: URL.createObjectURL(photo),
-      caption: '',
-      tags: [],
-      isStarred: false,
-    })), // Uploaded photos
-  ];
+
+  // State for combined images
+  const [combinedImages, setCombinedImages] = useState([]);
+
+  useEffect(() => {
+    // Get the maximum id from the existing images
+    const maxId = images.reduce((max, image) => (image.id > max ? image.id : max), 0);
+
+    const newCombinedImages = [
+      ...images,
+      ...photos.map((photo, index) => ({
+        id: maxId + index + 1,
+        url: URL.createObjectURL(photo),
+        caption: '',
+        tags: [],
+        isStarred: false,
+      })),
+    ];
+    setCombinedImages(newCombinedImages);
+  }, [images, photos]);
 
   const handleNextImage = () => {
     const nextIndex = (selectedImageIndex + 1) % combinedImages.length;
     setSelectedImageIndex(nextIndex);
+    setCurrentImage(combinedImages[nextIndex]);
   };
 
   const handlePreviousImage = () => {
     const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
     setSelectedImageIndex(prevIndex);
+    setCurrentImage(combinedImages[prevIndex]);
   };
 
-  // Open the first popup (Photo Details)
+  // Open the popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
-    setSelectedImageIndex(index);
-    setShowModal(true);
+    setSelectedImageIndex(index); // Set the index of selected image
+    setCurrentImage(combinedImages[index]); // Set the current image to the one at the selected index
+    setShowModal(true); // Open the modal
   };
-
-  // Open the EditPopup
-  const handleOpenEditPopup = () => {
-    setShowModal(false); // Close the first popup
-    setShowEditPopup(true); // Open EditPopup
-  };
-
-  // Save edits from the EditPopup
-  const handleSaveEdits = (updatedDetails) => {
-    setImages((prevImages) =>
-      prevImages.map((image, index) =>
-        index === selectedImageIndex
-          ? { ...image, ...updatedDetails } // Update selected image
-          : image
-      )
-    );
-    setShowEditPopup(false); // Close EditPopup
-    setShowModal(true); // Reopen the first popup to show updated details
-  };
-
-  // Handle marking a photo as sold
-  const handleSoldPopup = () => {
-    //move to sold - doesnt do anything for now
-    setShowSoldMessage(false); // Close Sold confirmation
-    setShowModal(false); // Close modal since the image is removed
-  };
-
-  // Delete an image
-  const handleDeleteImage = () => {
-    setImages((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
-    setShowEditPopup(false); // Close the EditPopup after deleting
-  };
-
 
   return (
     <div className="flex flex-col">
@@ -267,19 +145,19 @@ function Sold() {
         <Navbar />
       </div>
       <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Sold Photos</h1>
-        <>
-          <div className="absolute top-20 right-40 mt-6 mr-6 z-50" title={isSelected ? "Cancel Select" : "Select Photo(s)"}>
-            <Button
-              onClick={handleButtonClick}
-              color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
-              className="fixed w-36 h-12"
-            >
-              <span>{isSelected ? 'Cancel' : 'Select'}</span>
-            </Button>
-          </div>
-        </>
-        {isSelected && selectedImages.length > 0 && (
-        <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 mt-6">
+      <>
+        <div className="absolute top-20 right-40 mt-6 mr-6 z-50" title={isSelected ? "Cancel Select" : "Select Photo(s)"}>
+          <Button
+            onClick={handleButtonClick}
+            color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
+            className="fixed w-36 h-12"
+          >
+            <span>{isSelected ? 'Cancel' : 'Select'}</span>
+          </Button>
+        </div>
+      </>
+      {isSelected && selectedImages.length > 0 && (
+        <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 mt-6 z-50">
           <Button
             onClick={handleDeleteSelected}
             color="bg-[#FF6666] hover:bg-[#e64a19]"
@@ -290,49 +168,95 @@ function Sold() {
         </div>
       )}
 
-        <div className="fixed bottom-0 left-60 transform text-center">
-          <p className="text-black font-small">
-            Total Photos: {images.length}
-          </p>
-        </div>
-
-        {/* Searchbar */}
-        <div className="mt-4 flex flex-col items-center ml-32">
-          <Searchbar />
-        </div>
-
-        {/* Top Tags */}
-        <div className="flex flex-row mt-8 items-start justify-center gap-5">
-          <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">
-            Top Tags
-          </h2>
-          <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
-            &#9733; Favourites
-          </button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-            Nature
-          </button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-            Summer
-          </button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-            Beach
-          </button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-            Animal
-          </button>
-          <button className="mb-4 text-xl text-[#016AC7] font-bold">
-            All Tags &#10230;
-          </button>
-        </div>
-
-        {/* Image Boxes */}
-        <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
-         
-        </div>
+      <div className="fixed bottom-0 left-60 transform text-center">
+        <p className="text-black font-small">
+          Total Photos: {combinedImages.length}
+        </p>
       </div>
-    
-      );
+
+      {/* Searchbar */}
+      <div className="mt-4 flex flex-col items-center ml-32">
+        <Searchbar />
+      </div>
+
+      {/* Top Tags */}
+      <div className="flex flex-row mt-8 items-start justify-center gap-5">
+        <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">
+          Top Tags
+        </h2>
+        <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
+          &#9733; Favourites
+        </button>
+        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+          Nature
+        </button>
+        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+          Summer
+        </button>
+        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+          Beach
+        </button>
+        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+          Animal
+        </button>
+        <button className="mb-4 text-xl text-[#016AC7] font-bold">
+          All Tags &#10230;
+        </button>
+      </div>
+
+      {/* Image Boxes */}
+      <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
+        {combinedImages.map((image, index) => (
+          <div key={image.id} className="relative group">
+            <div
+              onClick={() => isSelected ? handleImageSelect(image.id) : handleOpenPhotoDetails(index)}
+              onMouseEnter={() => setHovered(index)}
+              onMouseLeave={() => setHovered(null)}
+              className={`cursor-pointer ${isSelected && selectedImages.includes(image.id) ? 'border-4 border-yellow-200 rounded-2xl' : 'rounded-2xl'} transform transition-transform duration-200 ${hovered === index ? 'scale-105' : ''}`}
+              style={{ width: '12rem', height: '10.5rem' }}
+            >
+              {/* Checkmark for selected images */}
+              {isSelected && selectedImages.includes(image.id) && (
+                <img
+                  src={checkIcon}
+                  alt="Checkmark"
+                  className="absolute top-3 left-40 w-6 h-5 z-10"
+                />
+              )}
+              {/* Show "Photo Details" button only when not in select mode and hovered */}
+              {!isSelected && hovered === index && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering the image click event
+                    handleOpenPhotoDetails(index);
+                  }}
+                  className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
+                >
+                  Photo Details
+                </button>
+              )}
+              {/* Image Element */}
+              <img
+                src={image ? image.url : ''} 
+                alt={`Preview ${index}`}
+                className="h-40 w-48 object-cover rounded-2xl shadow-lg"
+                style={{ marginLeft: '-1px' }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Popup Modal */}
+      {showModal && currentImage && (
+        <Popup
+          image={currentImage}
+          onClose={() => setShowModal(false)}
+          onDelete={handleDeleteImage}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Sold;

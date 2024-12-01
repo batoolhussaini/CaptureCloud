@@ -14,6 +14,12 @@ import AlbumDetails from './Pages/AlbumDetails';
 import Flowers from './Pages/Flowers';
 import Map from './Pages/Map'
 import MapPhotos from './Pages/MapPhotos'
+import MapPhotos2 from './Pages/MapPhotos2'
+import MapPhotos3 from './Pages/MapPhotos3'
+import MapPhotos4 from './Pages/MapPhotos4'
+import MapPhotos5 from './Pages/MapPhotos5'
+
+
 
 
 
@@ -36,6 +42,10 @@ function App() {
         <Route path="/all-tags" component={<AllTags />} />
         <Route path="/map" element={<Map />} />
         <Route path="/mapPhotos" element={<MapPhotos />} />
+        <Route path="/mapPhotos2" element={<MapPhotos2 />} />
+        <Route path="/mapPhotos3" element={<MapPhotos3 />} />
+        <Route path="/mapPhotos4" element={<MapPhotos4 />} />
+        <Route path="/mapPhotos5" element={<MapPhotos5 />} />
       </Routes>
     </Router>
   );

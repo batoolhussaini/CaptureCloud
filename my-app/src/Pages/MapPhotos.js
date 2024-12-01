@@ -5,18 +5,17 @@ import logo from '../Assets/Logo/Logo.png';
 import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import checkIcon from '../Assets/Icons/white_check.png';
 import Button from '../UI/button';
-import ARpopup from '../UI/ARpopup';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
 
-import pic1 from '../Assets/Photos/pic1.jpg';
-import pic2 from '../Assets/Photos/pic2.jpg';
-import pic3 from '../Assets/Photos/pic3.jpeg';
-import pic4 from '../Assets/Photos/pic4.jpg';
-import pic5 from '../Assets/Photos/pic5.jpg';
-import pic6 from '../Assets/Photos/pic6.avif';
+import pic1 from '../Assets/Photos/mapPic11.jpg';
+import pic2 from '../Assets/Photos/mapPic12.jpg';
+import pic3 from '../Assets/Photos/mapPic13.webp';
+import pic4 from '../Assets/Photos/mapPic14.jpg';
+import pic5 from '../Assets/Photos/mapPic16.jpg';
+import pic6 from '../Assets/Photos/mapPic17.jpg';
 
 function MapPhotos() {
   useEffect(() => { document.title = 'Banff'; });
@@ -24,15 +23,13 @@ function MapPhotos() {
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [flowers, setFlowers] = useState([
-    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
-    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic1, caption: '', tags: [], isStarred: false, album: "" },
+    { url: pic2, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic3, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic4, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic5, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic6, caption: '', tags: [], isStarred: false, album: ""  },
   ]);
-  const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
-  const [albumName, setAlbumName] = useState('Flowers'); 
   const [hovered, setHovered] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -109,15 +106,6 @@ function MapPhotos() {
     setValidationVisible(false);
   };
 
-  const handleRenameConfirm = (newName) => {
-    setAlbumName(newName); 
-    setIsRenamePopupOpen(false); 
-  };
-
-  const handleRenameClose = () => {
-    setIsRenamePopupOpen(false); 
-  };
-
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -134,15 +122,6 @@ function MapPhotos() {
         </div>
 
         <div className="flex-1 p-6">
-          
-
-          {isRenamePopupOpen && (
-            <ARpopup
-              onConfirm={handleRenameConfirm} 
-              onClose={handleRenameClose}   
-            />
-          )}
-
           <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
           >
             <Button
@@ -219,7 +198,6 @@ function MapPhotos() {
             caption={flowers[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
             onEdit={handleOpenEditPopup}
-            //onMarkSold={() => setShowSoldMessage(true)}
           />
         )}
 
