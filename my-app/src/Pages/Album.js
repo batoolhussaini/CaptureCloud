@@ -6,11 +6,15 @@ import folderIcon from '../Assets/Icons/Folder_add_fill.png';
 import { Link } from 'react-router-dom'; 
 import Button from '../UI/button';  
 import checkIcon from '../Assets/Icons/Check.png'; 
+import ARpopup from '../UI/ARpopup';
+import Validation from '../UI/Validation';
+import Confirmation from '../UI/Confirmation';
 
 function Album() {
   const [isSelected, setIsSelected] = useState(false); 
-  const [newAlbumName, setNewAlbumName] = useState(''); 
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isValidationVisible, setValidationVisible] = useState(false);
+  const [isConfirmationVisible, setConfirmationVisible] = useState(false);
   const [albums, setAlbums] = useState(() => {
     const savedAlbums = localStorage.getItem('albums');
     return savedAlbums ? JSON.parse(savedAlbums) : [
@@ -19,6 +23,8 @@ function Album() {
   });
 
   const [selectedAlbums, setSelectedAlbums] = useState([]);
+
+  const [flowersAlbum, setflowersAlbum] = useState([]);
 
   useEffect(() => {
     localStorage.setItem('albums', JSON.stringify(albums));
@@ -34,10 +40,7 @@ function Album() {
 
   const handlePlusClick = () => {
     if (!isSelected) {  
-      setAlbums([ 
-        ...albums, 
-        { name: `NewAlbum ${albums.length + 1}`, icon: folderIcon }
-      ]);
+      setIsPopupOpen(true); 
     }
   };
 
@@ -51,10 +54,35 @@ function Album() {
   };
 
   const handleDeleteSelected = () => {
+    setValidationVisible(true);
+  };
+
+  const confirmDelete = () => {
     const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
     setAlbums(updatedAlbums);
+
+    if (selectedAlbums.includes("Flowers")) {
+      setflowersAlbum([...flowersAlbum, "Flowers"]);
+    }
+
     setSelectedAlbums([]); 
     localStorage.setItem('albums', JSON.stringify(updatedAlbums));
+    setValidationVisible(false);
+    setConfirmationVisible(true);
+  };
+
+  const cancelDelete = () => {
+    setValidationVisible(false);
+  };
+
+  const handlePopupConfirm = (newAlbumName) => {
+    const newAlbum = { name: newAlbumName, icon: folderIcon };
+    setAlbums([...albums, newAlbum]);
+    setIsPopupOpen(false);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
   };
 
   return (
@@ -82,18 +110,40 @@ function Album() {
           </button>
         </div>
 
-        <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
-        <Link to="/flowers">
-            <div className="cursor-pointer rounded-2xl">
-              <img 
-                src={folderIcon} 
-                alt="Flowers Album" 
-                className="h-[180px] w-[230px]" 
-              />
+        {!flowersAlbum.includes("Flowers") && (
+          <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
+            <div
+              onClick={(e) => isSelected ? handleAlbumSelect("Flowers", e) : null}
+              className={`cursor-pointer ${isSelected && selectedAlbums.includes("Flowers") ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
+            >
+              {isSelected && selectedAlbums.includes("Flowers") && (
+                <img 
+                  src={checkIcon} 
+                  alt="Checkmark" 
+                  className="absolute top-2 right-2 w-5 h-5"
+                />
+              )}
+
+              {!isSelected && (
+                <Link to="/flowers">
+                  <img 
+                    src={folderIcon} 
+                    alt="Flowers Album" 
+                    className="h-[180px] w-[230px]" 
+                  />
+                </Link>
+              )}
+              {isSelected && (
+                <img 
+                  src={folderIcon} 
+                  alt="Flowers Album" 
+                  className="h-[180px] w-[230px]" 
+                />
+              )}
             </div>
-          </Link>
-          <span className="text-center text-blue-400">Flowers</span>
-        </div>
+            <span className="text-center text-blue-400">Flowers</span>
+          </div>
+        )}
 
         {albums.map((album) => (
           <div key={album.name} className="flex flex-col items-center space-y-50 p-4 w-1/4">
@@ -130,10 +180,9 @@ function Album() {
             <span className="text-center text-blue-400">{album.name}</span> 
           </div>
         ))}
-
       </div>
 
-      <div className="fixed top-12 right-40 mt-14 mr-6">
+      <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Album(s)"}>
         <Button
           onClick={handleButtonClick}
           color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
@@ -154,6 +203,32 @@ function Album() {
           </Button>
         </div>
       )}
+
+      {isPopupOpen && (
+        <ARpopup onConfirm={handlePopupConfirm} onClose={handlePopupClose} />
+      )}
+
+      {isValidationVisible && (
+        <Validation
+          title="Delete Albums?"
+          message="Are you sure you want to delete the selected album(s)?"
+          button1Text="Cancel"
+          button2Text="Delete"
+          onBlue={cancelDelete}
+          onRed={confirmDelete}
+        />
+      )}
+
+      {isConfirmationVisible && (
+        <Confirmation
+          message="Album(s) successfully deleted."
+          onConfirm={() => setConfirmationVisible(false)}
+        />
+      )}
+
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+        <p className="text-black font-small">Total Albums: {albums.length + (flowersAlbum.includes("Flowers") ? 0 : 1)}</p>
+      </div>
     </div>
   );
 }

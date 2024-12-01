@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Layout/Navbar.js';
 import Searchbar from '../Layout/Searchbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import EditPopup from '../UI/EditPopup.js';
 import InfoIcon from '../Assets/Icons/Info icon.png';
 import PhotoDetails from '../UI/PhotoDetails.js';
+import { usePhotoContext } from './PhotoContext'; 
+import pic1 from '../Assets/Photos/pic1.jpg';
+import pic2 from '../Assets/Photos/pic2.jpg';
+import pic3 from '../Assets/Photos/pic3.jpeg';
+import pic4 from '../Assets/Photos/pic4.jpg';
+import pic5 from '../Assets/Photos/pic5.jpg';
+import pic6 from '../Assets/Photos/pic6.avif';
+import Button from '../UI/button';  
+import { useNavigate } from "react-router-dom";
+import globe from '../Assets/Icons/Globe.png';
+
 
 function Home() {
   const [hovered, setHovered] = useState(false); // Hover state for image box
@@ -13,13 +24,18 @@ function Home() {
   const [showSoldMessage, setShowSoldMessage] = useState(false); // Sold confirmation popup state
   const [isExpanded, setIsExpanded] = useState(false); // Expand state for any additional UI
   const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Index of the selected image
+  const navigate = useNavigate();
 
-  // State for the list of images
+  useEffect(() => {
+    document.title = 'Home';
+  });
+
+  // list of hardcoded images
   const [images, setImages] = useState([
     {
       url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
       caption: '',
-      tags: ['cat'],
+      tags: ['cat', 'animal'],
       isStarred: false,
     },
     {
@@ -33,9 +49,29 @@ function Home() {
       caption: '',
       tags: ['nature', 'water'],
       isStarred: false,
-    }
+      
+    },
+    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
+    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers"  },
     // Add more dummy images as needed
   ]);
+
+  // Using the context to get photos from the Upload page
+  const { photos } = usePhotoContext();
+  // Combine hardcoded images and uploaded photos into one list
+  const combinedImages = [
+    ...images, // Hardcoded images
+    ...photos.map((photo) => ({
+      url: URL.createObjectURL(photo),
+      caption: '',
+      tags: [],
+      isStarred: false,
+    })), // Uploaded photos
+  ];
 
   // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
@@ -71,10 +107,23 @@ function Home() {
 
   // Delete an image
   const handleDeleteImage = () => {
-    setImages((prevImages) => prevImages.filter((_, index) => index !== selectedImageIndex));
+    setImages((prevImages) =>
+      prevImages.filter((_, index) => index !== selectedImageIndex)
+    );
     setShowEditPopup(false); // Close the EditPopup after deleting
   };
-  
+
+  const handleNextImage = () => {
+    const nextIndex = (selectedImageIndex + 1) % combinedImages.length;
+    setSelectedImageIndex(nextIndex);
+  };
+
+  const handlePreviousImage = () => {
+    const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
+    setSelectedImageIndex(prevIndex);
+  };
+
+
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -85,36 +134,51 @@ function Home() {
       <div className="flex-1">
         {/* Header Section */}
         <div className="flex justify-center">
-          <img src={logo} alt="Logo" className="mt-2 w-32" />
+          <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
         </div>
 
-        <h1 className="text-5xl font-medium text-center mb-3 text-text-c mt-6">Home</h1>
+        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">
+          Home
+        </h1>
 
+    
         {/* Searchbar */}
-        <div className="mt-4 flex flex-col items-center">
+        <div className="mt-4 flex flex-col items-center ml-32">
           <Searchbar />
         </div>
 
-        {/* Top Tags - HARDCODEDDDD FIX THISS */}
+        {/* Top Tags */}
         <div className="flex flex-row mt-8 items-start justify-center gap-5">
-          <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">Top Tags</h2>
+          <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">
+            Top Tags
+          </h2>
           <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
             &#9733; Favourites
           </button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Nature</button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Summer</button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Beach</button>
-          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">Animal</button>
-          <button className="mb-4 text-xl text-[#016AC7] font-bold">All Tags &#10230;</button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Nature
+          </button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Summer
+          </button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Beach
+          </button>
+          <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+            Animal
+          </button>
+          <button className="mb-4 text-xl text-[#016AC7] font-bold">
+            All Tags &#10230;
+          </button>
         </div>
 
         {/* Image Boxes */}
-        <div className="flex flex-row mt-8 items-start justify-center gap-5">
-          {images.map((image, index) => (
+        <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
+          {combinedImages.map((image, index) => (
             <div
               key={index}
               className={`relative w-52 h-48 rounded-lg transform transition-transform duration-200 ${
-                hovered ==index ? 'scale-105' : ''
+                hovered === index ? 'scale-105' : ''
               }`}
               onMouseEnter={() => setHovered(index)} //only show this if certain image is hovered on
               onMouseLeave={() => setHovered(null)}
@@ -122,12 +186,12 @@ function Home() {
               {/* Image Element */}
               <img
                 src={image.url}
-                alt={`Preview ${index}`} //with index now
-                className="relative w-52 h-48 rounded-lg transform transition-transform duration-200"
+                alt={`Preview ${index}`}
+                className="w-full h-full object-cover rounded-2xl shadow-lg"
               />
-              {hovered == index && (
+              {hovered === index && (
                 <button
-                  onClick={() => handleOpenPhotoDetails(index)} // Show the initial popup
+                  onClick={() => handleOpenPhotoDetails(index)}
                   className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
                 >
                   Photo Details
@@ -137,26 +201,35 @@ function Home() {
           ))}
         </div>
 
-        {/* Initial Popup Modal */}
-        {showModal && selectedImageIndex !== null && (
-          <PhotoDetails
-            image={images[selectedImageIndex].url}
-            isStarred={images[selectedImageIndex].isStarred}
-            caption={images[selectedImageIndex].caption}
-            onClose={() => setShowModal(false)}
-            onEdit={handleOpenEditPopup}
-            onMarkSold={() => setShowSoldMessage(true)}
-          />
+          {/* Initial Popup Modal */}
+          {showModal && selectedImageIndex !== null && (
+            <>
+            <PhotoDetails
+              image={combinedImages[selectedImageIndex].url}
+              isStarred={combinedImages[selectedImageIndex].isStarred}
+              caption={combinedImages[selectedImageIndex].caption}
+              onClose={() => setShowModal(false)}
+              onEdit={handleOpenEditPopup}
+              onPrevious={handlePreviousImage}
+              onNext={handleNextImage} 
+            />  
+          </>
         )}
+
         {/* EditPopup Component */}
         {showEditPopup && selectedImageIndex !== null && (
           <EditPopup
-            image={images[selectedImageIndex]}
+            image={combinedImages[selectedImageIndex]}
             onClose={() => setShowEditPopup(false)}
             onSave={handleSaveEdits}
             onDelete={handleDeleteImage}
           />
         )}
+      </div>
+
+      {/* Photo Count */}
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+        <p className="text-black font-small">Total Photos: {combinedImages.length}</p>
       </div>
     </div>
   );

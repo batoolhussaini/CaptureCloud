@@ -12,6 +12,7 @@ import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import checkIcon from '../Assets/Icons/white_check.png';
 import Popup from '../UI/Popup';
 import Confirmation from '../UI/Confirmation.js';
+import ARpopup from '../UI/ARpopup.js';
 
 function AlbumDetails() {
   useEffect(() => {
@@ -29,6 +30,8 @@ function AlbumDetails() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [imageInfo, setImageInfo] = useState({});
+  const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
 
   const maxImages = 10;
 
@@ -109,10 +112,6 @@ function AlbumDetails() {
     progressBar();
   };
 
-  const handleBackClick = () => {
-    navigate('/albums');
-  };
-
   const handleButtonClick = () => {
     setIsSelected(!isSelected);
   };
@@ -151,6 +150,50 @@ function AlbumDetails() {
     setIsConfirmationOpen(false);
   };
 
+  const handleSave = (image, updatedData) => {
+    setImageInfo((prevInfo) => ({
+      ...prevInfo,
+      [image.name]: updatedData, 
+    }));
+    setIsPopupOpen(false); 
+  };
+
+  const handleDelete = (image) => {
+    setImages((prevImages) => prevImages.filter((img) => img !== image));
+    setIsPopupOpen(false); 
+  };
+
+  const handleEditAlbumName = () => {
+    setIsRenamePopupOpen(true);
+  };
+
+  const handleRenameConfirm = (newName) => {
+    const albums = JSON.parse(localStorage.getItem('albums')) || [];
+    const updatedAlbums = albums.map((album) =>
+      album.name === decodeURIComponent(name) ? { ...album, name: newName } : album
+    );
+    localStorage.setItem('albums', JSON.stringify(updatedAlbums));
+
+    setIsRenamePopupOpen(false);
+    navigate(`/album/${encodeURIComponent(newName)}`);
+  };
+
+  const handleRenameClose = () => {
+    setIsRenamePopupOpen(false); 
+  };
+
+  const handleUploadIconClick = () => {
+    alert('Under development. Tune back soon!'); 
+  }
+
+  const handleUploadBackArrowClick = () => {
+    const confirmLeave = window.confirm('Leave page? Any changes you made will not be saved.'); 
+
+    if (confirmLeave) {
+      navigate('/albums');
+    }
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex justify-center">
@@ -166,18 +209,19 @@ function AlbumDetails() {
         </div>
 
         <div className="flex-1 p-6" onDragOver={handleDragOver} onDrop={handleDrop}  >
-          <div className="text-3xl text-left mt-2 ml-10 flex items-center space-x-4">
-            <img src={folderIcon} alt="Folder Icon" className="w-8 h-8" />
-            <h2 className="text-[#6AABD2] text-2xl">{decodeURIComponent(name)}</h2>
-            <button className="ml-4">
-              <img
-                src={editIcon}
-                alt="Edit Icon"
-                className="w-4 h-5 mt-0 cursor-pointer"
-                title="Edit Name"
-              />
-            </button>
-          </div>
+        <div className="text-3xl text-left mt-2 ml-10 flex items-center space-x-4">
+        <img src={folderIcon} alt="Folder Icon" className="w-9 h-9" />
+        <h2 className="text-[#6AABD2] text-2xl">{decodeURIComponent(name)}</h2>
+        <button className="ml-4" onClick={handleEditAlbumName}>
+          <img
+            src={editIcon}
+            alt="Edit Icon"
+            className="w-4 h-5 mt-0 cursor-pointer"
+            title="Edit Name"
+          />
+        </button>
+      </div>
+      {isRenamePopupOpen && <ARpopup onConfirm={handleRenameConfirm}  onClose={handleRenameClose} />}
 
           <div className="flex-grow flex items-center justify-center mt-6">
             {isVisible && (
@@ -219,52 +263,54 @@ function AlbumDetails() {
           </div>
 
           <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[95px]">
-            {images.map((image, index) => (
-              <div key={index} className="relative">
-                <div
-                  onClick={() => isSelected && handleImageSelect(image)}
-                  className={`cursor-pointer ${
-                    isSelected && selectedImages.includes(image)
-                      ? 'border-4 border-yellow-200 rounded-2xl'
-                      : 'rounded-2xl'
+          {images.map((image, index) => (
+            <div key={index} className="relative">
+              <div
+                onClick={() => isSelected && handleImageSelect(image)}
+                className={`cursor-pointer ${
+                  isSelected && selectedImages.includes(image)
+                    ? 'border-4 border-yellow-200 rounded-2xl'
+                    : 'rounded-2xl'
                   }`}
-                  style={{
-                    width: '12rem',
-                    height: '10.5rem',
-                  }}
-                >
-                  {isSelected && selectedImages.includes(image) && (
-                    <img
-                      src={checkIcon}
-                      alt="Checkmark"
-                      className="absolute top-3 left-40 w-6 h-5 z-10"
-                    />
-                  )}
+                  style={{ width: '12rem', height: '10.5rem',}}>
+        {isSelected && selectedImages.includes(image) && (
+          <img
+            src={checkIcon}
+            alt="Checkmark"
+            className="absolute top-3 left-40 w-6 h-5 z-10"
+          />
+        )}
 
-                  {!isUploadClicked && (
-                    <img
-                      src={editIcon}
-                      alt="Edit Icon"
-                      className="absolute top-2 right-1/4 w-5 h-5 cursor-pointer"
-                      title="Edit photo"
-                      onClick={() => handleEditClick(image)}
-                    />
-                  )}
-
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt={`Uploaded ${index + 1}`}
-                    className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
-                      isSelected && selectedImages.includes(image)
-                        ? 'filter brightness-50' : ''
-                    }`}
-                    style={{
-                      marginLeft: '-1px',
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+        {image instanceof File && (
+          <div className="relative w-48 h-40">
+            <img
+              src={URL.createObjectURL(image)}
+              alt={`Uploaded ${index + 1}`}
+              className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
+                isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
+              }`}
+              style={{
+                marginLeft: '-1px',
+              }}
+            />
+            {!isUploadClicked && (
+              <button 
+                onClick={() => handleEditClick(image)}
+                className="absolute top-0 -right-10 bg-white p-2 rounded-full hover:bg-gray-200"
+                title="Edit photo details"
+              >
+                <img
+                  src={editIcon}
+                  alt="Edit Icon"
+                  className="h-5 w-5"
+                />
+              </button>
+            )}
+          </div>
+        )}           
+        </div>
+        </div>
+         ))}
           </div>
         </div>
       </div>
@@ -284,11 +330,12 @@ function AlbumDetails() {
           <img
             src={uploadIcon}
             alt="Uploaded Icon"
-            className="fixed top-1/3 right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
+            onClick={handleUploadIconClick}
+            className="fixed top-[220px] right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
             title="Upload Photos"
           />
 
-          <div className="absolute top-20 right-40 mt-6 mr-6">
+          <div className="absolute top-20 right-40 mt-6 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}>
             <Button
               onClick={handleButtonClick}
               color={isSelected ? "bg-[#B0B0B0]" : "bg-[#D9D9D9] hover:bg-[#B0B0B0]"} 
@@ -317,7 +364,7 @@ function AlbumDetails() {
           alt="Back"
           className="w-8 h-8 mt-5 cursor-pointer"
           title="Back to Albums"
-          onClick={handleBackClick}
+          onClick={handleUploadBackArrowClick}
         />
       </div>
 
@@ -343,7 +390,22 @@ function AlbumDetails() {
         />
       )}
 
-      <Popup isOpen={isPopupOpen} handleClose={handleClosePopup} image={currentImage} />
+      <Popup
+        isOpen={isPopupOpen}
+        handleClose={handleClosePopup}
+        image={currentImage}
+        onSave={handleSave}
+        onDelete={handleDelete}
+      />
+
+      {isUploadClicked && (
+        <div className="fixed bottom-0 left-60 transform text-center">
+          <p className="text-black font-small">
+            Total Photos: {images.length}
+          </p>
+        </div>
+      )}
+              
     </div>
   );
 }
