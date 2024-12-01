@@ -21,9 +21,9 @@ function MapPhotos() {
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [flowers, setFlowers] = useState([
-    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
-    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic1, caption: '', tags: [], isStarred: false, album: "" },
+    { url: pic2, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic3, caption: '', tags: [], isStarred: false, album: ""  },
   ]);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const [albumName, setAlbumName] = useState('Flowers'); 

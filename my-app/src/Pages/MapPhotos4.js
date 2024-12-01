@@ -20,18 +20,18 @@ import pic6 from '../Assets/Photos/mapPic26.jpg';
 import pic7 from '../Assets/Photos/mapPic27.jpg';
 
 function MapPhotos() {
-  useEffect(() => { document.title = 'Soeul'; });
+  useEffect(() => { document.title = 'Seoul'; });
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [flowers, setFlowers] = useState([
-    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
-    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic7, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic1, caption: '', tags: [], isStarred: false, album: "" },
+    { url: pic2, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic3, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic4, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic5, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic6, caption: '', tags: [], isStarred: false, album: ""  },
+    { url: pic7, caption: '', tags: [], isStarred: false, album: ""  },
   ]);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const [albumName, setAlbumName] = useState('Flowers'); 
