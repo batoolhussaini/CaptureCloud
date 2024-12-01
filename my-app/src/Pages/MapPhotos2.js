@@ -151,7 +151,7 @@ function MapPhotos() {
             />
           )}
 
-          <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
+          <div className="fixed top-12 right-40 mt-14 mr-6 z-50" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
           >
             <Button
               onClick={handleButtonClick}
