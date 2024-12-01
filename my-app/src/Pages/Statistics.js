@@ -155,7 +155,7 @@ function Statistics() {
         </Button>
       </div>
 
-      <div className="absolute bottom-4 left-8 text-medium text-black ml-36">
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
         Total photos: 82
       </div>
 

@@ -279,8 +279,8 @@ function Flowers() {
 
       {isValidationVisible && (
         <Validation
-          title="Delete Photos?"
-          message="Are you sure you want to delete the selected photo(s)?"
+          title="Move to Trash?"
+          message="Are you sure you want to move the selected photo(s) to trash?"
           button1Text="Cancel"
           button2Text="Delete"
           onBlue={cancelDelete}
@@ -290,7 +290,7 @@ function Flowers() {
 
       {isConfirmationVisible && (
         <Confirmation
-          message="Photo(s) successfully deleted."
+          message="Successfully moved to trash."
           onConfirm={() => setConfirmationVisible(false)}
         />
       )}
