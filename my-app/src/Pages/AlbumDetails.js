@@ -199,11 +199,7 @@ function AlbumDetails() {
   }
 
   const handleUploadBackArrowClick = () => {
-    const confirmLeave = window.confirm('Leave page? Any changes you made will not be saved.'); 
-
-    if (confirmLeave) {
-      navigate('/albums');
-    }
+    navigate('/albums');
   }
 
   return (
