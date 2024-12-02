@@ -107,6 +107,17 @@ function MapPhotos() {
   const cancelDelete = () => {
     setValidationVisible(false);
   };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % flowers.length);
+  };
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex((prevIndex) =>
+      (prevIndex - 1 + flowers.length) % flowers.length
+    );
+  };
+
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -115,7 +126,7 @@ function MapPhotos() {
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Seoul</h1>
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Seoul, South Korea</h1>
 
       <div className="flex">
         <div className="flex justify-center">
@@ -170,16 +181,19 @@ function MapPhotos() {
                     />
                   )}
 
-                  <img
-                    src={image.url}
-                    alt={`Flower ${index + 1}`}
-                    className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
-                      isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
-                    }`}
-                    style={{
-                      marginLeft: '-1px',
-                    }}
-                  />
+                <img
+                  src={image.url}
+                  alt={`Flower ${index + 1}`}
+                  className={`h-40 w-48 object-cover rounded-2xl shadow-lg transition-transform duration-200 ${
+                    isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
+                  } ${
+                    hovered === index && !isSelected ? 'transform scale-105' : ''
+                  }`}
+                  style={{
+                    marginLeft: '-1px',
+                  }}
+                />
+
                   {hovered === index && !isSelected && (
                   <button
                   onClick={() => handleOpenPhotoDetails(index)}
@@ -199,6 +213,8 @@ function MapPhotos() {
             caption={flowers[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
             onEdit={handleOpenEditPopup}
+            onNext={handleNextImage}   
+            onPrev={handlePrevImage}   
           />
         )}
 
@@ -219,7 +235,7 @@ function MapPhotos() {
           src={leftArrowIcon}
           alt="Back"
           className="w-8 h-8 mt-5 cursor-pointer"
-          title="Back to Albums"
+          title="Back to Map"
           onClick={handleBackClick}
         />
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">

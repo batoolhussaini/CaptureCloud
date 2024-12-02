@@ -19,6 +19,7 @@ function Trash() {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
   const [actionType, setActionType] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(null);
+  const [hovered, setHovered] = useState(null); // Added hovered state
 
   useEffect(() => {
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
@@ -94,7 +95,7 @@ function Trash() {
     setDeletedImages(updatedTrash);
 
     if (updatedTrash.length > 0) {
-      const nextIndex = (currentImageIndex + 1) % updatedTrash.length;
+      const nextIndex = currentImageIndex % updatedTrash.length;
       setCurrentImageIndex(nextIndex);
       setExpandedImage(updatedTrash[nextIndex]);
     } else {
@@ -159,7 +160,6 @@ function Trash() {
     setExpandedImage(deletedImages[prevIndex]);
   };
 
-  
   return (
     <div className="flex flex-col">
       <div className="flex justify-center">
@@ -171,12 +171,20 @@ function Trash() {
       <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Trash</h1>
 
       {deletedImages && deletedImages.length > 0 ? (
-        <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[257px]">
+        <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[280px]">
           {deletedImages.map((image, index) => (
             <div key={index} className="relative group">
               <div
                 onClick={() => isSelected ? handleImageSelect(image) : handleImageClick(image, index)}
-                className={`cursor-pointer ${isSelected && selectedImages.includes(image) ? 'border-4 border-yellow-200 rounded-2xl' : 'rounded-2xl'}`}
+                onMouseEnter={() => setHovered(index)} // Added
+                onMouseLeave={() => setHovered(null)}   // Added
+                className={`cursor-pointer ${
+                  isSelected && selectedImages.includes(image)
+                    ? 'border-4 border-yellow-200 rounded-2xl'
+                    : 'rounded-2xl'
+                } transform transition-transform duration-200 ${
+                  hovered === index ? 'scale-105' : ''
+                }`} // Modified
                 style={{ width: '12rem', height: '10.5rem' }}
               >
                 {isSelected && selectedImages.includes(image) && (
@@ -186,19 +194,21 @@ function Trash() {
                     className="absolute top-3 left-40 w-6 h-5 z-10"
                   />
                 )}
-                {!isSelected && (
+                {!isSelected && hovered === index && ( // Modified condition
                   <img
                     src={fullScreenIcon}
                     alt="Expand"
                     title="Fullscreen"
-                    className="absolute top-2 left-2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    className="absolute top-2 left-2 w-8 h-8 opacity-100 transition-opacity duration-200"
                   />
                 )}
 
                 <img
-                  src={typeof image === "string" ? image : image.url} 
+                  src={typeof image === "string" ? image : image.url}
                   alt={`Deleted ${index + 1}`}
-                  className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''}`}
+                  className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
+                    isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
+                  }`}
                   style={{ marginLeft: '-1px' }}
                 />
               </div>
@@ -206,10 +216,12 @@ function Trash() {
           ))}
         </div>
       ) : (
-        <p className="ml-32 text-center">No deleted images.</p>
+        <p className="ml-32 text-center">Trash is empty.</p>
       )}
 
-      <div className="absolute top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
+      <div
+        className="absolute top-12 right-40 mt-14 mr-6"
+        title={isSelected ? 'Cancel Select' : 'Select Photo(s)'}
       >
         {deletedImages.length > 0 && (
           <Button
@@ -217,7 +229,7 @@ function Trash() {
             color="bg-[#D9D9D9] hover:bg-[#B0B0B0]"
             className="w-36 h-12"
           >
-            <span>{isSelected ? 'Cancel' : 'Select' }</span>
+            <span>{isSelected ? 'Cancel' : 'Select'}</span>
           </Button>
         )}
       </div>
@@ -226,7 +238,7 @@ function Trash() {
         <>
           <div className="fixed bottom-20 left-1/2 transform -translate-x-40">
             <Button
-              onClick={handleRestore}  
+              onClick={handleRestore}
               color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
               className="w-36 h-12"
             >
@@ -236,7 +248,7 @@ function Trash() {
 
           <div className="fixed bottom-20 right-1/2 transform translate-x-20">
             <Button
-              onClick={handlePermanentDelete}  
+              onClick={handlePermanentDelete}
               color="bg-[#FF6666] hover:bg-[#e64a19]"
               className="w-36 h-12"
             >
@@ -247,7 +259,9 @@ function Trash() {
           <div className="absolute top-20 left-60 mt-10">
             <span
               onClick={handleSelectAll}
-              className={`cursor-pointer underline text-blue-500 text-2xl ${isSelectAllActive ? 'font-bold' : 'hover:font-bold'}`}
+              className={`cursor-pointer underline text-blue-500 text-2xl ${
+                isSelectAllActive ? 'font-bold' : 'hover:font-bold'
+              }`}
             >
               Select All
             </span>
@@ -376,13 +390,12 @@ function Trash() {
         />
       )}
 
-          <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
-          <p className="text-black font-small">
-            Total Photos: {deletedImages.length}
-          </p>
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+        <p className="text-black font-small">
+          Total Photos: {deletedImages.length}
+        </p>
       </div>
       <div style={{ backgroundColor: '#FFFFFF' }} className="h-12"></div>
-
     </div>
   );
 }

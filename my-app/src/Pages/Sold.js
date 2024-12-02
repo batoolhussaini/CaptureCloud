@@ -3,15 +3,17 @@ import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
 import Button from '../UI/button';
 import Searchbar from '../Layout/Searchbar.js';
-import Popup from '../UI/Soldpopup.js';
 import pic1 from '../Assets/Photos/mapPic3.jpg';
 import pic2 from '../Assets/Photos/mapPic5.jpg';
-import pic3 from '../Assets/Photos/mapPic28.jpg';
+import pic3 from '../Assets/Photos/mapPic24.jpg';
 import pic4 from '../Assets/Photos/mapPic29.jpg';
 import pic5 from '../Assets/Photos/mapPic27.jpg';
 import checkIcon from '../Assets/Icons/white_check.png';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
+import RestoreValidation from '../UI/RestoreValidation.js';
+import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+import { useNavigate } from 'react-router-dom';
 
 function Sold() {
   useEffect(() => {
@@ -19,17 +21,19 @@ function Sold() {
   }, []);
 
   const [isSelected, setIsSelected] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]); // Array of image IDs
+  const [selectedImages, setSelectedImages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-  const [hovered, setHovered] = useState(null); // Hover state for image box
+  const [hovered, setHovered] = useState(null);
+  const navigate = useNavigate();
+  const [actionType, setActionType] = useState(null);
   const [images, setImages] = useState([
     {
       id: 1,
       url: 'https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg',
       caption: '',
-      tags: ['cat', 'animal'],
+      tags: ['paris', 'nature'],
       isStarred: false,
     },
     {
@@ -43,7 +47,7 @@ function Sold() {
       id: 3,
       url: 'https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg',
       caption: '',
-      tags: ['nature', 'water'],
+      tags: ['animals', 'water'],
       isStarred: false,
     },
     { id: 4, url: pic1, caption: '', tags: ['pink'], isStarred: false, album: '' },
@@ -55,10 +59,14 @@ function Sold() {
 
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  const [isDeleteValidationVisible, setDeleteValidationVisible] = useState(false);
+  const [isDeleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
+  const [isRestoreValidationVisible, setRestoreValidationVisible] = useState(false);
+  const [isRestoreConfirmationVisible, setRestoreConfirmationVisible] = useState(false);
 
   const handleButtonClick = () => {
     setIsSelected(!isSelected);
-    setSelectedImages([]); // Reset selected images when toggling select mode
+    setSelectedImages([]);
   };
 
   const handleImageSelect = (imageId) => {
@@ -70,7 +78,8 @@ function Sold() {
   };
 
   const handleDeleteSelected = () => {
-    setValidationVisible(true); // Show validation popup
+    setValidationVisible(true);
+    setActionType('delete');
   };
 
   const confirmDelete = () => {
@@ -86,19 +95,95 @@ function Sold() {
 
     setImages(updatedImages);
     setSelectedImages([]);
-    setValidationVisible(false); // Hide validation popup
-    setConfirmationVisible(true); // Show confirmation popup
+    setIsSelected(false);
+    setValidationVisible(false);
+    setConfirmationVisible(true);
   };
 
   const cancelDelete = () => {
-    setValidationVisible(false); // Hide validation popup
+    setValidationVisible(false);
+  };
+
+  const handleRestoreSelected = () => {
+    setRestoreValidationVisible(true);
+    setActionType('restore');
+  };
+
+  const confirmRestoreSelected = () => {
+    const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
+    const homeImages = JSON.parse(localStorage.getItem('homeImages')) || [];
+    selectedImages.forEach((id) => {
+      const image = images.find((img) => img.id === id);
+      if (image) {
+        homeImages.push(image);
+      }
+    });
+    localStorage.setItem('homeImages', JSON.stringify(homeImages));
+
+    setImages(updatedImages);
+    setSelectedImages([]);
+    setIsSelected(false);
+    setRestoreValidationVisible(false);
+    setConfirmationVisible(true);
+  };
+
+  const cancelRestoreSelected = () => {
+    setRestoreValidationVisible(false);
   };
 
   const handleDeleteImage = () => {
+    setDeleteValidationVisible(true);
+  };
+
+  const confirmDeleteImage = () => {
     const imageToDelete = images[selectedImageIndex];
     const updatedImages = images.filter((image) => image.id !== imageToDelete.id);
+    const trash = JSON.parse(localStorage.getItem('trash')) || [];
+    trash.push(imageToDelete.url);
+    localStorage.setItem('trash', JSON.stringify(trash));
+
     setImages(updatedImages);
-    setShowModal(false); // Close the popup after deleting
+    if (updatedImages.length > 0) {
+      const nextIndex = selectedImageIndex % updatedImages.length;
+      setSelectedImageIndex(nextIndex);
+      setCurrentImage(updatedImages[nextIndex]);
+    } else {
+      setShowModal(false);
+    }
+    setDeleteValidationVisible(false);
+    setDeleteConfirmationVisible(true);
+  };
+
+  const cancelDeleteImage = () => {
+    setDeleteValidationVisible(false);
+  };
+
+  const handleRestoreImage = () => {
+    setRestoreValidationVisible(true);
+    setActionType('restoreSingle');
+  };
+
+  const confirmRestoreImage = () => {
+    const imageToRestore = images[selectedImageIndex];
+    const updatedImages = images.filter((image) => image.id !== imageToRestore.id);
+    const homeImages = JSON.parse(localStorage.getItem('homeImages')) || [];
+    homeImages.push(imageToRestore);
+    localStorage.setItem('homeImages', JSON.stringify(homeImages));
+
+    setImages(updatedImages);
+    if (updatedImages.length > 0) {
+      const nextIndex = selectedImageIndex % updatedImages.length;
+      setSelectedImageIndex(nextIndex);
+      setCurrentImage(updatedImages[nextIndex]);
+    } else {
+      setShowModal(false);
+    }
+    setRestoreValidationVisible(false);
+    setRestoreConfirmationVisible(true);
+  };
+
+  const cancelRestoreImage = () => {
+    setRestoreValidationVisible(false);
   };
 
   const handleNextImage = () => {
@@ -114,9 +199,9 @@ function Sold() {
   };
 
   const handleOpenPhotoDetails = (index) => {
-    setSelectedImageIndex(index); // Set the index of selected image
-    setCurrentImage(images[index]); // Set the current image to the one at the selected index
-    setShowModal(true); // Open the modal
+    setSelectedImageIndex(index);
+    setCurrentImage(images[index]);
+    setShowModal(true);
   };
 
   return (
@@ -128,7 +213,10 @@ function Sold() {
         <Navbar />
       </div>
       <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Sold Photos</h1>
-      <div className="absolute top-20 right-40 mt-6 mr-6 z-50" title={isSelected ? 'Cancel Select' : 'Select Photo(s)'}>
+      <div
+        className="absolute top-20 right-40 mt-6 mr-6 z-10"
+        title={isSelected ? 'Cancel Select' : 'Select Photo(s)'}
+      >
         <Button
           onClick={handleButtonClick}
           color={isSelected ? 'bg-[#B0B0B0]' : 'bg-[#D9D9D9] hover:bg-[#B0B0B0]'}
@@ -137,12 +225,29 @@ function Sold() {
           <span>{isSelected ? 'Cancel' : 'Select'}</span>
         </Button>
       </div>
+
       {isSelected && selectedImages.length > 0 && (
-        <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 mt-6 z-50">
-          <Button onClick={handleDeleteSelected} color="bg-[#FF6666] hover:bg-[#e64a19]" className="w-36 h-12">
-            Delete Photos
-          </Button>
-        </div>
+        <>
+          <div className="fixed bottom-16 left-1/2 transform -translate-x-40 z-50">
+            <Button
+              onClick={handleRestoreSelected}
+              color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
+              className="w-36 h-12"
+            >
+              Restore to Home
+            </Button>
+          </div>
+
+          <div className="fixed bottom-16 right-1/2 transform translate-x-20 z-50">
+            <Button
+              onClick={handleDeleteSelected}
+              color="bg-[#FF6666] hover:bg-[#e64a19]"
+              className="w-36 h-12"
+            >
+              Delete Photos
+            </Button>
+          </div>
+        </>
       )}
 
       <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium z-50">
@@ -161,22 +266,27 @@ function Sold() {
           &#9733; Favourites
         </button>
         <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Nature
+          Paris
         </button>
         <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Summer
+          Birds
         </button>
         <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Beach
+          Historical
         </button>
         <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Animal
+          Buildings
         </button>
-        <button className="mb-4 text-xl text-[#016AC7] font-bold">All Tags &#10230;</button>
+        <button
+          className="mb-4 text-xl text-[#016AC7] font-bold"
+          onClick={() => navigate('/tagslist')}
+        >
+          All Tags &#10230;
+        </button>
       </div>
 
       {/* Image Boxes */}
-      <div className="mt-12 grid grid-cols-4 gap-16 ml-[240px] mr-[70px] gap-y-12 mb-20">
+      <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12 mb-20">
         {images.map((image, index) => (
           <div key={image.id} className="relative group">
             <div
@@ -184,8 +294,12 @@ function Sold() {
               onMouseEnter={() => setHovered(index)}
               onMouseLeave={() => setHovered(null)}
               className={`cursor-pointer ${
-                isSelected && selectedImages.includes(image.id) ? 'border-4 border-yellow-200 rounded-2xl' : 'rounded-2xl'
-              } transform transition-transform duration-200 ${hovered === index ? 'scale-105' : ''}`}
+                isSelected && selectedImages.includes(image.id)
+                  ? 'border-4 border-yellow-200 rounded-2xl'
+                  : 'rounded-2xl'
+              } transform transition-transform duration-200 ${
+                hovered === index ? 'scale-105' : ''
+              }`}
               style={{ width: '12rem', height: '10.5rem' }}
             >
               {isSelected && selectedImages.includes(image.id) && (
@@ -196,15 +310,12 @@ function Sold() {
                 />
               )}
               {!isSelected && hovered === index && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenPhotoDetails(index);
-                  }}
-                  className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
-                >
-                  Photo Details
-                </button>
+                <img
+                  src={fullScreenIcon}
+                  alt="Expand"
+                  title="Fullscreen"
+                  className="absolute top-2 left-2 w-8 h-8 opacity-100 transition-opacity duration-200"
+                />
               )}
               <img
                 src={image ? image.url : ''}
@@ -217,8 +328,62 @@ function Sold() {
         ))}
       </div>
 
-      {/* Validation Popup */}
-      {isValidationVisible && (
+      {showModal && currentImage && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
+            <div className="p-4 ml-[50px] rounded-lg relative">
+              <button
+                className="absolute top-2 -right-8 text-3xl text-white"
+                title="Close"
+                onClick={() => setShowModal(false)}
+              >
+                &times;
+              </button>
+              <img
+                src={currentImage.url}
+                alt="Expanded"
+                className="max-w-full max-h-[80vh] object-contain"
+              />
+              <button
+                className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
+                onClick={handlePreviousImage}
+                title="Previous"
+              >
+                &lt;
+              </button>
+              <button
+                className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
+                onClick={handleNextImage}
+                title="Next"
+              >
+                &gt;
+              </button>
+            </div>
+          </div>
+
+          <div className="fixed bottom-16 left-1/2 transform -translate-x-40 z-20">
+            <Button
+              onClick={handleRestoreImage}
+              color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
+              className="w-36 h-12"
+            >
+              Restore to Home
+            </Button>
+          </div>
+
+          <div className="fixed bottom-16 right-1/2 transform translate-x-20 z-20">
+            <Button
+              onClick={handleDeleteImage}
+              color="bg-[#FF6666] hover:bg-[#e64a19]"
+              className="w-36 h-12"
+            >
+              Delete
+            </Button>
+          </div>
+        </>
+      )}
+
+      {isValidationVisible && !showModal && actionType === 'delete' && (
         <Validation
           title="Move to Trash?"
           message="Are you sure you want to move the selected photo(s) to trash?"
@@ -226,23 +391,75 @@ function Sold() {
           button2Text="Delete"
           onBlue={cancelDelete}
           onRed={confirmDelete}
+          className="z-60"
         />
       )}
 
-      {/* Confirmation Popup */}
-      {isConfirmationVisible && (
+      {isConfirmationVisible && actionType === 'delete' && (
         <Confirmation
           message="Successfully moved to trash."
           onConfirm={() => setConfirmationVisible(false)}
+          className="z-60"
         />
       )}
 
-      {/* Popup Modal */}
-      {showModal && currentImage && (
-        <Popup
-          image={currentImage}
-          onClose={() => setShowModal(false)}
-          onDelete={handleDeleteImage}
+      {isRestoreValidationVisible && !showModal && actionType === 'restore' && (
+        <RestoreValidation
+          title="Restore Selected Photos?"
+          message="Are you sure you want to restore the selected photo(s) to Home Page?"
+          button1Text="Restore"
+          button2Text="Cancel"
+          onBlue={cancelRestoreSelected}
+          onGreen={confirmRestoreSelected}
+          className="z-60"
+        />
+      )}
+
+      {isConfirmationVisible && actionType === 'restore' && (
+        <Confirmation
+          message="Successfully restored to Home Page."
+          onConfirm={() => setConfirmationVisible(false)}
+          className="z-60"
+        />
+      )}
+
+      {isDeleteValidationVisible && showModal && (
+        <Validation
+          title="Move to Trash?"
+          message="Are you sure you want to move this photo to trash?"
+          button1Text="Cancel"
+          button2Text="Delete"
+          onBlue={cancelDeleteImage}
+          onRed={confirmDeleteImage}
+          className="z-60"
+        />
+      )}
+
+      {isDeleteConfirmationVisible && (
+        <Confirmation
+          message="Successfully moved to trash."
+          onConfirm={() => setDeleteConfirmationVisible(false)}
+          className="z-60"
+        />
+      )}
+
+      {isRestoreValidationVisible && showModal && actionType === 'restoreSingle' && (
+        <RestoreValidation
+          title="Restore Photo?"
+          message="Are you sure you want to restore this photo to Home Page?"
+          button1Text="Restore"
+          button2Text="Cancel"
+          onBlue={cancelRestoreImage}
+          onGreen={confirmRestoreImage}
+          className="z-60"
+        />
+      )}
+
+      {isRestoreConfirmationVisible && (
+        <Confirmation
+          message="Successfully restored to Home Page."
+          onConfirm={() => setRestoreConfirmationVisible(false)}
+          className="z-60"
         />
       )}
     </div>

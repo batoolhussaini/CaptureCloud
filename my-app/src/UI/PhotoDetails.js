@@ -7,7 +7,7 @@ function PhotoDetails({
   onClose,
   onEdit,
   onMarkSold,
-  onPrevious,
+  onPrev, // Changed from 'onPrevious' to 'onPrev'
   onNext,
 }) {
   return (
@@ -15,18 +15,18 @@ function PhotoDetails({
       <div className="bg-white p-10 rounded-lg shadow-lg relative flex items-center justify-center">
         {/* Navigation Arrows */}
         <button
-          onClick={onPrevious}
+          onClick={onPrev} // Updated from 'onPrevious' to 'onPrev'
           className="absolute left-[-70px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
           title="Previous"
         >
-        &lt;
+          &lt;
         </button>
         <button
           onClick={onNext}
           className="absolute right-[-70px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
           title="Next"
         >
-        &gt;
+          &gt;
         </button>
 
         <div className="relative w-full max-w-[90vw] max-h-[90vh] flex flex-col items-center">

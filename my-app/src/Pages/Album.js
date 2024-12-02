@@ -104,7 +104,7 @@ function Album() {
             <img 
               src={folderPlusIcon} 
               alt="Folder Plus Icon" 
-              className="h-[195px] w-[225px] mt-12"  title="New Album"
+              className="h-[165px] w-[210px] mt-[60px]"  title="New Album"
               style={{ opacity: isSelected ? 0.5 : 1 }} 
             />
           </button>
@@ -129,7 +129,7 @@ function Album() {
                   <img 
                     src={folderIcon} 
                     alt="Flowers Album" 
-                    className="h-[180px] w-[230px]" 
+                    className="h-[160px] w-[210px]" 
                   />
                 </Link>
               )}
@@ -137,7 +137,7 @@ function Album() {
                 <img 
                   src={folderIcon} 
                   alt="Flowers Album" 
-                  className="h-[180px] w-[230px]" 
+                  className="h-[160px] w-[210px]" 
                 />
               )}
             </div>
@@ -165,7 +165,7 @@ function Album() {
                   <img 
                     src={album.icon} 
                     alt={album.name} 
-                    className="h-[180px] w-[230px]" 
+                    className="h-[160px] w-[210px]" 
                   />
                 </Link>
               )}
@@ -173,7 +173,7 @@ function Album() {
                 <img 
                   src={album.icon} 
                   alt={album.name} 
-                  className="h-[180px] w-[230px]" 
+                  className="h-[160px] w-[210px]" 
                 />
               )}
             </div>

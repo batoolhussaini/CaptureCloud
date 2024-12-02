@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 
-function Soldpopup({ onClose, image, onDelete }) {
+function Soldpopup({ onClose, image, onDelete, onRestore }) {
   const [caption, setCaption] = useState('');
   const imageRef = useRef(null); 
 
-  const handleSave = () => {
-    // Your save logic here
+  const handleRestore = () => {
+    if (onRestore) {
+      onRestore();
+    }
   };
 
   const handleDelete = () => {
@@ -50,8 +52,8 @@ function Soldpopup({ onClose, image, onDelete }) {
         </div>
         <div className="flex justify-center space-x-56 mt-4">
           <button 
-            onClick={handleSave}
-            className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-color w-36 h-10"
+            onClick={handleRestore}
+            className="text-black rounded-3xl shadow-md bg-[#B1DEA5] hover:bg-[#8CBF7B] transition-color w-36 h-10"
           >
             Restore to Home
           </button>

@@ -128,6 +128,16 @@ function Flowers() {
     setIsRenamePopupOpen(false); 
   };
 
+  const handleNextImage = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % flowers.length);
+  };
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex((prevIndex) =>
+      (prevIndex - 1 + flowers.length) % flowers.length
+    );
+  };
+
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -186,7 +196,7 @@ function Flowers() {
             </div>
           )}
 
-          <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[95px]">
+          <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[130px]">
             {flowers.map((image, index) => (
               <div key={index} className="relative">
                 <div
@@ -195,7 +205,7 @@ function Flowers() {
                     isSelected && selectedImages.includes(image)
                       ? 'border-4 border-yellow-200 rounded-2xl'
                       : 'rounded-2xl'
-                  } relative` }
+                  } relative`}
                   style={{
                     width: '12rem',
                     height: '10.5rem',
@@ -214,45 +224,48 @@ function Flowers() {
                   <img
                     src={image.url}
                     alt={`Flower ${index + 1}`}
-                    className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${
+                    className={`h-40 w-48 object-cover rounded-2xl shadow-lg transition-transform duration-200 ${
                       isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
+                    } ${
+                      hovered === index && !isSelected ? 'transform scale-105' : ''
                     }`}
                     style={{
                       marginLeft: '-1px',
                     }}
                   />
                   {hovered === index && !isSelected && (
-                  <button
-                  onClick={() => handleOpenPhotoDetails(index)}
-                  className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20">
-                  Photo Details
-                  </button>
-              )}
+                    <button
+                      onClick={() => handleOpenPhotoDetails(index)}
+                      className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20"
+                    >
+                      Photo Details
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
-        {showModal && selectedImageIndex !== null && (
-          <PhotoDetails
-            image={flowers[selectedImageIndex]}
-            isStarred={flowers[selectedImageIndex].isStarred}
-            caption={flowers[selectedImageIndex].caption}
-            onClose={() => setShowModal(false)}
-            onEdit={handleOpenEditPopup}
-            //onMarkSold={() => setShowSoldMessage(true)}
-          />
-        )}
+          {showModal && selectedImageIndex !== null && (
+            <PhotoDetails
+              image={flowers[selectedImageIndex]}
+              isStarred={flowers[selectedImageIndex].isStarred}
+              caption={flowers[selectedImageIndex].caption}
+              onClose={() => setShowModal(false)}
+              onEdit={handleOpenEditPopup}
+              onNext={handleNextImage}
+              onPrev={handlePrevImage}
+            />
+          )}
 
-        {/* EditPopup Component */}
-        {showEditPopup && selectedImageIndex !== null && (
-          <EditPopup
-            image={flowers[selectedImageIndex]}
-            onClose={() => setShowEditPopup(false)}
-            onSave={handleSaveEdits}
-            onDelete={handleDeleteImage}
-          />
-        )}
+          {showEditPopup && selectedImageIndex !== null && (
+            <EditPopup
+              image={flowers[selectedImageIndex]}
+              onClose={() => setShowEditPopup(false)}
+              onSave={handleSaveEdits}
+              onDelete={handleDeleteImage}
+            />
+          )}
         </div>
       </div>
 

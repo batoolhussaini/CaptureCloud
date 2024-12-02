@@ -49,12 +49,13 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-lg sm:p-8 relative">
         {/* Close Button */}
         <button
           onClick={() => setShowExitWarning(true)}
           className="absolute text-3xl top-2 right-2 text-gray-600 hover:text-gray-800"
+          title = "Close"
         >
           &times;
         </button>
