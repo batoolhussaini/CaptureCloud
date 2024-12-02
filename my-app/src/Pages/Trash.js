@@ -168,7 +168,7 @@ function Trash() {
       <div className="fixed">
         <Navbar />
       </div>
-      <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Trash</h1>
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Trash</h1>
 
       {deletedImages && deletedImages.length > 0 ? (
         <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[280px]">
