@@ -12,7 +12,7 @@ function PhotoDetails({
 }) {
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-10 rounded-lg shadow-lg relative flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg max-w-4xl w-full mx-4 relative">
         {/* Navigation Arrows */}
         <button
           onClick={onPrev} // Updated from 'onPrevious' to 'onPrev'
@@ -33,7 +33,7 @@ function PhotoDetails({
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-1 -right-5 text-gray-600 hover:text-gray-800"
+            className="absolute -right-10 -top-8 text-3xl text-white transform translate-x-full"
             title="Close"
           >
             &times;

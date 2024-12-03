@@ -11,6 +11,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [showExitWarning, setShowExitWarning] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState(image.album || '');
   const [tagErrorMessage, setTagErrorMessage] = useState('');
+  const [showValidation, setShowValidation] = useState(false);
   const imageRef = useRef(null);
 
   const handleAddTag = () => {
@@ -21,7 +22,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
     } else if (tags.includes(newTag)) {
       setTagErrorMessage('Tag already exists.');
     } else {
-      setTagErrorMessage('Tag cannot be empty.');
+      setTagErrorMessage('Please write a tag before adding.');
     }
   };
 
@@ -50,11 +51,11 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-lg sm:p-8 relative">
+      <div className="bg-white p-6 rounded-lg max-w-4xl w-full mx-4 relative">
         {/* Close Button */}
         <button
           onClick={() => setShowExitWarning(true)}
-          className="absolute text-3xl top-2 right-2 text-gray-600 hover:text-gray-800"
+          className="absolute -right-5 -top-2 text-3xl text-white transform translate-x-full"
           title = "Close"
         >
           &times;
@@ -72,14 +73,14 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         )}
 
         {/* Image Preview */}
-        <div className="relative">
+        <div className="flex justify-center relative">
           <img
             ref={imageRef}
             src={typeof image === "string" ? image : image.url} 
             alt="Edit Image"
-            className="w-full rounded-lg mb-5"
+            className="max-w-full max-h-[50vh] object-contain my-4"
           />
-          <button onClick={handleFullScreen} className="absolute top-2 left-2 h-6 w-6" title="Full Screen">
+          <button onClick={handleFullScreen} className="absolute top-2 right-2 h-6 w-6" title="Full Screen">
             <img src={fullScreenIcon} alt="Full Screen" />
           </button>
         </div>
@@ -173,21 +174,34 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         </div>
 
         {/* Save and Delete Buttons */}
-        <div className="flex justify-between">
+        <div className="flex justify-center space-x-32 mt-8">
           <button
             onClick={handleSave}
-            className="bg-[#BDD9E2] px-4 py-2 rounded-full font-medium"
+            className="text-black rounded-3xl shadow-md bg-[#B1DEA5] hover:bg-[#8CBF7B] transition-color w-32 h-10"
           >
             Save Edits
           </button>
           <button
-            onClick={onDelete}
-            className="bg-red-500 px-4 py-2 rounded-full text-white font-medium"
+            onClick={() => setShowValidation(true)}
+            className="bg-[#FF6666] hover:bg-[#e64a19] text-black rounded-3xl shadow-md transition-color w-32 h-10"
           >
             Delete Photo
           </button>
         </div>
       </div>
+      {showValidation && (
+        <Validation
+          title="Delete Photo?"
+          message="Are you sure you want to permanently delete the photo? This action cannot be undone."
+          onRed={() => {
+            onDelete(image); 
+            setShowValidation(false);
+          }}
+          onBlue={() => setShowValidation(false)}
+          button1Text="Cancel"
+          button2Text="Delete"
+        />
+      )}
     </div>
   );
 }
