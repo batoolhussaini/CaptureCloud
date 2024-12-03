@@ -12,6 +12,16 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const [newTag, setNewTag] = useState('');
   const [showValidation, setShowValidation] = useState(false);
 
+  const allLocations = ["Canada", "United States", "Mexico", "Brazil", "Argentina"];
+  const [filteredLocations, setFilteredLocations] = useState(allLocations);
+
+  const handleLocationChange = (event) => {
+    const input = event.target.value;
+    setLocation(input);
+    const matchingLocations = allLocations.filter(loc => loc.toLowerCase().startsWith(input.toLowerCase()));
+    setFilteredLocations(matchingLocations);
+  };
+
   const handleAddTag = () => {
     if (newTag && !tags.some(tag => tag.value === newTag)) {
       setTags([...tags, { value: newTag, type: 'tag' }]);
@@ -77,15 +87,13 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
             className="w-1/4 border-2 text-gray-500 italic text-c rounded-full px-3 py-2 focus:outline-none border-text-c"
             placeholder="Add location..."
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={handleLocationChange}
             list="location-list" 
           />
           <datalist id="location-list">
-            <option value="Canada" />
-            <option value="United States" />
-            <option value="Mexico" />
-            <option value="Brazil" />
-            <option value="Argentina" />
+            {filteredLocations.map(loc => (
+              <option key={loc} value={loc} />
+            ))}
           </datalist>
           <button
             onClick={handleAddLocation}
