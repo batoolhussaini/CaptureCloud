@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
-import globeIcon from '../Assets/Icons/Globe.png'; // Import globe icon
+import globeIcon from '../Assets/Icons/Globe.png'; 
 import Validation from './Validation.js';
 
 function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
@@ -22,7 +22,7 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const handleAddLocation = () => {
     if (location && !tags.some(tag => tag.type === 'location')) {
       setTags([...tags, { value: location, type: 'location' }]);
-      setLocation(''); // Clear the location input after adding
+      setLocation(''); 
     }
   };
 
@@ -37,7 +37,6 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   };
 
   const handleSave = () => {
-    // Save only the tags and separate location for the save function if needed
     const savedTags = tags.filter(tag => tag.type === 'tag').map(tag => tag.value);
     const savedLocation = tags.find(tag => tag.type === 'location')?.value;
     onSave(image, { tags: savedTags, caption, isStarClicked, location: savedLocation });
@@ -62,7 +61,7 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
         <div className="flex items-center mb-4">
           <label className="block text-gray-700 font-medium mr-3">Add Tags</label>
           <input
-            className="w-1/3 border-2 text-gray-500 italic text-c rounded-full px-3 py-2 focus:outline-none border-text-c"
+            className="w-1/4 border-2 text-gray-500 italic text-c rounded-full px-3 py-2 focus:outline-none border-text-c"
             placeholder="Add tags..."
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
@@ -79,7 +78,15 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
             placeholder="Add location..."
             value={location}
             onChange={(e) => setLocation(e.target.value)}
+            list="location-list" 
           />
+          <datalist id="location-list">
+            <option value="Canada" />
+            <option value="United States" />
+            <option value="Mexico" />
+            <option value="Brazil" />
+            <option value="Argentina" />
+          </datalist>
           <button
             onClick={handleAddLocation}
             className="text-sm ml-1 bg-text-c font-medium text-white px-3 py-1 rounded-full"
