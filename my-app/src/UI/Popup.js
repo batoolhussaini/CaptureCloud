@@ -1,24 +1,33 @@
 import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
-import Validation from './Validation.js'
+import globeIcon from '../Assets/Icons/Globe.png'; // Import globe icon
+import Validation from './Validation.js';
 
 function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const [tags, setTags] = useState(metadata?.tags || []);
   const [caption, setCaption] = useState(metadata?.caption || '');
   const [isStarClicked, setIsStarClicked] = useState(metadata?.isStarClicked || false);
+  const [location, setLocation] = useState('');
   const imageRef = useRef(null);
   const [newTag, setNewTag] = useState('');
   const [showValidation, setShowValidation] = useState(false);
 
   const handleAddTag = () => {
-    if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag]);
+    if (newTag && !tags.some(tag => tag.value === newTag)) {
+      setTags([...tags, { value: newTag, type: 'tag' }]);
       setNewTag('');
     }
   };
 
+  const handleAddLocation = () => {
+    if (location && !tags.some(tag => tag.type === 'location')) {
+      setTags([...tags, { value: location, type: 'location' }]);
+      setLocation(''); // Clear the location input after adding
+    }
+  };
+
   const handleRemoveTag = (tagToRemove) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter(tag => tag.value !== tagToRemove.value));
   };
 
   const handleFullScreen = () => {
@@ -28,7 +37,10 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   };
 
   const handleSave = () => {
-    onSave(image, { tags, caption, isStarClicked });
+    // Save only the tags and separate location for the save function if needed
+    const savedTags = tags.filter(tag => tag.type === 'tag').map(tag => tag.value);
+    const savedLocation = tags.find(tag => tag.type === 'location')?.value;
+    onSave(image, { tags: savedTags, caption, isStarClicked, location: savedLocation });
   };
 
   if (!isOpen) return null;
@@ -46,11 +58,11 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
           </button>
         </div>
         
-        {/* Tags Input */}
+        {/* Tags and Location Input */}
         <div className="flex items-center mb-4">
           <label className="block text-gray-700 font-medium mr-3">Add Tags</label>
           <input
-            className="w-3/4 border-2 text-gray-500 italic text-c rounded-full px-3 py-2 focus:outline-none border-text-c"
+            className="w-1/3 border-2 text-gray-500 italic text-c rounded-full px-3 py-2 focus:outline-none border-text-c"
             placeholder="Add tags..."
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
@@ -61,15 +73,28 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
           >
             Add
           </button>
+          <label className="block text-gray-700 font-medium mr-3 ml-6">Location</label>
+          <input
+            className="w-1/4 border-2 text-gray-500 italic text-c rounded-full px-3 py-2 focus:outline-none border-text-c"
+            placeholder="Add location..."
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+          <button
+            onClick={handleAddLocation}
+            className="text-sm ml-1 bg-text-c font-medium text-white px-3 py-1 rounded-full"
+          >
+            Add
+          </button>
         </div>
-        
 
         <div className="flex items-center mt-2">
           <button onClick={() => setIsStarClicked(!isStarClicked)} className={`text-3xl ${isStarClicked ? 'text-text-c' : 'text-gray-400'}`}>&#9733;</button>
           <div className="flex flex-wrap gap-2 ml-4">
             {tags.map((tag, index) => (
               <span key={index} className="bg-blueButton-c text-blue-800 px-2 py-1 rounded-lg flex items-center">
-                {tag}
+                {tag.type === 'location' ? <img src={globeIcon} alt="Location" className="h-4 w-4 mr-1" /> : null}
+                {tag.value}
                 <button onClick={() => handleRemoveTag(tag)} className="ml-1 text-black-600">&times;</button>
               </span>
             ))}
