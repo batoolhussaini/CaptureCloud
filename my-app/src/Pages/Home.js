@@ -29,6 +29,9 @@ function Home() {
   const [selectedImages, setSelectedImages] = useState([]); 
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false); 
+  const [isSoldValidationVisible, setSoldValidationVisible] = useState(false);
+  const [isSoldConfirmationVisible, setSoldConfirmationVisible] = useState(false); 
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -152,6 +155,10 @@ function Home() {
     setValidationVisible(true); 
   };
 
+  const handleSold = () => {
+    setSoldValidationVisible(true); 
+  };
+
   const confirmDelete = () => {
     const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
     setImages(updatedImages);
@@ -163,6 +170,21 @@ function Home() {
 
   const cancelDelete = () => {
     setValidationVisible(false); 
+  };
+
+  const cancelSold = () => {
+    setSoldValidationVisible(false); 
+  };
+
+  const confirmSold = () => {
+    const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
+    setImages(updatedImages);
+    setSelectedImages([]);
+    setSoldValidationVisible(false);
+    setSoldConfirmationVisible(true); 
+    setIsSelected(false); 
+    setShowSoldMessage(false); // Close Sold confirmation
+    setShowModal(false);
   };
 
   return (
@@ -332,6 +354,7 @@ function Home() {
             caption={combinedImages[selectedImageIndex].caption}
             onClose={() => setShowModal(false)}
             onEdit={handleOpenEditPopup}
+            onMarkSold={handleSold}
             onPrevious={handlePreviousImage}
             onNext={handleNextImage}
           />
@@ -359,10 +382,30 @@ function Home() {
           />
         )}
 
+        {isSoldValidationVisible && (
+          <Validation
+            title="Mark as Sold?"
+            message="Are you sure you want to mark this photo as sold?"
+            button1Text="Cancel"
+            button2Text="Sold"
+            onBlue={cancelSold}
+            onRed={confirmSold}
+            className="z-60"
+          />
+        )}
+
         {isConfirmationVisible && (
           <Confirmation
             message="Successfully moved to trash."
             onConfirm={() => setConfirmationVisible(false)}
+            className="z-60"
+          />
+        )}
+
+        {isSoldConfirmationVisible && (
+          <Confirmation
+            message="Successfully moved to the Sold page."
+            onConfirm={() => setSoldConfirmationVisible(false)}
             className="z-60"
           />
         )}
