@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
@@ -22,58 +22,55 @@ import pic5 from '../Assets/Photos/pic5.jpg';
 import pic6 from '../Assets/Photos/pic6.avif';
 
 function Flowers() {
-  useEffect(() => { document.title = 'Albums'; });
+  useEffect(() => {
+    document.title = 'Albums';
+  });
   const navigate = useNavigate();
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [flowers, setFlowers] = useState([
-    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: "Flowers" },
-    { url: pic2, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic3, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic4, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic5, caption: '', tags: [], isStarred: false, album: "Flowers"  },
-    { url: pic6, caption: '', tags: [], isStarred: false, album: "Flowers"  },
+    { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: 'Flowers' },
+    { url: pic2, caption: '', tags: [], isStarred: false, album: 'Flowers' },
+    { url: pic3, caption: '', tags: [], isStarred: false, album: 'Flowers' },
+    { url: pic4, caption: '', tags: [], isStarred: false, album: 'Flowers' },
+    { url: pic5, caption: '', tags: [], isStarred: false, album: 'Flowers' },
+    { url: pic6, caption: '', tags: [], isStarred: false, album: 'Flowers' },
   ]);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
-  const [albumName, setAlbumName] = useState('Flowers'); 
+  const [albumName, setAlbumName] = useState('Flowers');
   const [hovered, setHovered] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
-  const [showEditPopup, setShowEditPopup] = useState(false); // Edit popup state
+  const [showEditPopup, setShowEditPopup] = useState(false); 
+  const fileInputRef = useRef(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploadConfirmationVisible, setUploadConfirmationVisible] = useState(false);
 
-  // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
     setShowModal(true);
   };
 
-  // Open the EditPopup
   const handleOpenEditPopup = () => {
-    setShowModal(false); // Close the first popup
-    setShowEditPopup(true); // Open EditPopup
+    setShowModal(false); 
+    setShowEditPopup(true); 
   };
-    
-  // Save edits from the EditPopup
+
   const handleSaveEdits = (updatedDetails) => {
     setFlowers((prevImages) =>
       prevImages.map((image, index) =>
-        index === selectedImageIndex
-          ? { ...image, ...updatedDetails } // Update selected image
-          : image
+        index === selectedImageIndex ? { ...image, ...updatedDetails } : image
       )
     );
-    setShowEditPopup(false); // Close EditPopup
-    setShowModal(true); // Reopen the first popup to show updated details
+    setShowEditPopup(false); 
+    setShowModal(true); 
   };
-  
-  // Delete an image
+
   const handleDeleteImage = () => {
-    setFlowers((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
-    setShowEditPopup(false); // Close the EditPopup after deleting
+    setFlowers((prevImages) => prevImages.filter((_, index) => index !== selectedImageIndex));
+    setShowEditPopup(false); 
   };
 
   const handleBackClick = () => {
@@ -95,10 +92,63 @@ function Flowers() {
   const handleDeleteSelected = () => {
     setValidationVisible(true);
   };
-  
+
   const handleUploadIconClick = () => {
-    alert('Under development. Tune back soon!'); 
-  }
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const progressBar = () => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (progress < 100) {
+        progress += 10;
+        setUploadProgress(progress);
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          setUploadProgress(0);
+          setUploadConfirmationVisible(true);
+        }, 500);
+      }
+    }, 300);
+  };
+
+  const handleImageChange = (event) => {
+    const pics = event.target.files;
+    if (pics && pics.length > 0) {
+      const fileArray = Array.from(pics);
+      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
+
+      if (invalidFiles.length > 0) {
+        alert('Please upload only image files.');
+        return;
+      }
+      progressBar();
+
+      const newImages = [];
+      fileArray.forEach((pics) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageUrl = e.target.result;
+          newImages.push({
+            url: imageUrl,
+            caption: '',
+            tags: [],
+            isStarred: false,
+            album: albumName,
+          });
+
+          if (newImages.length === fileArray.length) {
+            setFlowers((prevFlowers) => [...prevFlowers, ...newImages]);
+            fileInputRef.current.value = null;
+          }
+        };
+        reader.readAsDataURL(pics);
+      });
+    }
+  };
 
   const confirmDelete = () => {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
@@ -120,12 +170,12 @@ function Flowers() {
   };
 
   const handleRenameConfirm = (newName) => {
-    setAlbumName(newName); 
-    setIsRenamePopupOpen(false); 
+    setAlbumName(newName);
+    setIsRenamePopupOpen(false);
   };
 
   const handleRenameClose = () => {
-    setIsRenamePopupOpen(false); 
+    setIsRenamePopupOpen(false);
   };
 
   const handleNextImage = () => {
@@ -133,9 +183,7 @@ function Flowers() {
   };
 
   const handlePrevImage = () => {
-    setSelectedImageIndex((prevIndex) =>
-      (prevIndex - 1 + flowers.length) % flowers.length
-    );
+    setSelectedImageIndex((prevIndex) => (prevIndex - 1 + flowers.length) % flowers.length);
   };
 
   return (
@@ -167,19 +215,17 @@ function Flowers() {
             </button>
           </div>
 
-          {isRenamePopupOpen && (
-            <ARpopup
-              onConfirm={handleRenameConfirm} 
-              onClose={handleRenameClose}   
-            />
-          )}
+          {isRenamePopupOpen && <ARpopup onConfirm={handleRenameConfirm} onClose={handleRenameClose} />}
 
-          <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
+          <div
+            className="fixed top-12 right-40 mt-14 mr-6 z-50"
+            title={isSelected ? 'Cancel Select' : 'Select Photo(s)'}
           >
             <Button
               onClick={handleButtonClick}
               color={isSelected ? 'bg-[#B0B0B0]' : 'bg-[#D9D9D9] hover:bg-[#B0B0B0]'}
-              className="w-36 h-12"            >
+              className="w-36 h-12 z-50"
+            >
               <span>{isSelected ? 'Cancel' : 'Select'}</span>
             </Button>
           </div>
@@ -226,9 +272,7 @@ function Flowers() {
                     alt={`Flower ${index + 1}`}
                     className={`h-40 w-48 object-cover rounded-2xl shadow-lg transition-transform duration-200 ${
                       isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
-                    } ${
-                      hovered === index && !isSelected ? 'transform scale-105' : ''
-                    }`}
+                    } ${hovered === index && !isSelected ? 'transform scale-105' : ''}`}
                     style={{
                       marginLeft: '-1px',
                     }}
@@ -307,6 +351,30 @@ function Flowers() {
           onConfirm={() => setConfirmationVisible(false)}
         />
       )}
+
+      {uploadProgress > 0 && uploadProgress < 100 && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+          <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+            <div
+              className="bg-[#1E5F99] h-full"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+          <div className="absolute text-white font-semibold">
+            Uploading... {uploadProgress}%
+          </div>
+        </div>
+      )}
+
+      {isUploadConfirmationVisible && (
+        <Confirmation
+          message="Photo(s) successfully uploaded."
+          onConfirm={() => setUploadConfirmationVisible(false)}
+        />
+      )}
+
+      <input type="file"  multiple accept="image/*" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
     </div>
   );
 }

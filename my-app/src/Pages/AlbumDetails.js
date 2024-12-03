@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
@@ -34,8 +34,9 @@ function AlbumDetails() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imageInfo, setImageInfo] = useState({});
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const maxImages = 10;
+  const maxImagesPerUpload = 10;
 
   const progressBar = () => {
     let progress = 0;
@@ -46,7 +47,10 @@ function AlbumDetails() {
       } else {
         clearInterval(interval);
         setTimeout(() => {
-          setIsConfirmationOpen(true); 
+          setIsConfirmationOpen(true);
+          setUploadProgress(0);
+          setIsVisible(false);
+          setIsUploadClicked(true);
         }, 500);
       }
     }, 300);
@@ -63,13 +67,14 @@ function AlbumDetails() {
         return;
       }
 
-      if (images.length + fileArray.length > maxImages) {
-        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+      if (fileArray.length > maxImagesPerUpload) {
+        alert(`You can only upload a maximum of ${maxImagesPerUpload} images at a time.`);
         return;
       }
 
       setImages((prevImages) => [...prevImages, ...fileArray]);
       setIsUploaded(true);
+      progressBar(); 
     }
   };
 
@@ -89,12 +94,13 @@ function AlbumDetails() {
         alert('Please upload only image files.');
         return;
       }
-      if (images.length + fileArray.length > maxImages) {
-        alert(`You can only upload a maximum of ${maxImages} images at a time.`);
+      if (fileArray.length > maxImagesPerUpload) {
+        alert(`You can only upload a maximum of ${maxImagesPerUpload} images at a time.`);
         return;
       }
       setImages((prevImages) => [...prevImages, ...fileArray]);
       setIsUploaded(true);
+      progressBar(); 
     }
   };
 
@@ -109,9 +115,11 @@ function AlbumDetails() {
   };
 
   const handleUploadClick = () => {
-    setIsVisible(false);
+    if (!isUploadClicked) {
+      setIsVisible(false);
+    }
     setIsUploadClicked(true);
-    progressBar();
+    progressBar(); 
   };
 
   const handleButtonClick = () => {
@@ -141,11 +149,11 @@ function AlbumDetails() {
     setImages(updatedImages);
     setSelectedImages([]);
     setIsValidationOpen(false);
-    setIsConfirmationOpen(true); 
+    setIsConfirmationOpen(true);
   };
 
   const cancelDelete = () => {
-    setIsValidationOpen(false); 
+    setIsValidationOpen(false);
   };
 
   const handleEditClick = (image) => {
@@ -165,14 +173,14 @@ function AlbumDetails() {
   const handleSave = (image, updatedData) => {
     setImageInfo((prevInfo) => ({
       ...prevInfo,
-      [image.name]: updatedData, 
+      [image.name]: updatedData,
     }));
-    setIsPopupOpen(false); 
+    setIsPopupOpen(false);
   };
 
   const handleDelete = (image) => {
     setImages((prevImages) => prevImages.filter((img) => img !== image));
-    setIsPopupOpen(false); 
+    setIsPopupOpen(false);
   };
 
   const handleEditAlbumName = () => {
@@ -191,16 +199,18 @@ function AlbumDetails() {
   };
 
   const handleRenameClose = () => {
-    setIsRenamePopupOpen(false); 
+    setIsRenamePopupOpen(false);
   };
 
   const handleUploadIconClick = () => {
-    alert('Under development. Tune back soon!'); 
-  }
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const handleUploadBackArrowClick = () => {
     navigate('/albums');
-  }
+  };
 
   return (
     <div className="flex flex-col">
@@ -264,7 +274,7 @@ function AlbumDetails() {
                 )}
                 <div className="flex items-center space-x-2">
                   <img src={infoIcon} alt="Information Icon" className="h-5 w-5" />
-                  <p className="text-black-500 text-sm">{maxImages} photos max</p>
+                  <p className="text-black-500 text-sm">{maxImagesPerUpload} photos per upload max</p>
                 </div>
               </div>
             )}
@@ -405,7 +415,7 @@ function AlbumDetails() {
 
       {isConfirmationOpen && (
         <Confirmation
-          message="Successfully moved to trash."
+          message="Photo(s) successfully uploaded."
           onConfirm={handleConfirmationClose}
         />
       )}
@@ -424,6 +434,15 @@ function AlbumDetails() {
         </div>
       )}
       <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div>
+
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={handleImageChange}
+        style={{ display: 'none' }}
+      />
     </div>
   );
 }
