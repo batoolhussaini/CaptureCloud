@@ -18,7 +18,8 @@ import ARpopup from '../UI/ARpopup.js';
 function AlbumDetails() {
   useEffect(() => {
     document.title = 'Albums';
-  });
+  }, []); 
+
   const { name } = useParams();
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
@@ -27,30 +28,50 @@ function AlbumDetails() {
   const [isUploadClicked, setIsUploadClicked] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isConfirmationOpenButton, setIsConfirmationOpenButton] = useState(false);
+  const [isConfirmationOpenIcon, setIsConfirmationOpenIcon] = useState(false);
+  const [isConfirmationOpenDelete, setIsConfirmationOpenDelete] = useState(false); 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isValidationOpen, setIsValidationOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadProgressButton, setUploadProgressButton] = useState(0);
+  const [uploadProgressIcon, setUploadProgressIcon] = useState(0);
   const [imageInfo, setImageInfo] = useState({});
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const fileInputRef = useRef(null);
+  const iconFileInputRef = useRef(null); 
 
   const maxImagesPerUpload = 10;
 
-  const progressBar = () => {
+  const progressBarButton = () => {
     let progress = 0;
     const interval = setInterval(() => {
       if (progress < 100) {
         progress += 10;
-        setUploadProgress(progress);
+        setUploadProgressButton(progress);
       } else {
         clearInterval(interval);
         setTimeout(() => {
-          setIsConfirmationOpen(true);
-          setUploadProgress(0);
+          setIsConfirmationOpenButton(true);
+          setUploadProgressButton(0);
           setIsVisible(false);
           setIsUploadClicked(true);
+        }, 500);
+      }
+    }, 300);
+  };
+
+  const progressBarIcon = () => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      if (progress < 100) {
+        progress += 10;
+        setUploadProgressIcon(progress);
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          setIsConfirmationOpenIcon(true);
+          setUploadProgressIcon(0);
         }, 500);
       }
     }, 300);
@@ -74,7 +95,28 @@ function AlbumDetails() {
 
       setImages((prevImages) => [...prevImages, ...fileArray]);
       setIsUploaded(true);
-      progressBar(); 
+    }
+  };
+
+  const handleIconUploadChange = (e) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      const invalidFiles = fileArray.filter((file) => !file.type.startsWith('image/'));
+
+      if (invalidFiles.length > 0) {
+        alert('Please upload only image files.');
+        return;
+      }
+
+      if (fileArray.length > maxImagesPerUpload) {
+        alert(`You can only upload a maximum of ${maxImagesPerUpload} images at a time.`);
+        return;
+      }
+
+      setImages((prevImages) => [...prevImages, ...fileArray]);
+      setIsUploaded(true);
+      progressBarIcon(); 
     }
   };
 
@@ -100,7 +142,6 @@ function AlbumDetails() {
       }
       setImages((prevImages) => [...prevImages, ...fileArray]);
       setIsUploaded(true);
-      progressBar(); 
     }
   };
 
@@ -108,18 +149,17 @@ function AlbumDetails() {
     setImages([]);
     setIsUploaded(false);
 
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput) {
-      fileInput.value = '';
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+
+    if (iconFileInputRef.current) {
+      iconFileInputRef.current.value = '';
     }
   };
 
   const handleUploadClick = () => {
-    if (!isUploadClicked) {
-      setIsVisible(false);
-    }
-    setIsUploadClicked(true);
-    progressBar(); 
+    progressBarButton(); 
   };
 
   const handleButtonClick = () => {
@@ -149,7 +189,7 @@ function AlbumDetails() {
     setImages(updatedImages);
     setSelectedImages([]);
     setIsValidationOpen(false);
-    setIsConfirmationOpen(true);
+    setIsConfirmationOpenDelete(true); 
   };
 
   const cancelDelete = () => {
@@ -166,8 +206,16 @@ function AlbumDetails() {
     setCurrentImage(null);
   };
 
-  const handleConfirmationClose = () => {
-    setIsConfirmationOpen(false);
+  const handleConfirmationCloseButton = () => {
+    setIsConfirmationOpenButton(false);
+  };
+
+  const handleConfirmationCloseIcon = () => {
+    setIsConfirmationOpenIcon(false);
+  };
+
+  const handleConfirmationCloseDelete = () => {
+    setIsConfirmationOpenDelete(false);
   };
 
   const handleSave = (image, updatedData) => {
@@ -203,14 +251,24 @@ function AlbumDetails() {
   };
 
   const handleUploadIconClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    if (iconFileInputRef.current) {
+      iconFileInputRef.current.click();
     }
   };
 
   const handleUploadBackArrowClick = () => {
     navigate('/albums');
   };
+
+  useEffect(() => {
+    return () => {
+      images.forEach((image) => {
+        if (image instanceof File) {
+          URL.revokeObjectURL(image);
+        }
+      });
+    };
+  }, [images]);
 
   return (
     <div className="flex flex-col">
@@ -239,8 +297,10 @@ function AlbumDetails() {
               />
             </button>
           </div>
-          {isRenamePopupOpen && <ARpopup onConfirm={handleRenameConfirm} onClose={handleRenameClose} />}
 
+          {isRenamePopupOpen && (
+            <ARpopup onConfirm={handleRenameConfirm} onClose={handleRenameClose} />
+          )}
           <div className="flex-grow flex items-center justify-center mt-6">
             {isVisible && (
               <div className="border-2 border-dashed border-black rounded-2xl w-[33rem] h-56 flex flex-col items-center justify-center bg-[#F5F5F5]">
@@ -263,7 +323,6 @@ function AlbumDetails() {
                     accept="image/*"
                   />
                 </div>
-
                 {images.length > 0 && (
                   <button
                     onClick={handleRemoveAll}
@@ -274,12 +333,13 @@ function AlbumDetails() {
                 )}
                 <div className="flex items-center space-x-2">
                   <img src={infoIcon} alt="Information Icon" className="h-5 w-5" />
-                  <p className="text-black-500 text-sm">{maxImagesPerUpload} photos per upload max</p>
+                  <p className="text-black-500 text-sm">
+                    {maxImagesPerUpload} photos per upload max
+                  </p>
                 </div>
               </div>
             )}
           </div>
-
           <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-6 gap-y-12 ml-[95px]">
             {images.map((image, index) => (
               <div key={index} className="relative">
@@ -329,7 +389,6 @@ function AlbumDetails() {
           </div>
         </div>
       </div>
-
       {isUploaded && !isUploadClicked && (
         <Button
           color="bg-[#CEECF5] hover:bg-[#B6D8E7]"
@@ -339,17 +398,15 @@ function AlbumDetails() {
           className="fixed bottom-3 right-10 flex items-center justify-center"
         />
       )}
-
       {isUploadClicked && (
         <>
           <img
             src={uploadIcon}
-            alt="Uploaded Icon"
+            alt="Upload Icon"
             onClick={handleUploadIconClick}
             className="fixed top-[220px] right-12 transform -translate-y-5 w-7 h-7 cursor-pointer"
             title="Upload Photos"
           />
-
           <div
             className="absolute top-20 right-40 mt-6 mr-6"
             title={isSelected ? 'Cancel Select' : 'Select Photo(s)'}
@@ -387,17 +444,32 @@ function AlbumDetails() {
         />
       </div>
 
-      {uploadProgress > 0 && uploadProgress < 100 && (
+      {uploadProgressButton > 0 && uploadProgressButton < 100 && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-black bg-opacity-50 absolute inset-0"></div>
           <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
             <div
               className="bg-[#1E5F99] h-full"
-              style={{ width: `${uploadProgress}%` }}
+              style={{ width: `${uploadProgressButton}%` }}
             />
           </div>
           <div className="absolute text-white font-semibold">
-            Uploading... {uploadProgress}%
+            Uploading... {uploadProgressButton}%
+          </div>
+        </div>
+      )}
+
+      {uploadProgressIcon > 0 && uploadProgressIcon < 100 && (
+        <div className="fixed inset-0 flex items-center justify-center z-40">
+          <div className="bg-black bg-opacity-50 absolute inset-0"></div>
+          <div className="relative rounded bg-[#6AABD2] w-3/4 h-6">
+            <div
+              className="bg-[#1E5F99] h-full"
+              style={{ width: `${uploadProgressIcon}%` }}
+            />
+          </div>
+          <div className="absolute text-white font-semibold">
+            Uploading... {uploadProgressIcon}%
           </div>
         </div>
       )}
@@ -413,10 +485,24 @@ function AlbumDetails() {
         />
       )}
 
-      {isConfirmationOpen && (
+      {isConfirmationOpenButton && (
         <Confirmation
           message="Photo(s) successfully uploaded."
-          onConfirm={handleConfirmationClose}
+          onConfirm={handleConfirmationCloseButton}
+        />
+      )}
+
+      {isConfirmationOpenIcon && (
+        <Confirmation
+          message="Photo(s) successfully uploaded."
+          onConfirm={handleConfirmationCloseIcon}
+        />
+      )}
+
+      {isConfirmationOpenDelete && (
+        <Confirmation
+          message="Photo(s) successfully deleted."
+          onConfirm={handleConfirmationCloseDelete}
         />
       )}
 
@@ -433,14 +519,23 @@ function AlbumDetails() {
           <p className="text-black font-small">Total Photos: {images.length}</p>
         </div>
       )}
-      <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div>
 
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div>
       <input
         type="file"
         multiple
         accept="image/*"
         ref={fileInputRef}
         onChange={handleImageChange}
+        style={{ display: 'none' }}
+      />
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        ref={iconFileInputRef}
+        onChange={handleIconUploadChange}
+        id="iconFileInput"
         style={{ display: 'none' }}
       />
     </div>
