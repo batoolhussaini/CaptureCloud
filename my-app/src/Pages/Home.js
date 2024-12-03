@@ -178,7 +178,9 @@ function Home() {
 
   const confirmSold = () => {
     const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
-    setImages(updatedImages);
+    setImages((prevImages) =>
+      prevImages.filter((_, index) => index !== selectedImageIndex)
+    );
     setSelectedImages([]);
     setSoldValidationVisible(false);
     setSoldConfirmationVisible(true); 
