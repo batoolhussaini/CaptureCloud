@@ -169,9 +169,9 @@ function Signup() {
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? (
-                                    <FaEyeSlash className="text-gray-500" />
+                                    <FaEyeSlash className="text-gray-500" title ="Hide password" />
                                 ) : (
-                                    <FaEye className="text-gray-500" />
+                                    <FaEye className="text-gray-500" title = "Show password"/>
                                 )}
                             </button>
                     </div>
@@ -226,9 +226,9 @@ function Signup() {
                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         >
                             {showConfirmPassword ? (
-                                <FaEyeSlash className="text-gray-500" />
+                                <FaEyeSlash className="text-gray-500" title = "Hide password" />
                             ) : (
-                                <FaEye className="text-gray-500" />
+                                <FaEye className="text-gray-500" title = "Show password" />
                             )}
                         </button>
                     </div>
