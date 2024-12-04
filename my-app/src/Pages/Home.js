@@ -58,7 +58,7 @@ function Home() {
 
   // Using the context to get photos from the Upload page
   // Combine hardcoded images and uploaded photos into one list
-  const combinedFromUploadImages = [
+  const combinedImages = [
     ...images, // Hardcoded images
     ...newHomeImages.map((photo, index) => ({
       id: images.length + index + 1, // Ensure unique IDs
@@ -67,17 +67,13 @@ function Home() {
       tags: [],
       isStarred: false,
     })), // Uploaded photos
-  ];
-
-  const combinedImages = [
-    ...combinedFromUploadImages, // Hardcoded images
     ...newSoldToHomeImages.map((photo, index) => ({
-      id: combinedFromUploadImages.length + index + 1, // Ensure unique IDs
+      id: images.length + newHomeImages.length + index + 1, // Ensure unique IDs
       url: photo.url,
       caption: '',
       tags: [],
       isStarred: false,
-    })), // Uploaded photos
+    })), // Sold photos
   ];
 
   // Open the first popup (Photo Details)
@@ -129,9 +125,7 @@ function Home() {
     }
 
     setConfirmationVisible(true); 
-
     setShowEditPopup(false); // Close the EditPopup after deleting
-    setShowModal(false); // Close the modal
   };
 
   const handleNextImage = () => {
@@ -182,11 +176,6 @@ function Home() {
     localStorage.setItem('trash', JSON.stringify(trash));
 
     setImages(updatedImages);
-    if (updatedImages.length > 0) {
-      const nextIndex = selectedImageIndex % updatedImages.length;
-      setSelectedImageIndex(nextIndex);
-    } 
-
     setSelectedImages([]);
     setValidationVisible(false);
     setConfirmationVisible(true); 
@@ -272,7 +261,7 @@ function Home() {
         </div>
 
         {/* Top Tags */}
-        <div className="flex flex-row mt-8 items-start justify-center gap-5">
+        <div className="flex flex-row mt-8 items-start justify-center gap-5 ml-32">
           {combinedImages.length > 0 ? (
             <>
               <h2 className="m-1 mt-[-1px] text-xl text-center text-[#016AC7] font-bold">

@@ -181,9 +181,9 @@ function Sold() {
   const confirmRestoreImage = () => {
     const imageToRestore = combinedImages[selectedImageIndex];
     const updatedImages = combinedImages.filter((image) => image.id !== imageToRestore.id);
-    const homeImages = JSON.parse(localStorage.getItem('home')) || [];
+    const homeImages = JSON.parse(localStorage.getItem('soldToHome')) || [];
     homeImages.push(imageToRestore);
-    localStorage.setItem('home', JSON.stringify(homeImages));
+    localStorage.setItem('soldToHome', JSON.stringify(homeImages));
 
     setImages(updatedImages);
     if (updatedImages.length > 0) {
