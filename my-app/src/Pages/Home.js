@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../Layout/Navbar.js';
-import Searchbar from '../Layout/Searchbar.js';
+import SearchbarHome from '../Layout/SearchbarHome.js';
 import logo from '../Assets/Logo/Logo.png';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
@@ -47,14 +47,25 @@ function Home() {
 
   // List of hardcoded images
   const [images, setImages] = useState([
-    { id: 4, url: pic1, caption: '', tags: ['pink'], isStarred: false, album: 'Flowers' },
-    { id: 5, url: pic2, caption: '', tags: [], isStarred: false, album: 'Flowers' },
-    { id: 6, url: pic3, caption: '', tags: [], isStarred: false, album: 'Flowers' },
-    { id: 7, url: pic4, caption: '', tags: [], isStarred: false, album: 'Flowers' },
-    { id: 8, url: pic5, caption: '', tags: [], isStarred: false, album: 'Flowers' },
-    { id: 9, url: pic6, caption: '', tags: [], isStarred: false, album: 'Flowers' },
+    { id: 4, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers' },
+    { id: 5, url: pic2, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers' },
+    { id: 6, url: pic3, caption: '', tags: ['rose'], isStarred: false, album: 'Flowers' },
+    { id: 7, url: pic4, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers' },
+    { id: 8, url: pic5, caption: '', tags: ['blue'], isStarred: false, album: 'Flowers' },
+    { id: 9, url: pic6, caption: '', tags: ['purple'], isStarred: false, album: 'Flowers' },
     // Add more dummy images as needed
   ]);
+
+  const handleSearchUpdate = (searchTags) => {
+    if (searchTags.length === 0) {
+      setImages(images);
+    } else {
+      const filtered = images.filter((image) =>
+        searchTags.every(tag => image.tags.includes(tag))
+      );
+      setImages(filtered);
+    }
+  };
 
   // Using the context to get photos from the Upload page
   // Combine hardcoded images and uploaded photos into one list
@@ -257,7 +268,13 @@ function Home() {
 
         {/* Searchbar */}
         <div className="mt-4 flex flex-col items-center ml-32">
-          <Searchbar />
+          <SearchbarHome onSearchUpdate={handleSearchUpdate}  />
+          <div className="">
+          {images.map((image) => (
+          <div key={image.id} className="relative">
+          </div>
+        ))}
+      </div>
         </div>
 
         {/* Top Tags */}
