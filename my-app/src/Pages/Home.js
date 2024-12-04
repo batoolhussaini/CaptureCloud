@@ -4,7 +4,6 @@ import Searchbar from '../Layout/Searchbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
-import { usePhotoContext } from './PhotoContext';
 import pic1 from '../Assets/Photos/pic1.jpg';
 import pic2 from '../Assets/Photos/pic2.jpg';
 import pic3 from '../Assets/Photos/pic3.jpeg';
@@ -31,36 +30,23 @@ function Home() {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false); 
   const [isSoldValidationVisible, setSoldValidationVisible] = useState(false);
   const [isSoldConfirmationVisible, setSoldConfirmationVisible] = useState(false); 
+  const [newHomeImages, setNewHomeImages] = useState([]);
+  const [newSoldToHomeImages, setNewSoldToHomeImages] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    const home = JSON.parse(localStorage.getItem('home')) || [];
+    const soldToHome = JSON.parse(localStorage.getItem('soldToHome')) || [];
+
     document.title = 'Home';
+
+    setNewHomeImages(home);
+    setNewSoldToHomeImages(soldToHome)
   }, []);
 
   // List of hardcoded images
   const [images, setImages] = useState([
-    {
-      id: 1,
-      url: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350',
-      caption: '',
-      tags: ['cat', 'animal'],
-      isStarred: false,
-    },
-    {
-      id: 2,
-      url: 'https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68',
-      caption: '',
-      tags: ['nature'],
-      isStarred: false,
-    },
-    {
-      id: 3,
-      url: 'https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s',
-      caption: '',
-      tags: ['nature', 'water'],
-      isStarred: false,
-    },
     { id: 4, url: pic1, caption: '', tags: ['pink'], isStarred: false, album: 'Flowers' },
     { id: 5, url: pic2, caption: '', tags: [], isStarred: false, album: 'Flowers' },
     { id: 6, url: pic3, caption: '', tags: [], isStarred: false, album: 'Flowers' },
@@ -71,13 +57,23 @@ function Home() {
   ]);
 
   // Using the context to get photos from the Upload page
-  const { photos } = usePhotoContext();
   // Combine hardcoded images and uploaded photos into one list
-  const combinedImages = [
+  const combinedFromUploadImages = [
     ...images, // Hardcoded images
-    ...photos.map((photo, index) => ({
+    ...newHomeImages.map((photo, index) => ({
       id: images.length + index + 1, // Ensure unique IDs
-      url: URL.createObjectURL(photo),
+      url: photo,
+      caption: '',
+      tags: [],
+      isStarred: false,
+    })), // Uploaded photos
+  ];
+
+  const combinedImages = [
+    ...combinedFromUploadImages, // Hardcoded images
+    ...newSoldToHomeImages.map((photo, index) => ({
+      id: combinedFromUploadImages.length + index + 1, // Ensure unique IDs
+      url: photo.url,
       caption: '',
       tags: [],
       isStarred: false,
@@ -118,9 +114,22 @@ function Home() {
   
   // Delete an image 
   const handleDeleteImage = () => {
-    setImages((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
+    const imageToDelete = combinedImages[selectedImageIndex];
+    const updatedImages = combinedImages.filter((image) => image.id !== imageToDelete.id);
+    const trash = JSON.parse(localStorage.getItem('trash')) || [];
+    trash.push(imageToDelete.url);
+    localStorage.setItem('trash', JSON.stringify(trash));
+
+    setImages(updatedImages);
+    if (updatedImages.length > 0) {
+      const nextIndex = selectedImageIndex % updatedImages.length;
+      setSelectedImageIndex(nextIndex);
+    } else {
+      setShowModal(false);
+    }
+
+    setConfirmationVisible(true); 
+
     setShowEditPopup(false); // Close the EditPopup after deleting
     setShowModal(false); // Close the modal
   };
@@ -159,9 +168,25 @@ function Home() {
     setSoldValidationVisible(true); 
   };
 
+
+
   const confirmDelete = () => {
-    const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
+    const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
+    const trash = JSON.parse(localStorage.getItem('trash')) || [];
+    selectedImages.forEach((id) => {
+      const image = combinedImages.find((img) => img.id === id);
+      if (image) {
+        trash.push(image.url);
+      }
+    });
+    localStorage.setItem('trash', JSON.stringify(trash));
+
     setImages(updatedImages);
+    if (updatedImages.length > 0) {
+      const nextIndex = selectedImageIndex % updatedImages.length;
+      setSelectedImageIndex(nextIndex);
+    } 
+
     setSelectedImages([]);
     setValidationVisible(false);
     setConfirmationVisible(true); 
@@ -177,10 +202,20 @@ function Home() {
   };
 
   const confirmSold = () => {
-    const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
-    setImages((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
+    const imageToRestore = combinedImages[selectedImageIndex];
+    const updatedImages = combinedImages.filter((image) => image.id !== imageToRestore.id);
+    const homeImages = JSON.parse(localStorage.getItem('sold')) || [];
+    homeImages.push(imageToRestore);
+    localStorage.setItem('sold', JSON.stringify(homeImages));
+
+    setImages(updatedImages);
+    if (updatedImages.length > 0) {
+      const nextIndex = selectedImageIndex % updatedImages.length;
+      setSelectedImageIndex(nextIndex);
+    } else {
+      setShowModal(false);
+    }
+
     setSelectedImages([]);
     setSoldValidationVisible(false);
     setSoldConfirmationVisible(true); 
@@ -326,6 +361,9 @@ function Home() {
                 </div>
               </div>
             ))}
+
+
+            
           </div>
         ) : (
           /* No Photos Message */

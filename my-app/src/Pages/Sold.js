@@ -16,8 +16,12 @@ import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import { useNavigate } from 'react-router-dom';
 
 function Sold() {
+  const [newSoldImages, setNewSoldImages] = useState([]);
+
   useEffect(() => {
+    const sold = JSON.parse(localStorage.getItem('sold')) || [];
     document.title = 'Sold Photos';
+    setNewSoldImages(sold);
   }, []);
 
   const [isSelected, setIsSelected] = useState(false);
@@ -64,6 +68,17 @@ function Sold() {
   const [isRestoreValidationVisible, setRestoreValidationVisible] = useState(false);
   const [isRestoreConfirmationVisible, setRestoreConfirmationVisible] = useState(false);
 
+  const combinedImages = [
+    ...images, // Hardcoded images
+    ...newSoldImages.map((photo, index) => ({
+      id: images.length + index + 1, // Ensure unique IDs
+      url: photo.url,
+      caption: '',
+      tags: [],
+      isStarred: false,
+    })), // Uploaded photos
+  ];
+
   const handleButtonClick = () => {
     setIsSelected(!isSelected);
     setSelectedImages([]);
@@ -83,10 +98,10 @@ function Sold() {
   };
 
   const confirmDelete = () => {
-    const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
+    const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
     selectedImages.forEach((id) => {
-      const image = images.find((img) => img.id === id);
+      const image = combinedImages.find((img) => img.id === id);
       if (image) {
         trash.push(image.url);
       }
@@ -110,15 +125,15 @@ function Sold() {
   };
 
   const confirmRestoreSelected = () => {
-    const updatedImages = images.filter((image) => !selectedImages.includes(image.id));
-    const homeImages = JSON.parse(localStorage.getItem('homeImages')) || [];
+    const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
+    const homeImages = JSON.parse(localStorage.getItem('soldToHome')) || [];
     selectedImages.forEach((id) => {
-      const image = images.find((img) => img.id === id);
+      const image = combinedImages.find((img) => img.id === id);
       if (image) {
         homeImages.push(image);
       }
     });
-    localStorage.setItem('homeImages', JSON.stringify(homeImages));
+    localStorage.setItem('soldToHome', JSON.stringify(homeImages));
 
     setImages(updatedImages);
     setSelectedImages([]);
@@ -136,8 +151,8 @@ function Sold() {
   };
 
   const confirmDeleteImage = () => {
-    const imageToDelete = images[selectedImageIndex];
-    const updatedImages = images.filter((image) => image.id !== imageToDelete.id);
+    const imageToDelete = combinedImages[selectedImageIndex];
+    const updatedImages = combinedImages.filter((image) => image.id !== imageToDelete.id);
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
     trash.push(imageToDelete.url);
     localStorage.setItem('trash', JSON.stringify(trash));
@@ -164,20 +179,19 @@ function Sold() {
   };
 
   const confirmRestoreImage = () => {
-    const imageToRestore = images[selectedImageIndex];
-    const updatedImages = images.filter((image) => image.id !== imageToRestore.id);
-    const homeImages = JSON.parse(localStorage.getItem('homeImages')) || [];
+    const imageToRestore = combinedImages[selectedImageIndex];
+    const updatedImages = combinedImages.filter((image) => image.id !== imageToRestore.id);
+    const homeImages = JSON.parse(localStorage.getItem('home')) || [];
     homeImages.push(imageToRestore);
-    localStorage.setItem('homeImages', JSON.stringify(homeImages));
+    localStorage.setItem('home', JSON.stringify(homeImages));
 
     setImages(updatedImages);
     if (updatedImages.length > 0) {
       const nextIndex = selectedImageIndex % updatedImages.length;
       setSelectedImageIndex(nextIndex);
       setCurrentImage(updatedImages[nextIndex]);
-    } else {
-      setShowModal(false);
     }
+    setShowModal(false);
     setRestoreValidationVisible(false);
     setRestoreConfirmationVisible(true);
   };
@@ -187,20 +201,20 @@ function Sold() {
   };
 
   const handleNextImage = () => {
-    const nextIndex = (selectedImageIndex + 1) % images.length;
+    const nextIndex = (selectedImageIndex + 1) % combinedImages.length;
     setSelectedImageIndex(nextIndex);
-    setCurrentImage(images[nextIndex]);
+    setCurrentImage(combinedImages[nextIndex]);
   };
 
   const handlePreviousImage = () => {
-    const prevIndex = (selectedImageIndex - 1 + images.length) % images.length;
+    const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
     setSelectedImageIndex(prevIndex);
-    setCurrentImage(images[prevIndex]);
+    setCurrentImage(combinedImages[prevIndex]);
   };
 
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
-    setCurrentImage(images[index]);
+    setCurrentImage(combinedImages[index]);
     setShowModal(true);
   };
 
@@ -251,7 +265,7 @@ function Sold() {
       )}
 
       <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium z-50">
-        <p className="text-black font-small">Total Photos: {images.length}</p>
+        <p className="text-black font-small">Total Photos: {combinedImages.length + newSoldImages.length}</p>
       </div>
 
       {/* Searchbar */}
@@ -286,8 +300,8 @@ function Sold() {
       </div>
 
       {/* Image Boxes */}
-      <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12 mb-20">
-        {images.map((image, index) => (
+      <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12">
+        {combinedImages.map((image, index) => (
           <div key={image.id} className="relative group">
             <div
               onClick={() => (isSelected ? handleImageSelect(image.id) : handleOpenPhotoDetails(index))}
@@ -326,6 +340,7 @@ function Sold() {
             </div>
           </div>
         ))}
+
       </div>
 
       {showModal && currentImage && (
@@ -382,6 +397,8 @@ function Sold() {
           </div>
         </>
       )}
+
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-16"></div> 
 
       {isValidationVisible && !showModal && actionType === 'delete' && (
         <Validation

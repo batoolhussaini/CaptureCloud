@@ -106,8 +106,13 @@ function Upload() {
   };
 
   const handleConfirmationClose = () => {
+    const home = JSON.parse(localStorage.getItem('home')) || [];
+    images.forEach((image) => {
+      home.push(URL.createObjectURL(image));
+    });
+    localStorage.setItem('home', JSON.stringify(home));
+
     setIsConfirmationOpen(false);
-    addPhotos(images);
     setImages([]);
     navigate('/home');
   };
