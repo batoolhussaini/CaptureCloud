@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
+import Button from '../UI/button';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import FullScreen from './FullScreenView';
 
 
-function PhotoDetails({
+
+function SoldPhotoDetails({
   image,
-  isStarred,
-  caption,
   onClose,
-  onEdit,
-  onMarkSold,
+  onRestore,
+  onDelete,
   onPrev, // Changed from 'onPrevious' to 'onPrev'
   onNext,
-}) {
+}) 
+{
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   const handleFullScreen = () => {
@@ -21,6 +22,7 @@ function PhotoDetails({
   const handleExitFullScreen = () => {
     setIsFullScreen(false);
   };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-10 rounded-lg max-w-4xl w-auto mx-4 relative">
@@ -58,43 +60,42 @@ function PhotoDetails({
           <img
             src={typeof image === 'string' ? image : image.url}
             alt="Details"
-            className="max-w-full max-h-[80vh] object-contain rounded-lg mb-4"
+            className="max-w-full max-h-[80vh] object-contain rounded-lg"
           />
-          <div className="flex items-center mb-4">
-            {isStarred && (
-              <span className="text-3xl text-text-c">
-                &#9733; {/* Star icon */}
-              </span>
-            )}
-            <p className="text-gray-700 ml-2">{caption}</p>
-          </div>
-
           {/* Edit and Sold Buttons */}
-          <div className="flex justify-between w-full">
-            <button
-              onClick={onEdit}
-              className="bg-ccBlue px-9 py-3 rounded-[20px] font-medium text-xl"
-            >
-              Edit
-            </button>
-            <button
-              onClick={onMarkSold}
-              className="bg-ccBlue px-9 py-3 rounded-[20px] font-medium text-xl"
-            >
-              Sold
-            </button>
+          <div className="flex justify-center items-center w-full p-8 mb-4 mr-6">
+            <div className="left-1/2 transform -translate-x-40 z-20">
+                <Button
+                  onClick={onRestore}
+                  color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
+                  className="w-36 h-12"
+                >
+                  Restore to Home
+                </Button>
+              </div>
+
+              <div className="right-1/2 transform translate-x-20 z-20">
+                <Button
+                  onClick={onDelete} 
+                  color="bg-[#FF6666] hover:bg-[#e64a19]"
+                  className="w-36 h-12"
+                >
+                  Delete
+                </Button>
+              </div>
           </div>
         </div>
       </div>
+
       {/* Full Screen Popup */}
       {isFullScreen && (
-        <FullScreen
-          img={image}
-          onClose={() => handleExitFullScreen()}
-        />
-      )}
+          <FullScreen
+            img={image}
+            onClose={() => handleExitFullScreen()}
+          />
+        )}
     </div>
   );
 }
 
-export default PhotoDetails;
+export default SoldPhotoDetails;

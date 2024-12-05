@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import globeIcon from '../Assets/Icons/Globe.png'; 
 import Validation from './Validation.js';
+import FullScreen from './FullScreenView';
 
 function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const [tags, setTags] = useState(metadata?.tags || []);
@@ -14,6 +15,8 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
 
   const allLocations = ["Canada", "United States", "Mexico", "Brazil", "Argentina"];
   const [filteredLocations, setFilteredLocations] = useState(allLocations);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
 
   const handleLocationChange = (event) => {
     const input = event.target.value;
@@ -40,16 +43,23 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
     setTags(tags.filter(tag => tag.value !== tagToRemove.value));
   };
 
-  const handleFullScreen = () => {
-    if (imageRef.current && imageRef.current.requestFullscreen) {
-      imageRef.current.requestFullscreen();
-    }
-  };
-
   const handleSave = () => {
     const savedTags = tags.filter(tag => tag.type === 'tag').map(tag => tag.value);
     const savedLocation = tags.find(tag => tag.type === 'location')?.value;
     onSave(image, { tags: savedTags, caption, isStarClicked, location: savedLocation });
+  };
+
+  // const handleFullScreen = () => {
+  //   if (imageRef.current && imageRef.current.requestFullscreen) {
+  //     imageRef.current.requestFullscreen();
+  //   }
+  // };
+
+  const handleFullScreen = () => {
+    setIsFullScreen(true);
+  };
+  const handleExitFullScreen = () => {
+    setIsFullScreen(false);
   };
 
   if (!isOpen) return null;
@@ -146,6 +156,14 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
           button2Text="Delete"
         />
       )}
+
+      {/* Full Screen Popup */}
+      {isFullScreen && (
+          <FullScreen
+            img={URL.createObjectURL(image)}
+            onClose={() => handleExitFullScreen()}
+          />
+        )}
 
     </div>
   );

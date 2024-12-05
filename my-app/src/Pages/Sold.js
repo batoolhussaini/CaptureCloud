@@ -8,31 +8,27 @@ import pic2 from '../Assets/Photos/mapPic5.jpg';
 import pic3 from '../Assets/Photos/mapPic24.jpg';
 import pic4 from '../Assets/Photos/mapPic29.jpg';
 import pic5 from '../Assets/Photos/mapPic27.jpg';
+import pic6 from '../Assets/Photos/mapPic4.webp';
+import pic7 from '../Assets/Photos/mapPic10.webp';
+import pic8 from '../Assets/Photos/mapPic9.avif';
+import pic9 from '../Assets/Photos/mapPic20.jpg';
+import pic10 from '../Assets/Photos/mapPic28.jpg';
+import pic11 from '../Assets/Photos/mapPic8.jpg';
+import pic12 from '../Assets/Photos/mapPic17.jpg';
+import pic13 from '../Assets/Photos/mapPic11.jpg';
+import pic14 from '../Assets/Photos/mapPic18.jpg';
 import checkIcon from '../Assets/Icons/white_check.png';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
 import RestoreValidation from '../UI/RestoreValidation.js';
+import SoldPhotoDetails from '../UI/SoldPhotoDetails.js';
+
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import { useNavigate } from 'react-router-dom';
 
 function Sold() {
-  const [newSoldImages, setNewSoldImages] = useState([]);
-
-  useEffect(() => {
-    const sold = JSON.parse(localStorage.getItem('sold')) || [];
-    document.title = 'Sold Photos';
-    setNewSoldImages(sold);
-  }, []);
-
-  const [isSelected, setIsSelected] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [currentImage, setCurrentImage] = useState(null);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-  const [hovered, setHovered] = useState(null);
-  const navigate = useNavigate();
-  const [actionType, setActionType] = useState(null);
-  const [images, setImages] = useState([
+  const [combinedImages, setCombinedImages] = useState([]);
+  const [images] = useState([
     {
       id: 1,
       url: 'https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg',
@@ -54,31 +50,55 @@ function Sold() {
       tags: ['animals', 'water'],
       isStarred: false,
     },
-    { id: 4, url: pic1, caption: '', tags: ['pink'], isStarred: false, album: '' },
+    { id: 4, url: pic1, caption: '', tags: [''], isStarred: false, album: '' },
     { id: 5, url: pic2, caption: '', tags: [], isStarred: false, album: '' },
     { id: 6, url: pic3, caption: '', tags: [], isStarred: false, album: '' },
     { id: 7, url: pic4, caption: '', tags: [], isStarred: false, album: '' },
     { id: 8, url: pic5, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 9, url: pic6, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 10, url: pic7, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 11, url: pic8, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 12, url: pic9, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 13, url: pic10, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 14, url: pic11, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 15, url: pic12, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 16, url: pic13, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 17, url: pic14, caption: '', tags: [], isStarred: false, album: '' },
   ]);
 
+  useEffect(() => {
+    const sold = JSON.parse(localStorage.getItem('sold')) || [];
+    document.title = 'Sold Photos';
+
+    const allImages = [
+      ...images, // Hardcoded images
+      ...sold.map((photo, index) => ({
+        id: images.length + index + 1, // Ensure unique IDs
+        url: photo,
+        caption: '',
+        tags: [],
+        isStarred: false,
+      })), // Home photos
+    ];
+
+    setCombinedImages(allImages);
+    
+  }, [images]);
+
+  const [isSelected, setIsSelected] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [hovered, setHovered] = useState(null);
+  const navigate = useNavigate();
+  const [actionType, setActionType] = useState(null);
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
   const [isDeleteValidationVisible, setDeleteValidationVisible] = useState(false);
   const [isDeleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
   const [isRestoreValidationVisible, setRestoreValidationVisible] = useState(false);
   const [isRestoreConfirmationVisible, setRestoreConfirmationVisible] = useState(false);
-
-  const combinedImages = [
-    ...images, // Hardcoded images
-    ...newSoldImages.map((photo, index) => ({
-      id: images.length + index + 1, // Ensure unique IDs
-      url: photo.url,
-      caption: '',
-      tags: [],
-      isStarred: false,
-    })), // Uploaded photos
-  ];
-
   const handleButtonClick = () => {
     setIsSelected(!isSelected);
     setSelectedImages([]);
@@ -108,7 +128,7 @@ function Sold() {
     });
     localStorage.setItem('trash', JSON.stringify(trash));
 
-    setImages(updatedImages);
+    setCombinedImages(updatedImages);
     setSelectedImages([]);
     setIsSelected(false);
     setValidationVisible(false);
@@ -126,16 +146,16 @@ function Sold() {
 
   const confirmRestoreSelected = () => {
     const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
-    const homeImages = JSON.parse(localStorage.getItem('soldToHome')) || [];
+    const homeImages = JSON.parse(localStorage.getItem('home')) || [];
     selectedImages.forEach((id) => {
       const image = combinedImages.find((img) => img.id === id);
       if (image) {
-        homeImages.push(image);
+        homeImages.push(image.url);
       }
     });
-    localStorage.setItem('soldToHome', JSON.stringify(homeImages));
+    localStorage.setItem('home', JSON.stringify(homeImages));
 
-    setImages(updatedImages);
+    setCombinedImages(updatedImages);
     setSelectedImages([]);
     setIsSelected(false);
     setRestoreValidationVisible(false);
@@ -157,7 +177,7 @@ function Sold() {
     trash.push(imageToDelete.url);
     localStorage.setItem('trash', JSON.stringify(trash));
 
-    setImages(updatedImages);
+    setCombinedImages(updatedImages);
     if (updatedImages.length > 0) {
       const nextIndex = selectedImageIndex % updatedImages.length;
       setSelectedImageIndex(nextIndex);
@@ -181,11 +201,11 @@ function Sold() {
   const confirmRestoreImage = () => {
     const imageToRestore = combinedImages[selectedImageIndex];
     const updatedImages = combinedImages.filter((image) => image.id !== imageToRestore.id);
-    const homeImages = JSON.parse(localStorage.getItem('soldToHome')) || [];
-    homeImages.push(imageToRestore);
-    localStorage.setItem('soldToHome', JSON.stringify(homeImages));
+    const homeImages = JSON.parse(localStorage.getItem('home')) || [];
+    homeImages.push(imageToRestore.url);
+    localStorage.setItem('home', JSON.stringify(homeImages));
 
-    setImages(updatedImages);
+    setCombinedImages(updatedImages);
     if (updatedImages.length > 0) {
       const nextIndex = selectedImageIndex % updatedImages.length;
       setSelectedImageIndex(nextIndex);
@@ -265,7 +285,7 @@ function Sold() {
       )}
 
       <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium z-50">
-        <p className="text-black font-small">Total Photos: {combinedImages.length + newSoldImages.length}</p>
+        <p className="text-black font-small">Total Photos: {combinedImages.length}</p>
       </div>
 
       {/* Searchbar */}
@@ -344,58 +364,67 @@ function Sold() {
       </div>
 
       {showModal && currentImage && (
-        <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
-            <div className="p-4 ml-[50px] rounded-lg relative">
-              <button
-                className="absolute top-2 -right-8 text-3xl text-white"
-                title="Close"
-                onClick={() => setShowModal(false)}
-              >
-                &times;
-              </button>
-              <img
-                src={currentImage.url}
-                alt="Expanded"
-                className="max-w-full max-h-[80vh] object-contain"
-              />
-              <button
-                className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
-                onClick={handlePreviousImage}
-                title="Previous"
-              >
-                &lt;
-              </button>
-              <button
-                className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
-                onClick={handleNextImage}
-                title="Next"
-              >
-                &gt;
-              </button>
-            </div>
-          </div>
+          <SoldPhotoDetails
+            image={currentImage.url}
+            onClose={() => setShowModal(false)}
+            onRestore={handleRestoreImage}
+            onDelete={handleDeleteImage}
+            onPrev={handlePreviousImage}
+            onNext={handleNextImage}
+          />
+        // <>
+        
+        //   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
+        //     <div className="p-4 ml-[50px] rounded-lg relative">
+        //       <button
+        //         className="absolute top-2 -right-8 text-3xl text-white"
+        //         title="Close"
+        //         onClick={() => setShowModal(false)}
+        //       >
+        //         &times;
+        //       </button>
+        //       <img
+        //         src={currentImage.url}
+        //         alt="Expanded"
+        //         className="max-w-full max-h-[80vh] object-contain"
+        //       />
+        //       <button
+        //         className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
+        //         onClick={handlePreviousImage}
+        //         title="Previous"
+        //       >
+        //         &lt;
+        //       </button>
+        //       <button
+        //         className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
+        //         onClick={handleNextImage}
+        //         title="Next"
+        //       >
+        //         &gt;
+        //       </button>
+        //     </div>
+        //   </div>
 
-          <div className="fixed bottom-16 left-1/2 transform -translate-x-40 z-20">
-            <Button
-              onClick={handleRestoreImage}
-              color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
-              className="w-36 h-12"
-            >
-              Restore to Home
-            </Button>
-          </div>
+        //   <div className="fixed bottom-16 left-1/2 transform -translate-x-40 z-20">
+        //     <Button
+        //       onClick={handleRestoreImage}
+        //       color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
+        //       className="w-36 h-12"
+        //     >
+        //       Restore to Home
+        //     </Button>
+        //   </div>
 
-          <div className="fixed bottom-16 right-1/2 transform translate-x-20 z-20">
-            <Button
-              onClick={handleDeleteImage}
-              color="bg-[#FF6666] hover:bg-[#e64a19]"
-              className="w-36 h-12"
-            >
-              Delete
-            </Button>
-          </div>
-        </>
+        //   <div className="fixed bottom-16 right-1/2 transform translate-x-20 z-20">
+        //     <Button
+        //       onClick={handleDeleteImage}
+        //       color="bg-[#FF6666] hover:bg-[#e64a19]"
+        //       className="w-36 h-12"
+        //     >
+        //       Delete
+        //     </Button>
+        //   </div>
+        // </>
       )}
 
       <div style={{ backgroundColor: '#FFFFFF' }} className="h-16"></div> 

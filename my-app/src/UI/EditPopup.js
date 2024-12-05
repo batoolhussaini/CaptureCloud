@@ -1,7 +1,11 @@
 import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+import exitFullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+
 import i from '../Assets/Icons/i.png';
 import Validation from './Validation';
+import FullScreen from './FullScreenView';
+
 
 function EditPopup({ image, onClose, onSave, onDelete }) {
   const [caption, setCaption] = useState(image.caption || '');
@@ -12,6 +16,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [selectedAlbum, setSelectedAlbum] = useState(image.album || '');
   const [tagErrorMessage, setTagErrorMessage] = useState('');
   const [showValidation, setShowValidation] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const imageRef = useRef(null);
 
   const handleAddTag = () => {
@@ -44,9 +49,11 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   };
 
   const handleFullScreen = () => {
-    if (imageRef.current && imageRef.current.requestFullscreen) {
-      imageRef.current.requestFullscreen();
-    }
+    setIsFullScreen(true);
+  };
+
+  const handleExitFullScreen = () => {
+    setIsFullScreen(false);
   };
 
   return (
@@ -84,6 +91,14 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
             <img src={fullScreenIcon} alt="Full Screen" />
           </button>
         </div>
+
+        {/* Full Screen Popup */}
+        {isFullScreen && (
+          <FullScreen
+            img={image}
+            onClose={() => handleExitFullScreen()}
+          />
+        )}
 
         {/* Star Image */}
         <div className="mb-2 flex items-center justify-between">
