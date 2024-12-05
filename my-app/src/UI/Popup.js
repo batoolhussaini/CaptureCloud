@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import globeIcon from '../Assets/Icons/Globe.png'; 
 import Validation from './Validation.js';
@@ -14,6 +14,13 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
 
   const allLocations = ["Canada", "United States", "Mexico", "Brazil", "Argentina"];
   const [filteredLocations, setFilteredLocations] = useState(allLocations);
+
+  useEffect(() => {
+    setTags(metadata?.tags || []);
+    setCaption(metadata?.caption || '');
+    setIsStarClicked(metadata?.isStarClicked || false);
+    setLocation(metadata?.location || '');
+  }, [metadata]);
 
   const handleLocationChange = (event) => {
     const input = event.target.value;
