@@ -372,59 +372,6 @@ function Sold() {
             onPrev={handlePreviousImage}
             onNext={handleNextImage}
           />
-        // <>
-        
-        //   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
-        //     <div className="p-4 ml-[50px] rounded-lg relative">
-        //       <button
-        //         className="absolute top-2 -right-8 text-3xl text-white"
-        //         title="Close"
-        //         onClick={() => setShowModal(false)}
-        //       >
-        //         &times;
-        //       </button>
-        //       <img
-        //         src={currentImage.url}
-        //         alt="Expanded"
-        //         className="max-w-full max-h-[80vh] object-contain"
-        //       />
-        //       <button
-        //         className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
-        //         onClick={handlePreviousImage}
-        //         title="Previous"
-        //       >
-        //         &lt;
-        //       </button>
-        //       <button
-        //         className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
-        //         onClick={handleNextImage}
-        //         title="Next"
-        //       >
-        //         &gt;
-        //       </button>
-        //     </div>
-        //   </div>
-
-        //   <div className="fixed bottom-16 left-1/2 transform -translate-x-40 z-20">
-        //     <Button
-        //       onClick={handleRestoreImage}
-        //       color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
-        //       className="w-36 h-12"
-        //     >
-        //       Restore to Home
-        //     </Button>
-        //   </div>
-
-        //   <div className="fixed bottom-16 right-1/2 transform translate-x-20 z-20">
-        //     <Button
-        //       onClick={handleDeleteImage}
-        //       color="bg-[#FF6666] hover:bg-[#e64a19]"
-        //       className="w-36 h-12"
-        //     >
-        //       Delete
-        //     </Button>
-        //   </div>
-        // </>
       )}
 
       <div style={{ backgroundColor: '#FFFFFF' }} className="h-16"></div> 

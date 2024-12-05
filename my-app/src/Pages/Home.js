@@ -31,6 +31,8 @@ import UploadCloudIcon from '../Assets/Icons/Upload cloud.png';
 import checkIcon from '../Assets/Icons/white_check.png'; 
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
+import RestoreValidation from '../UI/RestoreValidation.js';
+
 
 function Home() {
   const [combinedImages, setCombinedImages] = useState([]);
@@ -62,7 +64,7 @@ function Home() {
   ]);
 
   useEffect(() => {
-    const home = JSON.parse(localStorage.getItem('home')) || [];
+    const home = JSON.parse(localStorage.getItem('home')) || [];  // Get images from local storage
     document.title = 'Home';
 
     // Combine hardcoded images and uploaded photos into one list
@@ -76,14 +78,13 @@ function Home() {
           isStarred: false,
         })), // Sold and Uploaded photos
     ];
+    setCombinedImages(allImages);   // Set the list of combined images to the combinedImages variable
 
-    const isUploaded = JSON.parse(localStorage.getItem('isUploaded'));
-    if (isUploaded) {
-      setUploadConfirmationVisible(true);
+    // Display the "Photos uploaded sucessfully" popup if photos have just been uploaded
+    const isUploaded = JSON.parse(localStorage.getItem('isUploaded'));  // Get information from Upload page regarding if photos have been uploaded
+    if (isUploaded) {   
+      setUploadConfirmationVisible(true);   // Display "Photos uploaded sucessfully" popup
     }
-
-    setCombinedImages(allImages);
-    
   }, [images]);
 
   const [hovered, setHovered] = useState(null); // Hover state for image box
@@ -460,13 +461,13 @@ function Home() {
         )}
 
         {isSoldValidationVisible && (
-          <Validation
-            title="Mark as Sold?"
-            message="Are you sure you want to mark this photo as sold?"
-            button1Text="Cancel"
-            button2Text="Sold"
+          <RestoreValidation
+            title="Restore Selected Photos?"
+            message="Are you sure you want to restore the selected photo(s) to Home Page?"
+            button1Text="Sold"
+            button2Text="Cancel"
             onBlue={cancelSold}
-            onRed={confirmSold}
+            onGreen={confirmSold}
             className="z-60"
           />
         )}
