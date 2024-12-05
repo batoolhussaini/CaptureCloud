@@ -23,8 +23,8 @@ function PhotoDetails({
   };
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-10 rounded-lg max-w-4xl w-auto mx-4 relative">
-        <button onClick={handleFullScreen} className="absolute top-3 right-2 h-6 w-6" title="Full Screen">
+      <div className="bg-white p-11 rounded-lg max-w-4xl w-auto mx-4 relative">
+        <button onClick={handleFullScreen} className="absolute top-9 right-2 h-6 w-6" title="Full Screen">
           <img src={fullScreenIcon} alt="Full Screen" />
         </button>
 

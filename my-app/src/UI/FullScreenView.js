@@ -18,7 +18,7 @@ function FullScreenView({ img, onClose}) {
         {/* Full Screen Popup */}
         <button
             onClick={handleExitFullScreen}
-            className="absolute top-4 right-0 h-6 w-6"
+            className="absolute top-8 right-0 h-6 w-6"
             title="Exit Full Screen"
             style={{
                 transform: 'translateY(-70%)', 

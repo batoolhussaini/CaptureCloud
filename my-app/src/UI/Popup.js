@@ -56,12 +56,6 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
     onSave(image, { tags: savedTags, caption, isStarClicked, location: savedLocation });
   };
 
-  // const handleFullScreen = () => {
-  //   if (imageRef.current && imageRef.current.requestFullscreen) {
-  //     imageRef.current.requestFullscreen();
-  //   }
-  // };
-
   const handleFullScreen = () => {
     setIsFullScreen(true);
   };
