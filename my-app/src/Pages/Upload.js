@@ -10,7 +10,6 @@ import Button from '../UI/button.js';
 import Popup from '../UI/Popup.js';
 import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation.js';
-import { usePhotoContext } from './PhotoContext.js';
 
 function Upload() {
   useEffect(() => {
@@ -22,11 +21,8 @@ function Upload() {
   const [dragOver, setDragOver] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isValidationOpen, setIsValidationOpen] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-
-  const { addPhotos } = usePhotoContext();
 
   const maxImages = 10;
   const navigate = useNavigate();
@@ -84,7 +80,7 @@ function Upload() {
 
       if (progress >= 100) {
         clearInterval(interval);
-        setIsConfirmationOpen(true);
+        handleUploadPhotos();
       }
     }, 100);
   };
@@ -105,15 +101,15 @@ function Upload() {
     setDragOver(false);
   };
 
-  const handleConfirmationClose = () => {
+  const handleUploadPhotos = () => {
     const home = JSON.parse(localStorage.getItem('home')) || [];
     images.forEach((image) => {
       home.push(URL.createObjectURL(image));
     });
     localStorage.setItem('home', JSON.stringify(home));
 
-    setIsConfirmationOpen(false);
     setImages([]);
+    localStorage.setItem('isUploaded', true); // Let home page know that photos are just uploaded
     navigate('/home');
   };
 
@@ -228,13 +224,6 @@ function Upload() {
           onBlue={() => setIsValidationOpen(false)}
           button1Text="Cancel"
           button2Text="Remove"
-        />
-      )}
-
-      {isConfirmationOpen && (
-        <Confirmation 
-          message="Photo(s) Successfully Uploaded" 
-          onConfirm={handleConfirmationClose}
         />
       )}
 

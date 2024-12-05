@@ -77,6 +77,11 @@ function Home() {
         })), // Sold and Uploaded photos
     ];
 
+    const isUploaded = JSON.parse(localStorage.getItem('isUploaded'));
+    if (isUploaded) {
+      setUploadConfirmationVisible(true);
+    }
+
     setCombinedImages(allImages);
     
   }, [images]);
@@ -93,6 +98,7 @@ function Home() {
   const [isConfirmationVisible, setConfirmationVisible] = useState(false); 
   const [isSoldValidationVisible, setSoldValidationVisible] = useState(false);
   const [isSoldConfirmationVisible, setSoldConfirmationVisible] = useState(false); 
+  const [isUploadConfirmationVisible, setUploadConfirmationVisible] = useState(false); 
   const navigate = useNavigate();
 
 
@@ -242,6 +248,11 @@ function Home() {
     setIsSelected(false); 
     setShowSoldMessage(false); // Close Sold confirmation
     setShowModal(false);
+  };
+
+  const exitConfirmUploadPopup = () => {
+    setUploadConfirmationVisible(false); 
+    localStorage.setItem("isUploaded", JSON.stringify(false));
   };
 
   return (
@@ -472,6 +483,14 @@ function Home() {
           <Confirmation
             message="Successfully moved to the Sold page."
             onConfirm={() => setSoldConfirmationVisible(false)}
+            className="z-60"
+          />
+        )}
+
+        {isUploadConfirmationVisible && (
+          <Confirmation
+            message="Photo(s) Successfully Uploaded."
+            onConfirm={exitConfirmUploadPopup}
             className="z-60"
           />
         )}
