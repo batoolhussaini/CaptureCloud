@@ -23,7 +23,7 @@ import globeSelectedIcon from '../Assets/Icons/Globe-s.png';
 function Navbar() {
   const location = useLocation(); 
   const isAlbumDetailPage = location.pathname.startsWith('/album/');
-  const isAlbumsPage = location.pathname === '/albums' || isAlbumDetailPage;
+  const isAlbumsPage = location.pathname === '/albums' || isAlbumDetailPage || location.pathname === '/flowers';;
   const navigate = useNavigate();
 
 
@@ -121,7 +121,8 @@ function Navbar() {
         </div>
 
           <Link to="/map" className="flex items-center space-x-2 ml-3 hover:font-bold" onClick={(event) => handleNavigation(event, '/map')}>
-            {location.pathname === '/map' || location.pathname === '/mapPhotos' ? (
+            {location.pathname === '/map' || location.pathname === '/mapPhotos' || location.pathname === '/mapPhotos3' 
+            || location.pathname === '/mapPhotos2'  || location.pathname === '/mapPhotos5'  || location.pathname === '/mapPhotos4'? (
               <div className="flex items-center"> 
                 <div className="bg-selected -ml-2 h-8 w-28 flex items-center justify-center rounded-3xl">
                   <img src={globeSelectedIcon} alt="Map" style={{ height: '3vh', width: '3vh' }} />

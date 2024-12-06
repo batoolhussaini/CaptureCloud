@@ -51,7 +51,7 @@ function Home() {
     { id: 10, url: pic10, caption: '', tags: [''], isStarred: false, album: '', location: ''  },
     { id: 11, url: pic11, caption: '', tags: ['blue'], isStarred: false, album: '' , location: '' },
     { id: 12, url: pic12, caption: '', tags: ['lake'], isStarred: false, album: '', location: ''  },
-    { id: 13, url: pic13, caption: '', tags: ['car', 'animals'], isStarred: false, album: '', location: ''  },
+    { id: 13, url: pic13, caption: '', tags: ['cat', 'animals'], isStarred: false, album: '', location: ''  },
     { id: 14, url: pic14, caption: '', tags: ['day'], isStarred: false, album: '', location: ''  },
     { id: 15, url: pic15, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
     { id: 16, url: pic16, caption: '', tags: ['night'], isStarred: false, album: '', location: ''  },
