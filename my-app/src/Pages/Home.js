@@ -68,7 +68,7 @@ function Home() {
     document.title = 'Home';
 
     // Removing the already deleted or removed images
-    const removedFromHome = JSON.parse(localStorage.getItem('removedFromHome')) || [];    // Get the images removed from home page
+    const removedFromHome = JSON.parse(localStorage.getItem('removedFromHome')) || [];    // Get the images that were removed from home page
     
     const removalCount = {};
     removedFromHome.forEach((url) => {
@@ -85,7 +85,6 @@ function Home() {
 
     const updatedHome = home.filter((photo) => {
       if (removalCount[photo]) {
-        // Decrement count and skip it once
         removalCount[photo]--;
         return false;
       }

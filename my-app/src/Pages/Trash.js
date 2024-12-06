@@ -26,7 +26,27 @@ function Trash() {
   useEffect(() => {
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
     document.title = 'Trash';
-    setDeletedImages(trash);
+
+
+    // Removing the already deleted or removed images
+    const removedFromTrash = JSON.parse(localStorage.getItem('removedFromTrash')) || [];    // Get the images that were removed from tash page
+    
+    const removalCount = {};
+    removedFromTrash.forEach((url) => {
+      removalCount[url] = (removalCount[url] || 0) + 1;
+    });
+
+    const updatedTrash = trash.filter((photo) => {
+      if (removalCount[photo]) {
+        removalCount[photo]--;
+        return false;
+      }
+      return true;
+    });
+
+    localStorage.setItem('removedFromTrash', JSON.stringify(removedFromTrash));
+
+    setDeletedImages(updatedTrash);
   }, []);
 
   const handleButtonClick = () => {
@@ -65,6 +85,16 @@ function Trash() {
       }
     });
     localStorage.setItem('home', JSON.stringify(home));
+
+    const removedFromTrashImages = JSON.parse(localStorage.getItem('removedFromTrash')) || [];
+    selectedImages.forEach((image1) => {
+      const image = deletedImages.find((img) => img === image1);
+      if (image) {
+        removedFromTrashImages.push(image);  
+      }
+    });
+    localStorage.setItem('removedFromTrash', JSON.stringify(removedFromTrashImages));
+
     setDeletedImages(updatedTrash);
     setSelectedImages([]);
     setRestoreValidationVisible(false);
@@ -103,6 +133,12 @@ function Trash() {
     const home = JSON.parse(localStorage.getItem('home')) || [];
     home.push(expandedImage);
     localStorage.setItem('home', JSON.stringify(home));
+
+     // Collect the image to be deleted from Home page
+     const removedFromTrashImages = JSON.parse(localStorage.getItem('removedFromTrash')) || [];
+     removedFromTrashImages.push(expandedImage);
+     localStorage.setItem('removedFromTrash', JSON.stringify(removedFromTrashImages));
+     
     setDeletedImages(updatedTrash);
 
     if (updatedTrash.length > 0) {
