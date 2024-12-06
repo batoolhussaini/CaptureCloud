@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../Layout/Navbar';
 import logo from '../Assets/Logo/Logo.png';
 import Button from '../UI/button';
-import Searchbar from '../Layout/Searchbar.js';
+import SearchbarSold from '../Layout/SearchbarSold.js';
 import pic1 from '../Assets/Photos/mapPic3.jpg';
 import pic2 from '../Assets/Photos/mapPic5.jpg';
 import pic3 from '../Assets/Photos/mapPic24.jpg';
@@ -56,11 +56,11 @@ function Sold() {
     { id: 7, url: pic4, caption: '', tags: [], isStarred: false, album: '' },
     { id: 8, url: pic5, caption: '', tags: [], isStarred: false, album: '' },
     { id: 9, url: pic6, caption: '', tags: [], isStarred: false, album: '' },
-    { id: 10, url: pic7, caption: '', tags: [], isStarred: false, album: '' },
-    { id: 11, url: pic8, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 10, url: pic7, caption: '', tags: ['paris'], isStarred: false, album: '' },
+    { id: 11, url: pic8, caption: '', tags: ['paris'], isStarred: false, album: '' },
     { id: 12, url: pic9, caption: '', tags: [], isStarred: false, album: '' },
     { id: 13, url: pic10, caption: '', tags: [], isStarred: false, album: '' },
-    { id: 14, url: pic11, caption: '', tags: [], isStarred: false, album: '' },
+    { id: 14, url: pic11, caption: '', tags: ['paris'], isStarred: false, album: '' },
     { id: 15, url: pic12, caption: '', tags: [], isStarred: false, album: '' },
     { id: 16, url: pic13, caption: '', tags: [], isStarred: false, album: '' },
     { id: 17, url: pic14, caption: '', tags: [], isStarred: false, album: '' },
@@ -237,7 +237,17 @@ function Sold() {
     setCurrentImage(combinedImages[index]);
     setShowModal(true);
   };
-
+  
+  const handleSearchUpdate = (searchTags) => {
+    if (searchTags.length === 0) {
+      setCombinedImages(images);
+    } else {
+      const filtered = combinedImages.filter((image) =>
+        searchTags.every(tag => image.tags.includes(tag))
+      );
+      setCombinedImages(filtered);
+    }
+  }; 
   return (
     <div className="flex flex-col">
       <div className="flex justify-center">
@@ -290,8 +300,14 @@ function Sold() {
 
       {/* Searchbar */}
       <div className="mt-4 flex flex-col items-center ml-32">
-        <Searchbar />
+          <SearchbarSold onSearchUpdate={handleSearchUpdate}  />
+          <div className="">
+          {combinedImages.map((image) => (
+          <div key={image.id} className="relative">
+          </div>
+        ))}
       </div>
+        </div>
 
       {/* Top Tags */}
       <div className="flex flex-row mt-8 items-start justify-center gap-5">
