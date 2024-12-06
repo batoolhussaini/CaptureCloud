@@ -226,9 +226,25 @@ function Album() {
         />
       )}
 
-      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
-        <p className="text-black font-small">Total Albums: {albums.length + (flowersAlbum.includes("Flowers") ? 0 : 1)}</p>
-      </div>
+      {albums.length + (flowersAlbum.includes("Flowers") ? 0 : 1) > 3 ? (
+        <div 
+          style={{
+              position: 'relative',
+              bottom: 0,
+              left: 192,
+              width: '100%',
+              textAlign: 'left',
+              padding: '10px 0',
+            }}>
+            Total Albums: {albums.length + (flowersAlbum.includes("Flowers") ? 0 : 1)}
+        </div>
+      ) : (
+        <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
+          <p className="text-black font-small">
+          Total Albums: {albums.length + (flowersAlbum.includes("Flowers") ? 0 : 1)}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

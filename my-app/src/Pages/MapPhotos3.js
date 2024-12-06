@@ -231,7 +231,7 @@ function MapPhotos() {
           title="Back to Map"
           onClick={handleBackClick}
         />
-        <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
+        <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
           Total Photos: {flowers.length}
         </div>
       </div>

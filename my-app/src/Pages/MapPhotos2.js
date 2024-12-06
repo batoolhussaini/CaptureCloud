@@ -245,9 +245,6 @@ function MapPhotos() {
           title="Back to Map"
           onClick={handleBackClick}
         />
-        <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
-          Total Photos: {flowers.length}
-        </div>
       </div>
       <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div> 
 
@@ -268,6 +265,18 @@ function MapPhotos() {
           onConfirm={() => setConfirmationVisible(false)}
         />
       )}
+
+      <div 
+          style={{
+              position: 'relative',
+              bottom: 0,
+              left: 192,
+              width: '100%',
+              textAlign: 'left',
+              padding: '10px 0',
+            }}>
+            Total Photos: {flowers.length}
+        </div>
     </div>
   );
 }
