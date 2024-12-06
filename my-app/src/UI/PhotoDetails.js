@@ -13,7 +13,7 @@ function PhotoDetails({
   onClose,
   onEdit,
   onMarkSold,
-  onPrev, // Changed from 'onPrevious' to 'onPrev'
+  onPrev, 
   onNext,
 }) {
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -57,44 +57,46 @@ function PhotoDetails({
             &times;
           </button>
 
-          {/* Image and Caption */}
-          <img
-            src={typeof image === 'string' ? image : image.url}
-            alt="Details"
-            className="max-w-full max-h-[80vh] object-contain rounded-lg mb-4"
-          />
-        <div className="flex items-center mb-4">
-            {isStarred && (
-              <span className="text-3xl text-text-c">
-                &#9733; {/* Star icon */}
-              </span>
-            )}
-            <p className="text-gray-700 ml-2">{caption}</p>
-            
-          {album && (
-                <div className="flex items-right ml-5">
+          {/* Image, Star, and Caption */}
+          <div className="flex flex-col items-start">
+            <img
+              src={typeof image === 'string' ? image : image.url}
+              alt="Details"
+              className="max-w-full max-h-[80vh] object-contain rounded-lg mb-4"
+            />
+            <div className="flex items-center mb-4">
+              {isStarred && (
+                <span className="text-3xl text-text-c mr-2">
+                  &#9733; {/* Star icon */}
+                </span>
+              )}
+              {caption && (
+                <p className="text-gray-700 font-medium">{caption}</p>
+              )}
+            </div>
+            {album && (
+                <div className="flex mb-4">
                   <img 
                     src={albumsIcon} 
                     alt="Albums" 
                     className="mr-2" 
                     style={{ height: '3vh', width: '3vh' }} 
                   />
-                  <p className="text-gray-700">{album}</p>
+                  <p className="text-gray-700 font-medium">{album}</p>
                 </div>
             )}
-
           {location && (
-                <div className="flex items-right ml-5">
+                <div className="flex mb-4">
                   <img 
                     src={locationIcon} 
                     alt="Location" 
                     className="mr-2" 
                     style={{ height: '3vh', width: '3vh' }} 
                   />
-                  <p className="text-gray-700">{location}</p>
+                  <p className="text-gray-700 font-medium">{location}</p>
                 </div>
             )}
-        </div>
+          </div>
 
           {/* Edit and Sold Buttons */}
           <div className="flex justify-between w-full">

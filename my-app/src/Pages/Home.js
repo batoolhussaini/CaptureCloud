@@ -39,7 +39,7 @@ function Home() {
 
   // List of hardcoded images
   const [images] = useState([
-    { id: 1, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers', location: '' },
+    { id: 1, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers', location: 'Paris, France' },
     { id: 2, url: pic2, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers', location: '' },
     { id: 3, url: pic3, caption: '', tags: ['rose'], isStarred: false, album: 'Flowers', location: ''  },
     { id: 4, url: pic4, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers', location: ''  },
