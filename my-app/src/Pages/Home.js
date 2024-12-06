@@ -39,27 +39,27 @@ function Home() {
 
   // List of hardcoded images
   const [images] = useState([
-    { id: 1, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers' },
-    { id: 2, url: pic2, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers' },
-    { id: 3, url: pic3, caption: '', tags: ['rose'], isStarred: false, album: 'Flowers' },
-    { id: 4, url: pic4, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers' },
-    { id: 5, url: pic5, caption: '', tags: ['blue'], isStarred: false, album: 'Flowers' },
-    { id: 6, url: pic6, caption: '', tags: ['purple'], isStarred: false, album: 'Flowers' },
-    { id: 7, url: pic7, caption: '', tags: ['street'], isStarred: false, album: '' },
-    { id: 8, url: pic8, caption: '', tags: ['pyramid'], isStarred: false, album: '' },
-    { id: 9, url: pic9, caption: '', tags: ['mountain'], isStarred: false, album: '' },
-    { id: 10, url: pic10, caption: '', tags: [''], isStarred: false, album: '' },
-    { id: 11, url: pic11, caption: '', tags: ['blue'], isStarred: false, album: '' },
-    { id: 12, url: pic12, caption: '', tags: ['lake'], isStarred: false, album: '' },
-    { id: 13, url: pic13, caption: '', tags: ['car', 'animals'], isStarred: false, album: '' },
-    { id: 14, url: pic14, caption: '', tags: ['day'], isStarred: false, album: '' },
-    { id: 15, url: pic15, caption: '', tags: ['street'], isStarred: false, album: '' },
-    { id: 16, url: pic16, caption: '', tags: ['night'], isStarred: false, album: '' },
-    { id: 17, url: pic17, caption: '', tags: ['night'], isStarred: false, album: '' },
-    { id: 18, url: pic18, caption: '', tags: ['trees'], isStarred: false, album: '' },
-    { id: 19, url: pic19, caption: '', tags: ['building'], isStarred: false, album: '' },
-    { id: 20, url: pic20, caption: '', tags: ['street'], isStarred: false, album: '' },
-    { id: 21, url: pic21, caption: '', tags: ['street'], isStarred: false, album: '' },
+    { id: 1, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers', location: '' },
+    { id: 2, url: pic2, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers', location: '' },
+    { id: 3, url: pic3, caption: '', tags: ['rose'], isStarred: false, album: 'Flowers', location: ''  },
+    { id: 4, url: pic4, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers', location: ''  },
+    { id: 5, url: pic5, caption: '', tags: ['blue'], isStarred: false, album: 'Flowers', location: ''  },
+    { id: 6, url: pic6, caption: '', tags: ['purple'], isStarred: false, album: 'Flowers', location: ''  },
+    { id: 7, url: pic7, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
+    { id: 8, url: pic8, caption: '', tags: ['pyramid'], isStarred: false, album: '', location: ''  },
+    { id: 9, url: pic9, caption: '', tags: ['mountain'], isStarred: false, album: '', location: ''  },
+    { id: 10, url: pic10, caption: '', tags: [''], isStarred: false, album: '', location: ''  },
+    { id: 11, url: pic11, caption: '', tags: ['blue'], isStarred: false, album: '' , location: '' },
+    { id: 12, url: pic12, caption: '', tags: ['lake'], isStarred: false, album: '', location: ''  },
+    { id: 13, url: pic13, caption: '', tags: ['car', 'animals'], isStarred: false, album: '', location: ''  },
+    { id: 14, url: pic14, caption: '', tags: ['day'], isStarred: false, album: '', location: ''  },
+    { id: 15, url: pic15, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
+    { id: 16, url: pic16, caption: '', tags: ['night'], isStarred: false, album: '', location: ''  },
+    { id: 17, url: pic17, caption: '', tags: ['night'], isStarred: false, album: '', location: ''  },
+    { id: 18, url: pic18, caption: '', tags: ['trees'], isStarred: false, album: '', location: ''  },
+    { id: 19, url: pic19, caption: '', tags: ['building'], isStarred: false, album: '', location: ''  },
+    { id: 20, url: pic20, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
+    { id: 21, url: pic21, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
     // Add more dummy images as needed
   ]);
 
@@ -430,6 +430,8 @@ function Home() {
             image={combinedImages[selectedImageIndex].url}
             isStarred={combinedImages[selectedImageIndex].isStarred}
             caption={combinedImages[selectedImageIndex].caption}
+            album = {combinedImages[selectedImageIndex].album}
+            location = {combinedImages[selectedImageIndex].location}
             onClose={() => setShowModal(false)}
             onEdit={handleOpenEditPopup}
             onMarkSold={handleSold}

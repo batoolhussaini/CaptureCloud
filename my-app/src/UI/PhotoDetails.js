@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import FullScreen from './FullScreenView';
-
+import albumsIcon from '../Assets/Icons/folder_filled.png';
+import locationIcon from '../Assets/Icons/Globe.png';
 
 function PhotoDetails({
   image,
   isStarred,
   caption,
+  album,
+  location,
   onClose,
   onEdit,
   onMarkSold,
@@ -60,14 +63,38 @@ function PhotoDetails({
             alt="Details"
             className="max-w-full max-h-[80vh] object-contain rounded-lg mb-4"
           />
-          <div className="flex items-center mb-4">
+        <div className="flex items-center mb-4">
             {isStarred && (
               <span className="text-3xl text-text-c">
                 &#9733; {/* Star icon */}
               </span>
             )}
             <p className="text-gray-700 ml-2">{caption}</p>
-          </div>
+            
+          {album && (
+                <div className="flex items-right ml-5">
+                  <img 
+                    src={albumsIcon} 
+                    alt="Albums" 
+                    className="mr-2" 
+                    style={{ height: '3vh', width: '3vh' }} 
+                  />
+                  <p className="text-gray-700">{album}</p>
+                </div>
+            )}
+
+          {location && (
+                <div className="flex items-right ml-5">
+                  <img 
+                    src={locationIcon} 
+                    alt="Location" 
+                    className="mr-2" 
+                    style={{ height: '3vh', width: '3vh' }} 
+                  />
+                  <p className="text-gray-700">{location}</p>
+                </div>
+            )}
+        </div>
 
           {/* Edit and Sold Buttons */}
           <div className="flex justify-between w-full">

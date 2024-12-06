@@ -5,7 +5,8 @@ import exitFullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import i from '../Assets/Icons/i.png';
 import Validation from './Validation';
 import FullScreen from './FullScreenView';
-
+import albumsIcon from '../Assets/Icons/folder_filled.png';
+import locationIcon from '../Assets/Icons/Globe.png';
 
 function EditPopup({ image, onClose, onSave, onDelete }) {
   const [caption, setCaption] = useState(image.caption || '');
@@ -18,6 +19,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [showValidation, setShowValidation] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const imageRef = useRef(null);
+  const [selectedLocation, setSelectedLocation] = useState(image.location || '');
 
   const handleAddTag = () => {
     if (newTag && !tags.includes(newTag)) {
@@ -39,6 +41,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
     const updatedDetails = {
       caption, isStarred, tags, 
       album: selectedAlbum,
+      location: selectedLocation
     };
     onSave(updatedDetails);
   };
@@ -104,13 +107,14 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         <div className="mb-2 flex items-center justify-between">
           <button
             onClick={() => setIsStarred(!isStarred)}
-            className={`text-3xl ${isStarred ? 'text-text-c' : 'text-gray-400'}`}
+            className={`text-4xl ${isStarred ? 'text-text-c' : 'text-gray-400'}`}
           >
             &#9733; {/* Star icon */}
           </button>
 
           {/* Album Label and Dropdown */}
           <form className="max-w-sm flex items-center space-x-2 m-3">
+          <img src={albumsIcon} alt="Albums" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
             <label htmlFor="albums" className="text-gray-700 font-medium mt-1">
               Album
             </label>
@@ -133,17 +137,40 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         </div>
 
         {/* Tags and Caption Input */}
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-1">
+        
+          <label className="block text-gray-700 font-medium ">
             Edit Caption
           </label>
+          <div className="mb-2 flex items-center justify-between">
           <input
             type="text"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-            className="w-full border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
+            className="w-1/2 border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
             placeholder="Enter a caption, 60 characters max"
           />
+
+          <form className="max-w-sm flex items-center space-x-2 m-3">
+          <img src={locationIcon} alt="location" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
+            <label htmlFor="locations" className="text-gray-700 font-medium">
+              Location
+            </label>
+            <select
+              id="location"
+              value={selectedLocation} 
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
+            >
+              <option value="" disabled selected>
+                Select a Location
+              </option>
+              <option value="NA">America</option>
+              <option value="EU">Europe</option>
+              <option value="AF">Africa</option>
+              <option value="AS">Asia</option>
+              
+            </select>
+          </form>
         </div>
 
         {/* Tags Input */}
