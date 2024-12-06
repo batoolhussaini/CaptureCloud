@@ -70,10 +70,37 @@ function Sold() {
     const sold = JSON.parse(localStorage.getItem('sold')) || [];
     document.title = 'Sold Photos';
 
+    // Removing the already deleted or removed images
+    const removedFromSold = JSON.parse(localStorage.getItem('removedFromSold')) || [];    // Get the images removed from home page
+    
+    const removalCount = {};
+    removedFromSold.forEach((url) => {
+      removalCount[url] = (removalCount[url] || 0) + 1;
+    });
+
+    const updatedImages = images.filter((image) => {
+      if (removalCount[image.url]) {
+        removalCount[image.url]--;
+        return false;
+      }
+      return true;
+    });
+
+    const updatedSold = sold.filter((photo) => {
+      if (removalCount[photo]) {
+        // Decrement count and skip it once
+        removalCount[photo]--;
+        return false;
+      }
+      return true;
+    });
+    
+   localStorage.setItem('removedFromSold', JSON.stringify(removedFromSold));
+
     const allImages = [
-      ...images, // Hardcoded images
-      ...sold.map((photo, index) => ({
-        id: images.length + index + 1, // Ensure unique IDs
+      ...updatedImages, // Hardcoded images
+      ...updatedSold.map((photo, index) => ({
+        id: 17 + index + 1, // Ensure unique IDs
         url: photo,
         caption: '',
         tags: [],
@@ -120,13 +147,17 @@ function Sold() {
   const confirmDelete = () => {
     const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
+    const removedFromSoldImages = JSON.parse(localStorage.getItem('removedFromSold')) || [];
     selectedImages.forEach((id) => {
       const image = combinedImages.find((img) => img.id === id);
       if (image) {
         trash.push(image.url);
+        removedFromSoldImages.push(image.url);
       }
     });
     localStorage.setItem('trash', JSON.stringify(trash));
+    localStorage.setItem('removedFromSold', JSON.stringify(removedFromSoldImages));
+
 
     setCombinedImages(updatedImages);
     setSelectedImages([]);
@@ -147,13 +178,19 @@ function Sold() {
   const confirmRestoreSelected = () => {
     const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
     const homeImages = JSON.parse(localStorage.getItem('home')) || [];
+    const removedFromSoldImages = JSON.parse(localStorage.getItem('removedFromSold')) || [];
+
     selectedImages.forEach((id) => {
       const image = combinedImages.find((img) => img.id === id);
       if (image) {
         homeImages.push(image.url);
+        removedFromSoldImages.push(image.url);
+
       }
     });
     localStorage.setItem('home', JSON.stringify(homeImages));
+    localStorage.setItem('removedFromSold', JSON.stringify(removedFromSoldImages));
+
 
     setCombinedImages(updatedImages);
     setSelectedImages([]);
@@ -176,6 +213,11 @@ function Sold() {
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
     trash.push(imageToDelete.url);
     localStorage.setItem('trash', JSON.stringify(trash));
+
+    // Collect the image to be deleted from Home page
+    const removedFromSoldImages = JSON.parse(localStorage.getItem('removedFromSold')) || [];
+    removedFromSoldImages.push(imageToDelete.url);
+    localStorage.setItem('removedFromSold', JSON.stringify(removedFromSoldImages));
 
     setCombinedImages(updatedImages);
     if (updatedImages.length > 0) {
@@ -204,6 +246,12 @@ function Sold() {
     const homeImages = JSON.parse(localStorage.getItem('home')) || [];
     homeImages.push(imageToRestore.url);
     localStorage.setItem('home', JSON.stringify(homeImages));
+
+    // Collect the image to be deleted from Home page
+    const removedFromSoldImages = JSON.parse(localStorage.getItem('removedFromSold')) || [];
+    removedFromSoldImages.push(imageToRestore.url);
+    localStorage.setItem('removedFromSold', JSON.stringify(removedFromSoldImages));
+
 
     setCombinedImages(updatedImages);
     if (updatedImages.length > 0) {

@@ -7,6 +7,7 @@ import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import Validation from '../UI/Validation';
 import RestoreValidation from '../UI/RestoreValidation.js';
 import Confirmation from '../UI/Confirmation';
+import SoldPhotoDetails from '../UI/SoldPhotoDetails.js';
 
 function Trash() {
   const [isSelected, setIsSelected] = useState(false);
@@ -270,58 +271,14 @@ function Trash() {
       )}
 
       {expandedImage && (
-        <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
-            <div className="p-4 ml-[50px] rounded-lg relative">
-              <button
-                className="absolute top-2 -right-8 text-3xl text-white"
-                title="Close"
-                onClick={handleCloseModal}
-              >
-                &times;
-              </button>
-              <img
-                src={expandedImage}
-                alt="Expanded"
-                className="max-w-full max-h-[80vh] object-contain"
-              />
-              <button
-                className="absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
-                onClick={handlePreviousImage}
-                title="Previous"
-              >
-                &lt;
-              </button>
-              <button
-                className="absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-[#ffffff] text-black font-bold rounded-full h-14 w-10 flex items-center justify-center shadow-md hover:bg-[#D9D9D9]"
-                onClick={handleNextImage}
-                title="Next"
-              >
-                &gt;
-              </button>
-            </div>
-          </div>
-
-          <div className="fixed bottom-16 left-1/2 transform -translate-x-40 z-20">
-            <Button
-              onClick={handleExpandedRestore}
-              color="bg-[#B1DEA5] hover:bg-[#8CBF7B]"
-              className="w-36 h-12"
-            >
-              Restore
-            </Button>
-          </div>
-
-          <div className="fixed bottom-16 right-1/2 transform translate-x-20 z-20">
-            <Button
-              onClick={handleExpandedDelete}
-              color="bg-[#FF6666] hover:bg-[#e64a19]"
-              className="w-36 h-12"
-            >
-              Delete
-            </Button>
-          </div>
-        </>
+        <SoldPhotoDetails
+          image={expandedImage}
+          onClose={handleCloseModal}
+          onRestore={handleExpandedRestore}
+          onDelete={handleExpandedDelete}
+          onPrev={handlePreviousImage}
+          onNext={handleNextImage}
+        />
       )}
 
       {isRestoreValidationVisible && !expandedImage && (

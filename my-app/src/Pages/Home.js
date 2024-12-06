@@ -31,7 +31,7 @@ import UploadCloudIcon from '../Assets/Icons/Upload cloud.png';
 import checkIcon from '../Assets/Icons/white_check.png'; 
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
-import MoveToSold from '../UI/MoveToSold.js';
+import RestoreValidation from '../UI/RestoreValidation.js';
 
 
 function Home() {
@@ -67,11 +67,38 @@ function Home() {
     const home = JSON.parse(localStorage.getItem('home')) || [];  // Get images from local storage
     document.title = 'Home';
 
+    // Removing the already deleted or removed images
+    const removedFromHome = JSON.parse(localStorage.getItem('removedFromHome')) || [];    // Get the images removed from home page
+    
+    const removalCount = {};
+    removedFromHome.forEach((url) => {
+      removalCount[url] = (removalCount[url] || 0) + 1;
+    });
+
+    const updatedImages = images.filter((image) => {
+      if (removalCount[image.url]) {
+        removalCount[image.url]--;
+        return false;
+      }
+      return true;
+    });
+
+    const updatedHome = home.filter((photo) => {
+      if (removalCount[photo]) {
+        // Decrement count and skip it once
+        removalCount[photo]--;
+        return false;
+      }
+      return true;
+    });
+
+    localStorage.setItem('removedFromHome', JSON.stringify(removedFromHome));
+
     // Combine hardcoded images and uploaded photos into one list
     const allImages = [
-        ...images, // Hardcoded images
-        ...home.map((photo, index) => ({
-          id: images.length + index + 1, // Ensure unique IDs
+        ...updatedImages, // Hardcoded images
+        ...updatedHome.map((photo, index) => ({
+          id: 21 + index + 1, // Ensure unique IDs
           url: photo,
           caption: '',
           tags: [],
@@ -154,6 +181,11 @@ function Home() {
     trash.push(imageToDelete.url);
     localStorage.setItem('trash', JSON.stringify(trash));
 
+    // Collect the image to be deleted from Home page
+    const removedFromHomeImages = JSON.parse(localStorage.getItem('removedFromHome')) || [];
+    removedFromHomeImages.push(imageToDelete.url);
+    localStorage.setItem('removedFromHome', JSON.stringify(removedFromHomeImages));
+
     setCombinedImages(updatedImages);
     if (updatedImages.length > 0) {
       const nextIndex = selectedImageIndex % updatedImages.length;
@@ -205,13 +237,23 @@ function Home() {
   const confirmDelete = () => {
     const updatedImages = combinedImages.filter((image) => !selectedImages.includes(image.id));
     const trash = JSON.parse(localStorage.getItem('trash')) || [];
+    const removedFromHomeImages = JSON.parse(localStorage.getItem('removedFromHome')) || [];
     selectedImages.forEach((id) => {
       const image = combinedImages.find((img) => img.id === id);
       if (image) {
-        trash.push(image.url);
+        trash.push(image.url);  
       }
     });
     localStorage.setItem('trash', JSON.stringify(trash));
+
+    // Collect the removed images
+    selectedImages.forEach((id) => {
+      const image = combinedImages.find((img) => img.id === id);
+      if (image) {
+        removedFromHomeImages.push(image.url);
+      }
+    });
+    localStorage.setItem('removedFromHome', JSON.stringify(removedFromHomeImages));
 
     setCombinedImages(updatedImages);
     setSelectedImages([]);
@@ -234,6 +276,11 @@ function Home() {
     const homeImages = JSON.parse(localStorage.getItem('sold')) || [];
     homeImages.push(imageToRestore.url);
     localStorage.setItem('sold', JSON.stringify(homeImages));
+
+    // Collect the image to be deleted from Home page
+    const removedFromHomeImages = JSON.parse(localStorage.getItem('removedFromHome')) || [];
+    removedFromHomeImages.push(imageToRestore.url);
+    localStorage.setItem('removedFromHome', JSON.stringify(removedFromHomeImages));
 
     setCombinedImages(updatedImages);
     if (updatedImages.length > 0) {
@@ -463,9 +510,9 @@ function Home() {
         )}
 
         {isSoldValidationVisible && (
-          <MoveToSold
-            title="Mark as Sold?"
-            message="Are you sure you want to mark this photo as sold?"
+          <RestoreValidation
+            title="Move to Sold?"
+            message="Are you sure you want to move this photo to the Sold Page?"
             button1Text="Sold"
             button2Text="Cancel"
             onBlue={cancelSold}

@@ -63,7 +63,7 @@ function SoldPhotoDetails({
             className="max-w-full max-h-[80vh] object-contain rounded-lg"
           />
           {/* Edit and Sold Buttons */}
-          <div className="flex justify-center items-center w-full p-8 mb-4 mr-6">
+          <div className="flex justify-center items-center w-full p-8 mb-2 mr-6">
             <div className="left-1/2 transform -translate-x-40 z-20">
                 <Button
                   onClick={onRestore}
