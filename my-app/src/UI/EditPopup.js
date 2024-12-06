@@ -129,9 +129,9 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               </option>
               <option value="Flowers">Flowers</option>
               <option value="2020">2020</option>
-              <option value="CA">Canada</option>
-              <option value="CAT">Cats</option>
-              <option value="OU">Outdoors</option>
+              <option value="Wedding">Wedding</option>
+              <option value="Cats">Cats</option>
+              <option value="Outdoors">Outdoors</option>
             </select>
           </form>
         </div>
