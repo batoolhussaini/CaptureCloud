@@ -8,8 +8,7 @@ function SearchbarHome({ onSearchUpdate }) {
   const [filteredTags, setFilteredTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
 
-  const uniqueTags = ['pink', 'rose', 'sunflower', 'blue', 'purple', 'street', 'pyramid','mountain','lake','car','day',
-    'street', 'night', 'animals','trees', 'building']; // Example list of unique tags
+  const uniqueTags = ['pink', 'rose', 'sunflower', 'blue', 'purple', 'street', 'pyramid','mountain','lake','car','day','night', 'animals','trees', 'building']; // Example list of unique tags
 
   const handleSearchChange = (e) => {
     const input = e.target.value.toLowerCase();
