@@ -12,7 +12,7 @@ function FullScreenView({ img, onClose}) {
     <div className="fixed inset-0 flex justify-center items-center z-[99999]">
       <div className="relative p-10 h-full bg-white rounded-lg"   style={{
                 minWidth: '55%', 
-                maxHeight: '98%', 
+                maxHeight: '100%', 
               }}
       >
         {/* Full Screen Popup */}
