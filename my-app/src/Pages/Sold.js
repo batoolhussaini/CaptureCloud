@@ -355,30 +355,44 @@ function Sold() {
         </div>
 
       {/* Top Tags */}
-      <div className="flex flex-row mt-8 items-start justify-center gap-5">
-        <h2 className="m-1 text-xl text-center text-[#016AC7] font-bold">Top Tags</h2>
-        <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
-          &#9733; Favourites
-        </button>
-        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Paris
-        </button>
-        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Birds
-        </button>
-        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Historical
-        </button>
-        <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-          Buildings
-        </button>
-        <button
-          className="mb-4 text-xl text-[#016AC7] font-bold"
-          onClick={() => navigate('/tagslist')}
-        >
-          All Tags &#10230;
-        </button>
-      </div>
+      <div className="flex flex-row mt-8 items-start justify-center gap-5 ml-32">
+          {combinedImages.length > 0 ? (
+            <>
+              <h2 className="m-1 mt-[-1px] text-xl text-center text-[#016AC7] font-bold">
+                Top Tags
+              </h2>
+              <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
+                &#9733; Favourites
+              </button>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                Nature
+              </button>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                Summer
+              </button>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                Beach
+              </button>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                Animal
+              </button>
+              <button
+                className={`mb-5 text-xl font-bold ${
+                  combinedImages.length > 0
+                    ? 'text-[#016AC7]'
+                    : 'text-gray-500 cursor-not-allowed'
+                }`}
+                onClick={combinedImages.length > 0 ? () => navigate('/tagslist') : null}
+              >
+                All Tags &#10230;
+              </button>
+            </>
+          ) : (
+            <h2 className="m-1 text-xl text-center text-gray-500 font-bold">
+              Top Tags
+            </h2>
+          )}
+        </div>
 
       {/* Image Boxes */}
       <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12">
