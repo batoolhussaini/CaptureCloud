@@ -164,10 +164,11 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               <option value="" disabled selected>
                 Select a Location
               </option>
-              <option value="NA">America</option>
-              <option value="EU">Europe</option>
-              <option value="AF">Africa</option>
-              <option value="AS">Asia</option>
+              <option value="Ontario, Canada">Ontario, Canada </option>
+              <option value="Paris, France">Paris, France </option>
+              <option value="Giza, Egypt">Giza, Egypt </option>
+              <option value="Seoul, South Korea<">Seoul, South Korea </option>
+              <option value="Banff, Canada<">Ontario, Canada </option>
               
             </select>
           </form>
