@@ -1,10 +1,10 @@
 import React from 'react';
 import i from '../Assets/Icons/i.png';
 
-const ValidationRestore = ({ title, message, onBlue, onGreen, button1Text, button2Text }) => {
+const SoldValidationRestore = ({ title, message, onBlue, onGreen, button1Text, button2Text }) => {
     return (
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50" title = "Close">
-        <div className="bg-white p-5 rounded-2xl shadow-lg border-2 border-black w-auto min-w-[500px] max-w-xl relative ml-2">
+        <div className="bg-white p-5 rounded-2xl shadow-lg border-2 border-black w-auto min-w-[500px] max-w-xl relative ml-36">
           <div className="flex items-center justify-center mb-4">
             <img src={i} alt="Icon" className="mr-4 h-10 w-8" />
             <h2 className="text-xl">{title}</h2>
@@ -35,4 +35,4 @@ const ValidationRestore = ({ title, message, onBlue, onGreen, button1Text, butto
     );
 };
 
-export default ValidationRestore;
+export default SoldValidationRestore;

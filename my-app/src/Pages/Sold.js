@@ -21,6 +21,7 @@ import checkIcon from '../Assets/Icons/white_check.png';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
 import RestoreValidation from '../UI/RestoreValidation.js';
+import SoldRestoreValidation from '../UI/SoldRestoreValidation.js';
 import SoldPhotoDetails from '../UI/SoldPhotoDetails.js';
 
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
@@ -461,7 +462,7 @@ function Sold() {
       )}
 
       {isRestoreValidationVisible && !showModal && actionType === 'restore' && (
-        <RestoreValidation
+        <SoldRestoreValidation
           title="Restore Selected Photos?"
           message="Are you sure you want to restore the selected photo(s) to Home Page?"
           button1Text="Restore"

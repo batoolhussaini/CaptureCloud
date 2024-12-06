@@ -6,8 +6,9 @@ import checkIcon from '../Assets/Icons/white_check.png';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 import Validation from '../UI/Validation';
 import RestoreValidation from '../UI/RestoreValidation.js';
+import SoldRestoreValidation from '../UI/SoldRestoreValidation.js';
 import Confirmation from '../UI/Confirmation';
-import SoldPhotoDetails from '../UI/SoldPhotoDetails.js';
+import TrashPhotoDetails from '../UI/TrashPhotoDetails.js';
 
 function Trash() {
   const [isSelected, setIsSelected] = useState(false);
@@ -56,7 +57,14 @@ function Trash() {
 
   const confirmRestore = () => {
     const updatedTrash = deletedImages.filter(image => !selectedImages.includes(image));
-    localStorage.setItem('trash', JSON.stringify(updatedTrash));
+    const home = JSON.parse(localStorage.getItem('home')) || [];
+    selectedImages.forEach((image1) => {
+      const image = deletedImages.find((img) => img === image1);
+      if (image) {
+        home.push(image);  
+      }
+    });
+    localStorage.setItem('home', JSON.stringify(home));
     setDeletedImages(updatedTrash);
     setSelectedImages([]);
     setRestoreValidationVisible(false);
@@ -92,7 +100,9 @@ function Trash() {
 
   const confirmExpandedRestore = () => {
     const updatedTrash = deletedImages.filter(image => image !== expandedImage);
-    localStorage.setItem('trash', JSON.stringify(updatedTrash));
+    const home = JSON.parse(localStorage.getItem('home')) || [];
+    home.push(expandedImage);
+    localStorage.setItem('home', JSON.stringify(home));
     setDeletedImages(updatedTrash);
 
     if (updatedTrash.length > 0) {
@@ -271,7 +281,7 @@ function Trash() {
       )}
 
       {expandedImage && (
-        <SoldPhotoDetails
+        <TrashPhotoDetails
           image={expandedImage}
           onClose={handleCloseModal}
           onRestore={handleExpandedRestore}
@@ -283,7 +293,7 @@ function Trash() {
 
       {isRestoreValidationVisible && !expandedImage && (
         <div className="fixed inset-0 flex justify-center items-center z-50">
-          <RestoreValidation
+          <SoldRestoreValidation
             title="Restore Selected Photos?"
             message="Are you sure you want to restore the selected photo(s) to the Home Page?"
             button1Text="Restore"
