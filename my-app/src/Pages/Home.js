@@ -39,7 +39,7 @@ function Home() {
 
   // List of hardcoded images
   const [images] = useState([
-    { id: 1, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers', location: '' },
+    { id: 1, url: pic1, caption: '', tags: ['pink', 'rose'], isStarred: false, album: 'Flowers', location: 'Paris, France' },
     { id: 2, url: pic2, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers', location: '' },
     { id: 3, url: pic3, caption: '', tags: ['rose'], isStarred: false, album: 'Flowers', location: ''  },
     { id: 4, url: pic4, caption: '', tags: ['sunflower'], isStarred: false, album: 'Flowers', location: ''  },
@@ -511,8 +511,8 @@ function Home() {
 
         {isSoldValidationVisible && (
           <RestoreValidation
-            title="Move to Sold?"
-            message="This action will remove the photo from Home and move it to the Sold page."
+            title="Mark as Sold?"
+            message="This action will remove the photo from Home and move it to the Sold page"
             button1Text="Sold"
             button2Text="Cancel"
             onBlue={cancelSold}

@@ -129,9 +129,9 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               </option>
               <option value="Flowers">Flowers</option>
               <option value="2020">2020</option>
-              <option value="CA">Canada</option>
-              <option value="CAT">Cats</option>
-              <option value="OU">Outdoors</option>
+              <option value="Wedding">Wedding</option>
+              <option value="Cats">Cats</option>
+              <option value="Outdoors">Outdoors</option>
             </select>
           </form>
         </div>
@@ -164,11 +164,11 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               <option value="" disabled selected>
                 Select a Location
               </option>
-              <option value="NA">America</option>
-              <option value="EU">Europe</option>
-              <option value="AF">Africa</option>
-              <option value="AS">Asia</option>
-              
+              <option value="Ontario, Canada">Ontario, Canada </option>
+              <option value="Paris, France">Paris, France </option>
+              <option value="Giza, Egypt">Giza, Egypt </option>
+              <option value="Seoul, South Korea">Seoul, South Korea </option>
+              <option value="Banff, Canada">Banff, Canada </option>
             </select>
           </form>
         </div>
@@ -234,7 +234,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
       {showValidation && (
         <Validation
           title="Delete Photo?"
-          message="Are you sure you want to permanently delete the photo? This action cannot be undone."
+          message="Are you sure you want to move this photo to trash?"
           onRed={() => {
             onDelete(image); 
             setShowValidation(false);
