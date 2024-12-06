@@ -62,10 +62,17 @@ function Statistics() {
 
   const showFirstChart = () => setCurrentChart(0);
   const showSecondChart = () => setCurrentChart(1);
+  
+  const today = new Date();
+  const todaysDate = today.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 
   const chartTitles = [
-    <>Sold vs Unsold Photos of December 6, 2024</>,
-    <>Most Sold Photos by Tags As of December 6, 2024</>
+    <>Sold vs Unsold Photos of {todaysDate}</>,
+    <>Most Sold Photos by Tags As of {todaysDate}</>
   ];
 
   const handleExport = () => {
