@@ -404,7 +404,7 @@ function Home() {
         onClick={() =>
           isSelected ? handleImageSelect(image.id) : handleOpenPhotoDetails(index)
         }
-        onMouseEnter={() => setHovered(index)} // only show this if certain image is hovered on
+        onMouseEnter={() => setHovered(index)}
         onMouseLeave={() => setHovered(null)}
         className={`cursor-pointer relative rounded-2xl transform transition-transform duration-200 ${
           hovered === index ? 'scale-105' : ''
