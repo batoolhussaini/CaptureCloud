@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import searchIcon from '../Assets/Icons/search_icon.png';
 import xIcon from '../Assets/Icons/X.png';
 
-function SearchbarHome({ onSearchUpdate }) {
-  const [searchTerm, setSearchTerm] = useState('');
+function SearchbarHome({ onSearchUpdate, defaultSearch = '' }) {
+  const [searchTerm, setSearchTerm] = useState(defaultSearch); // Initialize with defaultSearch
   const [filteredTags, setFilteredTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(defaultSearch ? [defaultSearch] : []); // Initialize with default tag
 
-  const uniqueTags = ['pink', 'rose', 'sunflower', 'blue', 'purple', 'street', 'pyramid','mountain','lake','cat','day','night', 'animals','trees', 'building']; // Example list of unique tags
+  const uniqueTags = ['pink', 'rose', 'sunflower', 'blue', 'purple', 'street', 'pyramid','mountain','lake','cat','day','night', 'animals','trees', 'building'];
 
   const handleSearchChange = (e) => {
     const input = e.target.value.toLowerCase();
@@ -18,31 +18,31 @@ function SearchbarHome({ onSearchUpdate }) {
       const tagToAdd = input.trim();
       if (uniqueTags.includes(tagToAdd) && !selectedTags.includes(tagToAdd)) {
         setSelectedTags([...selectedTags, tagToAdd]);
-        onSearchUpdate([...selectedTags, tagToAdd]); // Pass updated tags
+        onSearchUpdate([...selectedTags, tagToAdd]);
       }
       setSearchTerm('');
     } else {
-      setFilteredTags(uniqueTags.filter(tag => tag.toLowerCase().startsWith(input.toLowerCase())));
+      setFilteredTags(uniqueTags.filter(tag => tag.toLowerCase().startsWith(input)));
     }
   };
 
   const handleTagRemove = (tagToRemove) => {
     const updatedTags = selectedTags.filter(tag => tag !== tagToRemove);
     setSelectedTags(updatedTags);
-    onSearchUpdate(updatedTags); // Pass updated tags
+    onSearchUpdate(updatedTags);
   };
 
   const handleClearSearch = () => {
     setSearchTerm('');
     setSelectedTags([]);
-    onSearchUpdate([]); // Clear search in Home
+    onSearchUpdate([]);
   };
 
   const handleTagSelect = (tagToAdd) => {
     if (!selectedTags.includes(tagToAdd)) {
       const updatedTags = [...selectedTags, tagToAdd];
       setSelectedTags(updatedTags);
-      onSearchUpdate(updatedTags); // Pass updated tags
+      onSearchUpdate(updatedTags);
     }
     setSearchTerm('');
     setFilteredTags([]);
