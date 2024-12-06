@@ -546,10 +546,17 @@ function Home() {
       </div>
 
       {/* Photo Count */}
-      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
-        <p className="text-black font-small">
+      <div 
+        style={{
+            position: 'relative',
+            bottom: 0,
+            left: 192,
+            width: '100%',
+            textAlign: 'left',
+            backgroundColor: 'white', 
+            padding: '10px 0',
+          }}>
           Total Photos: {combinedImages.length}
-        </p>
       </div>
     </div>
   );
