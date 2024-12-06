@@ -18,6 +18,9 @@ import MapPhotos2 from './Pages/MapPhotos2'
 import MapPhotos3 from './Pages/MapPhotos3'
 import MapPhotos4 from './Pages/MapPhotos4'
 import MapPhotos5 from './Pages/MapPhotos5'
+import TagsList from './Pages/TagsList';
+import Animaltag from './Pages/Animaltag';
+import Skytag from './Pages/Skytag';
 
 
 
@@ -39,13 +42,16 @@ function App() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/album/:name" element={<AlbumDetails />} />  
         <Route path="/Flowers" element={<Flowers />} />
-        <Route path="/all-tags" component={<AllTags />} />
+        <Route path="/all-tags" element={<AllTags />} />
         <Route path="/map" element={<Map />} />
         <Route path="/mapPhotos" element={<MapPhotos />} />
         <Route path="/mapPhotos2" element={<MapPhotos2 />} />
         <Route path="/mapPhotos3" element={<MapPhotos3 />} />
         <Route path="/mapPhotos4" element={<MapPhotos4 />} />
         <Route path="/mapPhotos5" element={<MapPhotos5 />} />
+        <Route path="/tagslist" element={<TagsList />} />
+        <Route path="/animaltag" element={<Animaltag />} />
+        <Route path="/skytag" element={<Skytag />} />
       </Routes>
     </Router>
   );

@@ -383,7 +383,7 @@ function Home() {
                     ? 'text-[#016AC7]'
                     : 'text-gray-500 cursor-not-allowed'
                 }`}
-                onClick={combinedImages.length > 0 ? () => navigate('/tagslist') : null}
+                onClick={combinedImages.length > 0 ? () => navigate('/all-tags') : null}
               >
                 All Tags &#10230;
               </button>
