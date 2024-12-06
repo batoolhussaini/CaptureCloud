@@ -31,7 +31,7 @@ import UploadCloudIcon from '../Assets/Icons/Upload cloud.png';
 import checkIcon from '../Assets/Icons/white_check.png'; 
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
-import RestoreValidation from '../UI/RestoreValidation.js';
+import MoveToSold from '../UI/MoveToSold.js';
 
 
 function Home() {
@@ -463,9 +463,9 @@ function Home() {
         )}
 
         {isSoldValidationVisible && (
-          <RestoreValidation
-            title="Restore Selected Photos?"
-            message="Are you sure you want to restore the selected photo(s) to Home Page?"
+          <MoveToSold
+            title="Mark as Sold?"
+            message="Are you sure you want to mark this photo as sold?"
             button1Text="Sold"
             button2Text="Cancel"
             onBlue={cancelSold}
