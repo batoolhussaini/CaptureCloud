@@ -163,7 +163,7 @@ function Statistics() {
       </div>
 
       <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
-        Total photos: 82
+        Total Photos: 82
       </div>
 
       {isConfirmationVisible && (

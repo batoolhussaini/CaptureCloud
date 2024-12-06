@@ -514,11 +514,15 @@ function AlbumDetails() {
         onDelete={handleDelete}
       />
 
-      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
-        <p className="text-black font-small">
-          Total Photos: {images.length}
-        </p>
-      </div>
+      {isUploadClicked && (
+        <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
+          <p className="text-black font-small">
+            Total Photos: {images.length}
+          </p>
+        </div>
+      )}
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div>
+
 
       <input
         type="file"
