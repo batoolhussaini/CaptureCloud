@@ -168,7 +168,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               <option value="Paris, France">Paris, France </option>
               <option value="Giza, Egypt">Giza, Egypt </option>
               <option value="Seoul, South Korea">Seoul, South Korea </option>
-              <option value="Banff, Canada<">Ontario, Canada </option>
+              <option value="Banff, Canada">Banff, Canada </option>
             </select>
           </form>
         </div>
