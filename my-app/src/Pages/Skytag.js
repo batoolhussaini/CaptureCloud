@@ -35,9 +35,9 @@ function Animaltag() {
           <img src={logo} alt="Logo" className="w-32 ml-32" />
         </div>
 
-        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Home</h1>
+        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Sky</h1>
 
-        <div className="relative mt-4 flex items-center justify-center ml-32">
+        {/* <div className="relative mt-4 flex items-center justify-center ml-32">
         <button
             className="absolute bg-[#FFFFFF] px-7 py-3 rounded-full z-10 flex items-center justify-between"
             style={{ left: '41%' }}></button>
@@ -53,8 +53,8 @@ function Animaltag() {
               x
             </button>
           </button>
-          <Searchbar className="z-0 ml-32 w-80" placeholder="Search by tag..." />
-        </div>
+          {/* <Searchbar className="z-0 ml-32 w-80" placeholder="Search by tag..." /> 
+        </div>*/}
 
         <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12 mb-20">
           {images.map((image, index) => (

@@ -60,6 +60,9 @@ function Home() {
     { id: 19, url: pic19, caption: '', tags: ['building'], isStarred: false, album: '', location: ''  },
     { id: 20, url: pic20, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
     { id: 21, url: pic21, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
+    { id: 22, url: 'https://images.unsplash.com/photo-1442522772768-9032b6d10e3e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', caption: '', tags: ['fox', 'Animal'], isStarred: false, album: '', location: ''  },
+    { id: 23, url: 'https://wallpapershome.com/images/pages/pic_h/1055.jpg', caption: '', tags: ['Animal'], isStarred: false, album: '', location: ''  },
+    { id: 24, url: 'https://cdn.britannica.com/94/494-050-A674AD3A/Fallow-deer.jpg', caption: '', tags: ['Animal'], isStarred: false, album: '', location: ''  },
     // Add more dummy images as needed
   ]);
 
