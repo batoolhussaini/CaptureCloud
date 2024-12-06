@@ -105,7 +105,7 @@ function Home() {
 
   const handleSearchUpdate = (searchTags) => {
     if (searchTags.length === 0) {
-      setCombinedImages(combinedImages);
+      setCombinedImages(images);
     } else {
       const filtered = combinedImages.filter((image) =>
         searchTags.every(tag => image.tags.includes(tag))
