@@ -19,10 +19,17 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
 
 
   useEffect(() => {
-    setTags(metadata?.tags || []);
+    setTags(metadata?.tags?.map(t => ({ value: t, type: 'tag' })) || []);
     setCaption(metadata?.caption || '');
     setIsStarClicked(metadata?.isStarClicked || false);
-    setLocation(metadata?.location || '');
+    if (metadata?.location) {
+      setTags(prevTags => {
+        if (!prevTags.some(tag => tag.type === 'location')) {
+          return [...prevTags, { value: metadata.location, type: 'location' }];
+        }
+        return prevTags;
+      });
+    }
   }, [metadata]);
 
   const handleLocationChange = (event) => {
@@ -53,7 +60,14 @@ function Popup({ isOpen, handleClose, image, metadata, onDelete, onSave }) {
   const handleSave = () => {
     const savedTags = tags.filter(tag => tag.type === 'tag').map(tag => tag.value);
     const savedLocation = tags.find(tag => tag.type === 'location')?.value;
-    onSave(image, { tags: savedTags, caption, isStarClicked, location: savedLocation });
+    const updatedMetadata = {
+      ...metadata,
+      tags: savedTags,
+      caption,
+      isStarClicked,
+      location: savedLocation || ''
+    };
+    onSave(image, updatedMetadata);
   };
 
   const handleFullScreen = () => {
