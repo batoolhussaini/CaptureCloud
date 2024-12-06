@@ -7,6 +7,8 @@ import Validation from './Validation';
 import FullScreen from './FullScreenView';
 import albumsIcon from '../Assets/Icons/folder_filled.png';
 import locationIcon from '../Assets/Icons/Globe.png';
+import plusButton from '../Assets/Photos/plus.png';
+
 
 function EditPopup({ image, onClose, onSave, onDelete }) {
   const [caption, setCaption] = useState(image.caption || '');
@@ -111,85 +113,72 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
           >
             &#9733; {/* Star icon */}
           </button>
-
-          {/* Album Label and Dropdown */}
-          <form className="max-w-sm flex items-center space-x-2 m-3">
-          <img src={albumsIcon} alt="Albums" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
-            <label htmlFor="albums" className="text-gray-700 font-medium mt-1">
-              Album
-            </label>
-            <select
-              id="albums"
-              value={selectedAlbum} 
-              onChange={(e) => setSelectedAlbum(e.target.value)}
-              className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
-            >
-              <option value="" disabled selected>
-                Select an Album
-              </option>
-              <option value="Flowers">Flowers</option>
-              <option value="2020">2020</option>
-              <option value="Wedding">Wedding</option>
-              <option value="Cats">Cats</option>
-              <option value="Outdoors">Outdoors</option>
-            </select>
-          </form>
         </div>
 
-        {/* Tags and Caption Input */}
-        
-          <label className="block text-gray-700 font-medium ">
-            Edit Caption
-          </label>
-          <div className="mb-2 flex items-center justify-between">
-          <input
-            type="text"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            className="w-1/2 border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
-            placeholder="Enter a caption, 60 characters max"
-          />
-
-          <form className="max-w-sm flex items-center space-x-2 m-3">
-          <img src={locationIcon} alt="location" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
-            <label htmlFor="locations" className="text-gray-700 font-medium">
-              Location
+        {/* Caption and Album Input */} 
+        <div className="mb-4 flex items-center justify-between space-x-4">
+          {/* Edit Caption */}
+          <div className="flex flex-col">
+            <label htmlFor="caption" className="block text-gray-700 font-medium">
+              Edit Caption
             </label>
-            <select
-              id="location"
-              value={selectedLocation} 
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
-            >
-              <option value="" disabled selected>
-                Select a Location
-              </option>
-              <option value="Ontario, Canada">Ontario, Canada </option>
-              <option value="Paris, France">Paris, France </option>
-              <option value="Giza, Egypt">Giza, Egypt </option>
-              <option value="Seoul, South Korea">Seoul, South Korea </option>
-              <option value="Banff, Canada">Banff, Canada </option>
-            </select>
-          </form>
-        </div>
+            <input
+              id="caption"
+              type="text"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="w-[500px] border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
+              placeholder="Enter a caption, 60 characters max"
+            />
+          </div>
 
+  {/* Album Selection */}
+  <div className="flex items-center -mb-4 space-x-2">
+    <img
+      src={albumsIcon}
+      alt="albums"
+      className="h-8 w-8"
+    />
+    <label htmlFor="albums" className="text-gray-700 font-medium">
+      Album
+    </label>
+    <select
+      id="albums"
+      value={selectedAlbum}
+      onChange={(e) => setSelectedAlbum(e.target.value)}
+      className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
+    >
+      <option value="" disabled selected>
+        Select an Album
+      </option>
+      <option value="Flowers">Flowers</option>
+      <option value="2020">2020</option>
+      <option value="Wedding">Wedding</option>
+      <option value="Cats">Cats</option>
+      <option value="Outdoors">Outdoors</option>
+    </select>
+  </div>
+</div>
+
+<div className="mb-4 flex items-center justify-between space-x-4">
         {/* Tags Input */}
+        <div className="">
         <label className="block text-gray-700 font-medium">
           Add Tags
         </label>
         <div className="flex items-center mb-4">
           <input
-            className="w-full border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
+            className="w-[490px] border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
             placeholder="Add tags..."
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
           />
-          <button
-            onClick={handleAddTag}
-            className="text-l ml-1 bg-text-c font-medium text-white px-3 py-1.5 rounded-full"
-          >
-            Add
-          </button>
+        <img
+          src={plusButton}
+          onClick={handleAddTag}
+          alt="Add Tag"
+          className="cursor-pointer m-1 bg-text-c p-1 rounded-full w-9 h-9"
+        />
         </div>
 
         {/* Display Error Message */}
@@ -213,8 +202,32 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               </button>
             </span>
           ))}
+          </div>
         </div>
 
+        {/* Location Label and Dropdown */}
+          <form className="max-w-sm flex items-center space-x-2 -mt-8">
+          <img src={locationIcon} alt="Albums" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
+            <label htmlFor="location" className="text-gray-700 font-medium mt-1">
+              Location
+            </label>
+            <select
+              id="location"
+              value={selectedLocation} 
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="border-2 text-gray-500 italic rounded-full px-3 py-2 border-text-c"
+            >
+              <option value="" disabled selected>
+                Select Location
+              </option>
+              <option value="Ontario, Canada">Ontario, Canada </option>
+              <option value="Paris, France">Paris, France </option>
+              <option value="Giza, Egypt">Giza, Egypt </option>
+              <option value="Seoul, South Korea">Seoul, South Korea </option>
+              <option value="Banff, Canada">Banff, Canada </option>
+            </select>
+          </form>
+    </div>
         {/* Save and Delete Buttons */}
         <div className="flex justify-center space-x-32 mt-8">
           <button
