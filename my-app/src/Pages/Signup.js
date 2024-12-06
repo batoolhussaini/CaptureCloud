@@ -268,7 +268,7 @@ function Signup() {
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             title="Close"
                             onClick={() => setIsTermsPopupOpen(false)}>
-                            x
+                            ×
                         </button> 
                         <h1 className="text-3xl text-center mb-4 mt-6">Terms and Conditions</h1>
                         <div className="max-h-96 overflow-y-auto text-sm">

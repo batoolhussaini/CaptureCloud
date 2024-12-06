@@ -161,7 +161,7 @@ function Login() {
                             className="absolute top-3 right-3 text-bold text-gray-500 hover:text-gray-700 text-2xl"
                             title="Close"
                             onClick={handleClosePopup}>
-                            x
+                            ×
                         </button> 
                         <h1 className="text-3xl text-center mb-4 mt-6">Two-Factor Authentication</h1>
                         <div className="text-lg text-center mb-2">An email has been sent to {email}. Please enter the code from the email below:</div>
