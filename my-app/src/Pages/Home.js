@@ -60,6 +60,9 @@ function Home() {
     { id: 19, url: pic19, caption: '', tags: ['building'], isStarred: false, album: '', location: ''  },
     { id: 20, url: pic20, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
     { id: 21, url: pic21, caption: '', tags: ['street'], isStarred: false, album: '', location: ''  },
+    { id: 22, url: 'https://images.unsplash.com/photo-1442522772768-9032b6d10e3e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', caption: '', tags: ['fox', 'Animal'], isStarred: false, album: '', location: ''  },
+    { id: 23, url: 'https://wallpapershome.com/images/pages/pic_h/1055.jpg', caption: '', tags: ['Animal'], isStarred: false, album: '', location: ''  },
+    { id: 24, url: 'https://cdn.britannica.com/94/494-050-A674AD3A/Fallow-deer.jpg', caption: '', tags: ['Animal'], isStarred: false, album: '', location: ''  },
     // Add more dummy images as needed
   ]);
 
@@ -383,7 +386,7 @@ function Home() {
                     ? 'text-[#016AC7]'
                     : 'text-gray-500 cursor-not-allowed'
                 }`}
-                onClick={combinedImages.length > 0 ? () => navigate('/tagslist') : null}
+                onClick={combinedImages.length > 0 ? () => navigate('/all-tags') : null}
               >
                 All Tags &#10230;
               </button>
@@ -397,58 +400,49 @@ function Home() {
 
         {combinedImages.length > 0 ? (
           /* Image Boxes */
-          <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12 mb-20">
-            {combinedImages.map((image, index) => (
-              <div key={image.id} className="relative group">
-                <div
-                  onClick={() =>
-                    isSelected
-                      ? handleImageSelect(image.id)
-                      : handleOpenPhotoDetails(index)
-                  }
-                  onMouseEnter={() => setHovered(index)} //only show this if certain image is hovered on
-                  onMouseLeave={() => setHovered(null)}
-                  className={`cursor-pointer ${
-                    isSelected && selectedImages.includes(image.id)
-                      ? 'border-4 border-yellow-200 rounded-2xl'
-                      : 'rounded-2xl'
-                  } transform transition-transform duration-200 ${
-                    hovered === index ? 'scale-105' : ''
-                  }`}
-                  style={{ width: '12rem', height: '10.5rem' }}
-                >
-                  {isSelected && selectedImages.includes(image.id) && (
-                    <img
-                      src={checkIcon}
-                      alt="Checkmark"
-                      className="absolute top-3 left-40 w-6 h-5 z-10"
-                    />
-                  )}
-                  {!isSelected && hovered === index && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpenPhotoDetails(index);
-                      }}
-                      className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
-                    >
-                      Photo Details
-                    </button>
-                  )}
-                 {/* Image Element */}
-                  <img
-                    src={image.url}
-                    alt={`Preview ${index}`}
-                    className="h-40 w-48 object-cover rounded-2xl shadow-lg"
-                    style={{ marginLeft: '-1px' }}
-                  />
-                </div>
-              </div>
-            ))}
+<div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12 mb-20">
+  {combinedImages.map((image, index) => (
+    <div key={image.id} className="relative group">
+      <div
+        onClick={() =>
+          isSelected ? handleImageSelect(image.id) : handleOpenPhotoDetails(index)
+        }
+        onMouseEnter={() => setHovered(index)}
+        onMouseLeave={() => setHovered(null)}
+        className={`cursor-pointer relative rounded-2xl transform transition-transform duration-200 ${
+          hovered === index ? 'scale-105' : ''
+        } ${isSelected && selectedImages.includes(image.id) ? 'border-4 border-yellow-200' : ''}`}
+        style={{ width: '12rem', height: '10.5rem' }}
+      >
+        <img
+          src={image.url}
+          alt={`Preview ${index}`}
+          className={`h-40 w-48 object-cover rounded-2xl shadow-lg ${isSelected && selectedImages.includes(image.id) ? 'filter brightness-50' : ''}`}
+          style={{ marginLeft: '-1px', width: '100%', height: '100%' }}
+        />
+        {isSelected && selectedImages.includes(image.id) && (
+          <img
+            src={checkIcon}
+            alt="Checkmark"
+            className="absolute top-3 left-3 w-6 h-5 z-10"
+          />
+        )}
+        {!isSelected && hovered === index && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenPhotoDetails(index);
+            }}
+            className="bg-[#BDD9E2] font-medium p-2 px-4 rounded-full shadow-md focus:outline-none absolute inset-0 m-auto flex items-center justify-center w-3/4 h-10"
+          >
+            Photo Details
+          </button>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
 
-
-            
-          </div>
         ) : (
           /* No Photos Message */
           <div className="flex flex-col items-center justify-center mt-12">
