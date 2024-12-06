@@ -465,7 +465,7 @@ function Home() {
         {isSoldValidationVisible && (
           <MoveToSold
             title="Mark as Sold?"
-            message="Are you sure you want to mark this photo as sold?"
+            message="This action will remove the photo from Home and move it to the Sold page."
             button1Text="Sold"
             button2Text="Cancel"
             onBlue={cancelSold}

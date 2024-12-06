@@ -234,7 +234,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
       {showValidation && (
         <Validation
           title="Delete Photo?"
-          message="Are you sure you want to permanently delete the photo? This action cannot be undone."
+          message="Are you sure you want to move this photo to trash?"
           onRed={() => {
             onDelete(image); 
             setShowValidation(false);
