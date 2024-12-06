@@ -512,7 +512,7 @@ function Home() {
         {isSoldValidationVisible && (
           <RestoreValidation
             title="Move to Sold?"
-            message="Are you sure you want to move this photo to the Sold Page?"
+            message="This action will remove the photo from Home and move it to the Sold page."
             button1Text="Sold"
             button2Text="Cancel"
             onBlue={cancelSold}
