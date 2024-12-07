@@ -6,6 +6,9 @@ import logo from '../Assets/Logo/Logo.png';
 import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
+import SoldPhotoDetails from '../UI/SoldPhotoDetails.js';
+import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+
 
 
 function Skytag() {
@@ -25,6 +28,7 @@ function Skytag() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
+
   
 
   // Open Photo Details modal
@@ -54,8 +58,12 @@ function Skytag() {
 
   // Back button navigation
   const handleBackClick = () => {
-    navigate('/tagslist'); // Adjust this route to the correct path
+    const pageBeforeSkyTag = localStorage.getItem("pageBeforeSkyTag");
+    const navigateTo = pageBeforeSkyTag ? JSON.parse(pageBeforeSkyTag) : '/default-path';
+    navigate(navigateTo); // Adjust this route to the correct path
   };
+
+
 
   return (
     <div className="flex flex-col">
@@ -85,36 +93,34 @@ function Skytag() {
                   src={image.url}
                   alt={`Animal ${index + 1}`}
                   className="h-40 w-48 object-cover rounded-2xl shadow-lg transition-transform duration-200"
+                  onClick={() => handleOpenPhotoDetails(index)}
                 />
                 {hovered === index && (
-                  <button
-                    onClick={() => handleOpenPhotoDetails(index)}
-                    className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20"
-                  >
-                    Photo Details
-                  </button>
+                  <img
+                  src={fullScreenIcon}
+                  alt="Expand"
+                  title="Fullscreen"
+                  className="absolute top-2 left-2 w-8 h-8 opacity-100 transition-opacity duration-200"
+                />
+                  // <button
+                  //   onClick={() => handleOpenPhotoDetails(index)}
+                  //   className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20"
+                  // >
+                  //   Photo Details
+                  // </button>
                 )}
               </div>
             ))}
           </div>
 
           {showModal && selectedImageIndex !== null && (
-            <PhotoDetails
-              image={images[selectedImageIndex]}
-              isStarred={images[selectedImageIndex].isStarred}
-              caption={images[selectedImageIndex].caption}
+            <SoldPhotoDetails
+              image={images[selectedImageIndex].url}
               onClose={() => setShowModal(false)}
-              onEdit={handleOpenEditPopup}
+
             />
           )}
 
-          {showEditPopup && selectedImageIndex !== null && (
-            <EditPopup
-              image={images[selectedImageIndex]}
-              onClose={() => setShowEditPopup(false)}
-              onSave={handleSaveEdits}
-            />
-          )}
         </div>
       </div>
 
