@@ -124,7 +124,7 @@ function Account() {
         </div>
       </div>
 
-      <button className="absolute bottom-20 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline transition-colors" onClick={toggleQAPopup}>
+      <button className="absolute bottom-20 h-7 right-24 mr-3 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline transition-colors" onClick={toggleQAPopup}>
         <img src={question} alt="Phone Icon" className="w-6 h-6 mr-2" />
         FAQ
       </button> 

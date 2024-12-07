@@ -246,7 +246,7 @@ function MapPhotos() {
           onClick={handleBackClick}
         />
       </div>
-      <div style={{ backgroundColor: '#FFFFFF' }} className="h-8"></div> 
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-10"></div> 
 
       {isValidationVisible && (
         <Validation

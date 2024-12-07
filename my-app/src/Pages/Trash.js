@@ -398,6 +398,8 @@ function Trash() {
           Total Photos: {deletedImages.length}
         </p>
       </div>
+      <div style={{ backgroundColor: '#FFFFFF' }} className="h-16"></div> 
+
     </div>
   );
 }

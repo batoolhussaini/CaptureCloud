@@ -20,6 +20,11 @@ function Signup() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
     const [isTermsPopupOpen, setIsTermsPopupOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [nameRequiredError, setNameRequiredError] = useState(false);
+    const [emailRequiredError, setEmailRequiredError] = useState(false);
+    const [password1RequiredError, setPassword1RequiredError] = useState(false);
+    const [password2RequiredError, setPassword2RequiredError] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -54,23 +59,33 @@ function Signup() {
     const handleCreateAccount = (e) => {
         e.preventDefault();
 
+        setNameRequiredError(false);
+        setEmailRequiredError(false);
+        setPassword1RequiredError(false);
+        setPassword2RequiredError(false);
+
+
         if (name === "") {
             setError("please enter your name.");
+            setNameRequiredError(true);
             return;
         }
 
         if (email === "") {
             setError("please enter your email.");
+            setEmailRequiredError(true);
             return;
         }
 
         if (!validEmail(email)) {
             setError("invalid email address.");
+            
             return;
         }
 
         if (password1 === "") {
             setError("please enter a password.");
+            setPassword1RequiredError(true);
             return;
         }
 
@@ -81,6 +96,7 @@ function Signup() {
 
         if (password2 === "") {
             setError("please re-type your password.");
+            setPassword2RequiredError(true);
             return;
         }
 
@@ -113,7 +129,7 @@ function Signup() {
                 <form className="space-y-6" onSubmit={handleCreateAccount} noValidate>
                     <div className="flex items-center">
                         <label htmlFor="full name" className="mr-10 w-32">
-                            <span className="text-red-600">*</span> Full Name
+                            *Full Name
                         </label>
                         <input
                             type="text"
@@ -126,10 +142,11 @@ function Signup() {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </div>
+                    {nameRequiredError && <span className={`text-red-600 text-sm ml-36 ${error === "please enter your name." }`}>* required</span>}
 
                     <div className="flex items-center">
                         <label htmlFor="email" className="mr-10 w-32">
-                        <span className="text-red-600">*</span> Email
+                            *Email
                         </label>
                         <input
                             type="email"
@@ -144,10 +161,11 @@ function Signup() {
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
+                    {emailRequiredError && <span className={`text-red-600 text-sm ml-36 ${error === "please enter your email."}`}>* required</span>}
 
                     <div className="flex items-center relative">
                         <label htmlFor="password" className="mr-10 w-32">
-                        <span className="text-red-600">*</span> Password
+                            *Password
                         </label>
                         <input
                                 type={showPassword ? "text" : "password"}
@@ -175,6 +193,7 @@ function Signup() {
                                 )}
                             </button>
                     </div>
+                    {password1RequiredError && <span className={`text-red-600 text-sm ml-36 ${error === "please enter a password."}`}>* required</span>}
 
                     {password1 && (
                         <ul className="mt-0 text-xs space-y-1 ml-44">
@@ -207,7 +226,7 @@ function Signup() {
 
                     <div className="flex items-center relative h-10">
                         <label htmlFor="password" className="mr-10 w-32">
-                        <span className="text-red-600">*</span> Confirm Password
+                            *Confirm Password
                         </label>
                         <input
                             type={showConfirmPassword ? "text" : "password"} 
@@ -232,8 +251,9 @@ function Signup() {
                             )}
                         </button>
                     </div>
+                    {password2RequiredError && <span className={`text-red-600 text-sm ml-36 ${error === "please re-type your password."}`}>* required</span>}
 
-                    <label className="flex items-center ml-36 text-sm h-2">
+                    <label className="flex items-center ml-40 text-sm h-2">
                         <input type="checkbox" className={"form-checkbox accent-black"} checked={isChecked} onChange={handleCheckboxChange} />
                         <p className="ml-2">
                             I agree to the&nbsp;  
@@ -339,13 +359,6 @@ function Signup() {
                             If you have any questions or concerns about these Terms, please contact us at admin@capturecloud.com.
                         </p>
                         </div>
-
-                        <button
-                            onClick={() => setIsTermsPopupOpen(false)}
-                            className="text-black rounded-3xl shadow-md bg-[#CEECF5] hover:bg-[#C0DCE5] transition-colors w-28 h-10 mx-auto block mt-4"
-                        >
-                            Done
-                        </button>
                     </div>
                 </div>
             )}

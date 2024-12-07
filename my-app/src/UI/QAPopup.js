@@ -20,6 +20,10 @@ const QAPopup = ({ button, handleClose }) => {
       answer: 'No! Whether you\'re a professional or beginner, our platform is designed for all photographers.',
     },
     {
+      question: 'How do I edit the information for my photos?',
+      answer: 'Click a photo to view and edit the information or location of a photo. Make sure to click "Save" to save your edits.',
+    },
+    {
       question: 'How do I organize my photos into albums?',
       answer: 'Use the Albums page to create and manage your photo collections. Drag and drop photos into a new album or assign the photo an album during upload.',
     },
