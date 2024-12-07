@@ -58,7 +58,7 @@ function SearchbarSold({ onSearchUpdate }) {
           <div className="flex items-center flex-grow overflow-hidden">
             <div className="flex space-x-2 h-6">
               {selectedTags.map((tag, index) => (
-                <span key={index} className="bg-[#CEECF5] text-blue-800 px-2 py-1 rounded-full flex items-center flex-shrink-0">
+                <span key={index} className="bg-[#CEECF5] text-blue-800 px-2 py-1 rounded-full flex items-center flex-shrink-0" title = "Remove">
                   {tag}
                   <button onClick={() => handleTagRemove(tag)} className="ml-1 text-blue-600">
                     &times;
