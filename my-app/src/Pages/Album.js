@@ -15,22 +15,27 @@ function Album() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
+  
   const [albums, setAlbums] = useState(() => {
     const savedAlbums = localStorage.getItem('albums');
-    return savedAlbums ? JSON.parse(savedAlbums) : [
-      { name: "Flowers", icon: folderIcon },
-      { name: "Cats", icon: folderIcon },
-    ];
+    return savedAlbums ? JSON.parse(savedAlbums) : [];
+  });
+
+  const [deletedSavedAlbums, setDeletedSavedAlbums] = useState(() => {
+    const savedDeleted = localStorage.getItem('deletedSavedAlbums');
+    return savedDeleted ? JSON.parse(savedDeleted) : [];
   });
 
   const [selectedAlbums, setSelectedAlbums] = useState([]);
-
-  const [flowersAlbum, setflowersAlbum] = useState([]);
 
   useEffect(() => {
     localStorage.setItem('albums', JSON.stringify(albums));
     document.title = 'Albums'; 
   }, [albums]);
+
+  useEffect(() => {
+    localStorage.setItem('deletedSavedAlbums', JSON.stringify(deletedSavedAlbums));
+  }, [deletedSavedAlbums]);
 
   const handleButtonClick = () => {
     setIsSelected(!isSelected); 
@@ -62,12 +67,15 @@ function Album() {
     const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
     setAlbums(updatedAlbums);
 
-    if (selectedAlbums.includes("Flowers")) {
-      setflowersAlbum([...flowersAlbum, "Flowers"]);
+    const savedToDelete = selectedAlbums.filter(albumName => 
+      ["Flowers", "Cats"].includes(albumName)
+    );
+
+    if (savedToDelete.length > 0) {
+      setDeletedSavedAlbums([...deletedSavedAlbums, ...savedToDelete]);
     }
 
     setSelectedAlbums([]); 
-    localStorage.setItem('albums', JSON.stringify(updatedAlbums));
     setValidationVisible(false);
     setConfirmationVisible(true);
   };
@@ -86,16 +94,22 @@ function Album() {
     setIsPopupOpen(false);
   };
 
+  const savedAlbums = [
+    { name: "Flowers", icon: folderIcon },
+    { name: "Cats", icon: folderIcon },
+  ];
+
   return (
     <div className="flex flex-col">
       <div className='fixed'>
         <Navbar />
       </div>
+
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
 
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Albums</h1>  
       <div className="flex flex-wrap mt-7 ml-40 justify-start gap-15 ">
         <div className="flex flex-col items-center space-y-2 w-1/4"> 
           <button 
@@ -111,77 +125,44 @@ function Album() {
           </button>
         </div>
 
-        {/* Flowers Album */}
-        {!flowersAlbum.includes("Flowers") && (
-          <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
-            <div
-              onClick={(e) => isSelected ? handleAlbumSelect("Flowers", e) : null}
-              className={`cursor-pointer ${isSelected && selectedAlbums.includes("Flowers") ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
-            >
-              {isSelected && selectedAlbums.includes("Flowers") && (
-                <img 
-                  src={checkIcon} 
-                  alt="Checkmark" 
-                  className="absolute top-2 right-2 w-5 h-5"
-                />
-              )}
-
-              {!isSelected && (
-                <Link to="/flowers">
+        {savedAlbums.map(album => (
+          !deletedSavedAlbums.includes(album.name) && (
+            <div key={album.name} className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
+              <div
+                onClick={(e) => isSelected ? handleAlbumSelect(album.name, e) : null}
+                className={`cursor-pointer ${isSelected && selectedAlbums.includes(album.name) ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
+              >
+                {isSelected && selectedAlbums.includes(album.name) && (
                   <img 
-                    src={folderIcon} 
-                    alt="Flowers Album" 
+                    src={checkIcon} 
+                    alt="Checkmark" 
+                    className="absolute top-2 right-2 w-5 h-5"
+                  />
+                )}
+
+                {!isSelected ? (
+                  <Link to={`/${album.name.toLowerCase()}`}>
+                    <img 
+                      src={album.icon} 
+                      alt={`${album.name} Album`} 
+                      className="h-[160px] w-[210px]" 
+                    />
+                  </Link>
+                ) : (
+                  <img 
+                    src={album.icon} 
+                    alt={`${album.name} Album`} 
                     className="h-[160px] w-[210px]" 
                   />
-                </Link>
-              )}
-              {isSelected && (
-                <img 
-                  src={folderIcon} 
-                  alt="Flowers Album" 
-                  className="h-[160px] w-[210px]" 
-                />
-              )}
+                )}
+              </div>
+              <span className="text-center text-blue-400">{album.name}</span>
             </div>
-            <span className="text-center text-blue-400">Flowers</span>
-          </div>
-        )}
-
-        <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
-          <div
-            onClick={(e) => isSelected ? handleAlbumSelect("Cats", e) : null}
-            className={`cursor-pointer ${isSelected && selectedAlbums.includes("Cats") ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
-          >
-            {isSelected && selectedAlbums.includes("Cats") && (
-              <img 
-                src={checkIcon} 
-                alt="Checkmark" 
-                className="absolute top-2 right-2 w-5 h-5"
-              />
-            )}
-
-            {!isSelected && (
-              <Link to="/cats">
-                <img 
-                  src={folderIcon} 
-                  alt="Cats Album" 
-                  className="h-[160px] w-[210px]" 
-                />
-              </Link>
-            )}
-            {isSelected && (
-              <img 
-                src={folderIcon} 
-                alt="Cats Album" 
-                className="h-[160px] w-[210px]" 
-              />
-            )}
-          </div>
-          <span className="text-center text-blue-400">Cats</span>
-        </div>
+          )
+        ))}
 
         {albums.map((album) => (
-          <div key={album.name} className="flex flex-col items-center space-y-50 p-4 w-1/4">
+          <div key={album.name} className="flex flex-col items-center space-y-1 w-1/4 mt-5"> 
             <div 
               onClick={(e) => isSelected ? handleAlbumSelect(album.name, e) : null} 
               className={`cursor-pointer ${isSelected && selectedAlbums.includes(album.name) ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
@@ -195,7 +176,7 @@ function Album() {
                 />
               )}
 
-              {!isSelected && (
+              {!isSelected ? (
                 <Link to={`/album/${encodeURIComponent(album.name)}`}>
                   <img 
                     src={album.icon} 
@@ -203,8 +184,7 @@ function Album() {
                     className="h-[160px] w-[210px]" 
                   />
                 </Link>
-              )}
-              {isSelected && (
+              ) : (
                 <img 
                   src={album.icon} 
                   alt={album.name} 
@@ -261,9 +241,9 @@ function Album() {
         />
       )}
 
-      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 ml-2">
         <p className="text-black font-small">
-          Total Albums: {albums.length + 1 + (flowersAlbum.includes("Flowers") ? 0 : 1)}
+          Total Albums: {albums.length + (deletedSavedAlbums.includes("Flowers") ? 0 : 1) + (deletedSavedAlbums.includes("Cats") ? 0 : 1)}
         </p>
       </div>
     </div>
