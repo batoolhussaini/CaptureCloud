@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar';
@@ -9,7 +10,7 @@ import PhotoDetails from '../UI/PhotoDetails.js';
 
 function Skytag() {
   useEffect(() => {
-    document.title = 'Sky';
+    document.title = 'Animal';
   });
 
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Skytag() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
+  
 
   // Open Photo Details modal
   const handleOpenPhotoDetails = (index) => {
@@ -121,7 +123,7 @@ function Skytag() {
           src={leftArrowIcon}
           alt="Back"
           className="w-8 h-8 mt-5 cursor-pointer"
-          title="Back to Tag list"
+          title="Back to Animal Home"
           onClick={handleBackClick}
         />
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
