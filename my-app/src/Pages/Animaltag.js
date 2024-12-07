@@ -8,9 +8,15 @@ import PhotoDetails from '../UI/PhotoDetails.js';
 
 
 function Animaltag() {
+  const [isHomePage, setisHomePage] = useState(false);
+
   useEffect(() => {
     document.title = 'Animal';
-  });
+    const pageBeforeAnimalTag = localStorage.getItem("pageBeforeAnimalTag");
+    const navigateTo = pageBeforeAnimalTag ? JSON.parse(pageBeforeAnimalTag) : '/default-path';
+    const homePage = navigateTo === '/home';
+    setisHomePage(homePage)
+  }, []); 
 
   const navigate = useNavigate();
   const [hovered, setHovered] = useState(null);
@@ -54,6 +60,7 @@ function Animaltag() {
   // Back button navigation
   const handleBackClick = () => {
     const pageBeforeAnimalTag = localStorage.getItem("pageBeforeAnimalTag");
+
     const navigateTo = pageBeforeAnimalTag ? JSON.parse(pageBeforeAnimalTag) : '/default-path';
     navigate(navigateTo); // Adjust this route to the correct path
   };
@@ -120,13 +127,23 @@ function Animaltag() {
       </div>
 
       <div className="fixed left-48 top-20">
-        <img
-          src={leftArrowIcon}
-          alt="Back"
-          className="w-8 h-8 mt-5 cursor-pointer"
-          title="Back to Animal Home"
-          onClick={handleBackClick}
-        />
+        {isHomePage ? (
+          <img
+            src={leftArrowIcon}
+            alt="Back"
+            className="w-8 h-8 mt-5 cursor-pointer"
+            title="Back to Home"
+            onClick={handleBackClick}
+          />
+        ) : (
+            <img
+              src={leftArrowIcon}
+              alt="Back"
+              className="w-8 h-8 mt-5 cursor-pointer"
+              title="Back to Tags"
+              onClick={handleBackClick}
+            />
+        )}
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
           Total Photos: {images.length}
         </div>

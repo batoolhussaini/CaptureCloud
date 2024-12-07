@@ -12,8 +12,15 @@ import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
 
 
 function Skytag() {
+  const [isHomePage, setisHomePage] = useState(false);
+
   useEffect(() => {
     document.title = 'Animal';
+
+    const pageBeforeAnimalTag = localStorage.getItem("pageBeforeSkyTag");
+    const navigateTo = pageBeforeAnimalTag ? JSON.parse(pageBeforeAnimalTag) : '/default-path';
+    const homePage = navigateTo === '/sold';
+    setisHomePage(homePage)
   });
 
   const navigate = useNavigate();
@@ -62,7 +69,6 @@ function Skytag() {
     const navigateTo = pageBeforeSkyTag ? JSON.parse(pageBeforeSkyTag) : '/default-path';
     navigate(navigateTo); // Adjust this route to the correct path
   };
-
 
 
   return (
@@ -125,13 +131,23 @@ function Skytag() {
       </div>
 
       <div className="fixed left-48 top-20">
-        <img
+        {isHomePage ? (
+          <img
+            src={leftArrowIcon}
+            alt="Back"
+            className="w-8 h-8 mt-5 cursor-pointer"
+            title="Back to Sold Photos"
+            onClick={handleBackClick}
+          />
+        ) : (
+          <img
           src={leftArrowIcon}
           alt="Back"
           className="w-8 h-8 mt-5 cursor-pointer"
-          title="Back to Animal Home"
+          title="Back to Tags"
           onClick={handleBackClick}
         />
+        )}
         <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
           Total Photos: {images.length}
         </div>
