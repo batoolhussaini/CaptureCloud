@@ -152,10 +152,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         Select an Album
       </option>
       <option value="Flowers">Flowers</option>
-      <option value="2020">2020</option>
-      <option value="Wedding">Wedding</option>
       <option value="Cats">Cats</option>
-      <option value="Outdoors">Outdoors</option>
     </select>
   </div>
 </div>
