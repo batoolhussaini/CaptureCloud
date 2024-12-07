@@ -17,6 +17,7 @@ function Login() {
     const [successMessage, setSuccessMessage] = useState("");
     const [authError, setAuthError] = useState("");
     const navigate = useNavigate();
+    const [rememberMe, setRememberMe] = useState(false);
 
     
 
@@ -133,6 +134,19 @@ function Login() {
                             )}
                         </button>
                     </div>
+                    
+                    <div className="flex items-center justify-between">
+                        <label className="flex items-center text-sm text-black ml-48 h-2">
+                            <input
+                                type="checkbox"
+                                className="mr-2"
+                                checked={rememberMe}
+                                onChange={() => setRememberMe(!rememberMe)} 
+                            />
+                            Remember password
+                        </label>
+                    </div>
+
                     {error && <p className="text-red-600 text-center text-sm h-0">{error}</p>}
                     <div className="flex flex-col items-center relative">
                         <button
