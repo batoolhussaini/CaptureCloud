@@ -18,11 +18,14 @@ function Album() {
   const [albums, setAlbums] = useState(() => {
     const savedAlbums = localStorage.getItem('albums');
     return savedAlbums ? JSON.parse(savedAlbums) : [
-      { name: "Flowers", icon: folderIcon } 
+      { name: "Flowers", icon: folderIcon },
+      { name: "Cats", icon: folderIcon },
     ];
   });
 
   const [selectedAlbums, setSelectedAlbums] = useState([]);
+
+  const [flowersAlbum, setflowersAlbum] = useState([]);
 
   useEffect(() => {
     localStorage.setItem('albums', JSON.stringify(albums));
@@ -58,6 +61,11 @@ function Album() {
   const confirmDelete = () => {
     const updatedAlbums = albums.filter((album) => !selectedAlbums.includes(album.name));
     setAlbums(updatedAlbums);
+
+    if (selectedAlbums.includes("Flowers")) {
+      setflowersAlbum([...flowersAlbum, "Flowers"]);
+    }
+
     setSelectedAlbums([]); 
     localStorage.setItem('albums', JSON.stringify(updatedAlbums));
     setValidationVisible(false);
@@ -97,23 +105,79 @@ function Album() {
             <img 
               src={folderPlusIcon} 
               alt="Folder Plus Icon" 
-              className="h-[195px] w-[225px] mt-12"  title="New Album"
+              className="h-[165px] w-[210px] mt-[60px]"  title="New Album"
               style={{ opacity: isSelected ? 0.5 : 1 }} 
             />
           </button>
         </div>
 
+        {/* Flowers Album */}
+        {!flowersAlbum.includes("Flowers") && (
+          <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
+            <div
+              onClick={(e) => isSelected ? handleAlbumSelect("Flowers", e) : null}
+              className={`cursor-pointer ${isSelected && selectedAlbums.includes("Flowers") ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
+            >
+              {isSelected && selectedAlbums.includes("Flowers") && (
+                <img 
+                  src={checkIcon} 
+                  alt="Checkmark" 
+                  className="absolute top-2 right-2 w-5 h-5"
+                />
+              )}
+
+              {!isSelected && (
+                <Link to="/flowers">
+                  <img 
+                    src={folderIcon} 
+                    alt="Flowers Album" 
+                    className="h-[160px] w-[210px]" 
+                  />
+                </Link>
+              )}
+              {isSelected && (
+                <img 
+                  src={folderIcon} 
+                  alt="Flowers Album" 
+                  className="h-[160px] w-[210px]" 
+                />
+              )}
+            </div>
+            <span className="text-center text-blue-400">Flowers</span>
+          </div>
+        )}
+
         <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
-          <Link to="/flowers">
-            <div className="cursor-pointer rounded-2xl">
+          <div
+            onClick={(e) => isSelected ? handleAlbumSelect("Cats", e) : null}
+            className={`cursor-pointer ${isSelected && selectedAlbums.includes("Cats") ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
+          >
+            {isSelected && selectedAlbums.includes("Cats") && (
+              <img 
+                src={checkIcon} 
+                alt="Checkmark" 
+                className="absolute top-2 right-2 w-5 h-5"
+              />
+            )}
+
+            {!isSelected && (
+              <Link to="/cats">
+                <img 
+                  src={folderIcon} 
+                  alt="Cats Album" 
+                  className="h-[160px] w-[210px]" 
+                />
+              </Link>
+            )}
+            {isSelected && (
               <img 
                 src={folderIcon} 
-                alt="Flowers Album" 
-                className="h-[180px] w-[230px]" 
+                alt="Cats Album" 
+                className="h-[160px] w-[210px]" 
               />
-            </div>
-          </Link>
-          <span className="text-center text-blue-400">Flowers</span>
+            )}
+          </div>
+          <span className="text-center text-blue-400">Cats</span>
         </div>
 
         {albums.map((album) => (
@@ -136,7 +200,7 @@ function Album() {
                   <img 
                     src={album.icon} 
                     alt={album.name} 
-                    className="h-[180px] w-[230px]" 
+                    className="h-[160px] w-[210px]" 
                   />
                 </Link>
               )}
@@ -144,7 +208,7 @@ function Album() {
                 <img 
                   src={album.icon} 
                   alt={album.name} 
-                  className="h-[180px] w-[230px]" 
+                  className="h-[160px] w-[210px]" 
                 />
               )}
             </div>
@@ -197,8 +261,10 @@ function Album() {
         />
       )}
 
-      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium">
-        <p className="text-black font-small">Total Albums: {1+ albums.length}</p>
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
+        <p className="text-black font-small">
+          Total Albums: {albums.length + 1 + (flowersAlbum.includes("Flowers") ? 0 : 1)}
+        </p>
       </div>
     </div>
   );

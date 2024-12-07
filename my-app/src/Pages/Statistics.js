@@ -11,24 +11,24 @@ import {
 } from 'chart.js';
 import logo from '../Assets/Logo/Logo.png';
 import exportIcon from '../Assets/Icons/export_icon.png';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
-import Button from '../UI/button.js'; // Update the path as needed
+import Button from '../UI/button.js';
+import Confirmation from '../UI/Confirmation.js'; 
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend);
 
 function Statistics() {
-  const navigate = useNavigate();
   const [currentChart, setCurrentChart] = useState(0);
   const [chartData, setChartData] = useState(null);
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
   useEffect(() => {
     document.title = 'Statistics'; 
     const fixedData = () => {
       const labels1 = ['Sold', 'Unsold'];
       const data1 = [37, 63];
-      const labels2 = ['Nature', 'Wedding', 'Flower', 'Sunset', 'Garden'];
-      const data2 = [15, 30, 25, 10, 20];
+      const labels2 = ['Nature', 'Animal', 'Flower', 'Street', 'Sunflower'];
+      const data2 = [15, 30, 25, 25, 5];
 
       setChartData({
         chart1: {
@@ -62,14 +62,25 @@ function Statistics() {
 
   const showFirstChart = () => setCurrentChart(0);
   const showSecondChart = () => setCurrentChart(1);
+  
+  const today = new Date();
+  const todaysDate = today.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
 
   const chartTitles = [
-    <>Sold vs Unsold Photos of December 6, 2024</>,
-    <>Most Sold Photos by Tags As of December 6, 2024</>
+    <>Sold vs Unsold Photos of {todaysDate}</>,
+    <>Most Sold Photos by Tags As of {todaysDate}</>
   ];
 
   const handleExport = () => {
-    alert('Under development. Tune back soon!'); 
+    setIsConfirmationVisible(true);
+  };
+
+  const closeConfirmation = () => {
+    setIsConfirmationVisible(false);
   };
 
   return (
@@ -78,28 +89,31 @@ function Statistics() {
         <Navbar /> 
       </div>
 
-      <div className="flex justify-center">
-        <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
+      <div className="flex justify-center mt-2">
+      <img src={logo} alt="Logo" className="mt-0 w-32 ml-32" />
       </div>
 
-      <div className="flex flex-col items-center justify-center w-full p-2 ml-20"> 
-        <h1 className="text-6xl text-center mb-6 text-[#6AABD2] mt-4 ml-25">Statistics</h1>
+      <div className="flex flex-col items-center justify-left w-full p-8 ">
+        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] -mt-3 ml-32">Statistics</h1>
 
-        <div className="text-2xl font-semibold mb-2 font-[Anek Bangla]">{chartTitles[currentChart]}</div>
+        <div className="text-xl font-semibold ml-[120px] mb-9 font-[Anek Bangla]">{chartTitles[currentChart]}</div>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4" >
           {currentChart > 0 && (
             <button
               onClick={showFirstChart}
               className="text-black-800 border border-grey-300 p-3 rounded-full hover:bg-[#D9D9D9] hover:text-black active:bg-[#ffffff] active:text-black focus:outline-none transition"
               aria-label="Show First Chart"
-              title = "Previous"
+              title = "Previous Chart"
+              style={{
+                position: 'relative', 
+                left: '110px', 
+              }}
             >
               &lt;
             </button>
           )}
-
-          <div className="w-80 h-80">
+          <div className="w-[400px] h-[400px]"style={{ marginLeft: currentChart === 1 ? '120px' : '190px' }}>
             <Pie 
               data={chartData[`chart${currentChart + 1}`]} 
               options={{
@@ -116,7 +130,8 @@ function Statistics() {
                     },
                   },
                   legend: {
-                    position: 'top',
+                    position: 'bottom',
+                    marignLeft: '-75px'
                   },
                 },
               }}
@@ -128,7 +143,7 @@ function Statistics() {
               onClick={showSecondChart}
               className="text-black-800 border border-grey-300 p-3 rounded-full hover:bg-[#D9D9D9] hover:text-black active:bg-[#ffffff] active:text-black focus:outline-none transition"
               aria-label="Show Second Chart"
-              title = "Next"
+              title = "Next Chart"
             >
               &gt;
             </button>
@@ -147,9 +162,16 @@ function Statistics() {
         </Button>
       </div>
 
-      <div className="absolute bottom-4 left-8 text-medium text-black ml-36">
-        Total photos: 82
+      <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
+        Total Photos: 82
       </div>
+
+      {isConfirmationVisible && (
+        <Confirmation 
+          message="Chart downloaded successfully."
+          onConfirm={closeConfirmation}
+        />
+      )}
     </div>
   );
 }

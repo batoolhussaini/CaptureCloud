@@ -1,7 +1,14 @@
 import React, { useState, useRef } from 'react';
 import fullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+import exitFullScreenIcon from '../Assets/Icons/Full_Screen_Corner.png';
+
 import i from '../Assets/Icons/i.png';
 import Validation from './Validation';
+import FullScreen from './FullScreenView';
+import albumsIcon from '../Assets/Icons/folder_filled.png';
+import locationIcon from '../Assets/Icons/Globe.png';
+import plusButton from '../Assets/Photos/plus.png';
+
 
 function EditPopup({ image, onClose, onSave, onDelete }) {
   const [caption, setCaption] = useState(image.caption || '');
@@ -11,7 +18,10 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [showExitWarning, setShowExitWarning] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState(image.album || '');
   const [tagErrorMessage, setTagErrorMessage] = useState('');
+  const [showValidation, setShowValidation] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const imageRef = useRef(null);
+  const [selectedLocation, setSelectedLocation] = useState(image.location || '');
 
   const handleAddTag = () => {
     if (newTag && !tags.includes(newTag)) {
@@ -21,7 +31,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
     } else if (tags.includes(newTag)) {
       setTagErrorMessage('Tag already exists.');
     } else {
-      setTagErrorMessage('Tag cannot be empty.');
+      setTagErrorMessage('Please write a tag before adding.');
     }
   };
 
@@ -33,6 +43,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
     const updatedDetails = {
       caption, isStarred, tags, 
       album: selectedAlbum,
+      location: selectedLocation
     };
     onSave(updatedDetails);
   };
@@ -43,18 +54,21 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   };
 
   const handleFullScreen = () => {
-    if (imageRef.current && imageRef.current.requestFullscreen) {
-      imageRef.current.requestFullscreen();
-    }
+    setIsFullScreen(true);
+  };
+
+  const handleExitFullScreen = () => {
+    setIsFullScreen(false);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-lg sm:p-8 relative">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg max-w-4xl w-full mx-4 relative">
         {/* Close Button */}
         <button
           onClick={() => setShowExitWarning(true)}
-          className="absolute text-3xl top-2 right-2 text-gray-600 hover:text-gray-800"
+          className="absolute -right-5 -top-2 text-3xl text-white transform translate-x-full"
+          title = "Close"
         >
           &times;
         </button>
@@ -71,81 +85,98 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
         )}
 
         {/* Image Preview */}
-        <div className="relative">
+        <div className="flex justify-center relative">
           <img
             ref={imageRef}
             src={typeof image === "string" ? image : image.url} 
             alt="Edit Image"
-            className="w-full rounded-lg mb-5"
+            className="max-w-full max-h-[50vh] object-contain my-4"
           />
-          <button onClick={handleFullScreen} className="absolute top-2 left-2 h-6 w-6" title="Full Screen">
+          <button onClick={handleFullScreen} className="absolute top-2 right-2 h-6 w-6" title="Full Screen">
             <img src={fullScreenIcon} alt="Full Screen" />
           </button>
         </div>
+
+        {/* Full Screen Popup */}
+        {isFullScreen && (
+          <FullScreen
+            img={image}
+            onClose={() => handleExitFullScreen()}
+          />
+        )}
 
         {/* Star Image */}
         <div className="mb-2 flex items-center justify-between">
           <button
             onClick={() => setIsStarred(!isStarred)}
-            className={`text-3xl ${isStarred ? 'text-text-c' : 'text-gray-400'}`}
+            className={`text-4xl ${isStarred ? 'text-text-c' : 'text-gray-400'}`}
           >
             &#9733; {/* Star icon */}
           </button>
+        </div>
 
-          {/* Album Label and Dropdown */}
-          <form className="max-w-sm flex items-center space-x-2 m-3">
-            <label htmlFor="albums" className="text-gray-700 font-medium mt-1">
-              Album
+        {/* Caption and Album Input */} 
+        <div className="mb-4 flex items-center justify-between space-x-4">
+          {/* Edit Caption */}
+          <div className="flex flex-col">
+            <label htmlFor="caption" className="block text-gray-700 font-medium">
+              Edit Caption
             </label>
-            <select
-              id="albums"
-              value={selectedAlbum} 
-              onChange={(e) => setSelectedAlbum(e.target.value)}
-              className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
-            >
-              <option value="" disabled selected>
-                Select an Album
-              </option>
-              <option value="Flowers">Flowers</option>
-              <option value="2020">2020</option>
-              <option value="CA">Canada</option>
-              <option value="CAT">Cats</option>
-              <option value="OU">Outdoors</option>
-            </select>
-          </form>
-        </div>
+            <input
+              id="caption"
+              type="text"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="w-[500px] border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
+              placeholder="Enter a caption, 60 characters max"
+            />
+          </div>
 
-        {/* Tags and Caption Input */}
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-1">
-            Edit Caption
-          </label>
-          <input
-            type="text"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            className="w-full border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
-            placeholder="Enter a caption, 60 characters max"
-          />
-        </div>
+  {/* Album Selection */}
+  <div className="flex items-center -mb-4 space-x-2">
+    <img
+      src={albumsIcon}
+      alt="albums"
+      className="h-8 w-8"
+    />
+    <label htmlFor="albums" className="text-gray-700 font-medium">
+      Album
+    </label>
+    <select
+      id="albums"
+      value={selectedAlbum}
+      onChange={(e) => setSelectedAlbum(e.target.value)}
+      className="border-2 text-gray-500 italic rounded-full px-4 py-2 border-text-c"
+    >
+      <option value="" disabled selected>
+        Select an Album
+      </option>
+      <option value="Flowers">Flowers</option>
+      <option value="Cats">Cats</option>
+    </select>
+  </div>
+</div>
 
+<div className="mb-4 flex items-center justify-between space-x-4">
         {/* Tags Input */}
+        <div className="">
         <label className="block text-gray-700 font-medium">
           Add Tags
         </label>
         <div className="flex items-center mb-4">
           <input
-            className="w-full border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
+            className="w-[490px] border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
             placeholder="Add tags..."
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
           />
-          <button
-            onClick={handleAddTag}
-            className="text-l ml-1 bg-text-c font-medium text-white px-3 py-1.5 rounded-full"
-          >
-            Add
-          </button>
+        <img
+          src={plusButton}
+          onClick={handleAddTag}
+          alt="Add Tag"
+          title = "Add Tag"
+          className="cursor-pointer m-1 bg-text-c p-1 rounded-full w-9 h-9"
+        />
         </div>
 
         {/* Display Error Message */}
@@ -163,30 +194,68 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               {tag}
               <button
                 onClick={() => handleRemoveTag(tag)}
+                title = "Remove tag"
                 className="ml-1 text-black"
               >
                 &times;
               </button>
             </span>
           ))}
+          </div>
         </div>
 
+        {/* Location Label and Dropdown */}
+          <form className="max-w-sm flex items-center space-x-2 -mt-8">
+          <img src={locationIcon} alt="Albums" className="ml-5"style={{ height: '3vh', width: '3vh' }} />
+            <label htmlFor="location" className="text-gray-700 font-medium mt-1">
+              Location
+            </label>
+            <select
+              id="location"
+              value={selectedLocation} 
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="border-2 text-gray-500 italic rounded-full px-3 py-2 border-text-c"
+            >
+              <option value="" disabled selected>
+                Select Location
+              </option>
+              <option value="Ontario, Canada">Ontario, Canada </option>
+              <option value="Paris, France">Paris, France </option>
+              <option value="Giza, Egypt">Giza, Egypt </option>
+              <option value="Seoul, South Korea">Seoul, South Korea </option>
+              <option value="Banff, Canada">Banff, Canada </option>
+            </select>
+          </form>
+    </div>
         {/* Save and Delete Buttons */}
-        <div className="flex justify-between">
+        <div className="flex justify-center space-x-32 mt-8">
           <button
             onClick={handleSave}
-            className="bg-[#BDD9E2] px-4 py-2 rounded-full font-medium"
+            className="text-black rounded-3xl shadow-md bg-[#B1DEA5] hover:bg-[#8CBF7B] transition-color w-32 h-10"
           >
             Save Edits
           </button>
           <button
-            onClick={onDelete}
-            className="bg-red-500 px-4 py-2 rounded-full text-white font-medium"
+            onClick={() => setShowValidation(true)}
+            className="bg-[#FF6666] hover:bg-[#e64a19] text-black rounded-3xl shadow-md transition-color w-32 h-10"
           >
             Delete Photo
           </button>
         </div>
       </div>
+      {showValidation && (
+        <Validation
+          title="Delete Photo?"
+          message="Are you sure you want to move this photo to trash?"
+          onRed={() => {
+            onDelete(image); 
+            setShowValidation(false);
+          }}
+          onBlue={() => setShowValidation(false)}
+          button1Text="Cancel"
+          button2Text="Delete"
+        />
+      )}
     </div>
   );
 }

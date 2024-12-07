@@ -14,7 +14,7 @@ const ARpopup = ({ onConfirm, onClose }) => {
       setError('name already exists.');
     } else if (inputValue.trim() === "Flowers") {
       setError('name already exists.');
-    } else if (inputValue.trim().length > 50) {
+    } else if (inputValue.trim().length > 30) {
       setError('cannot exceed 30 characters.');
     } else {
       setError('');
@@ -30,7 +30,7 @@ const ARpopup = ({ onConfirm, onClose }) => {
           <input 
             id="albumInput"
             type="text" 
-            placeholder="30 characters max."
+            placeholder="30 characters max"
             className="block w-full p-2 border-2 border-[#6AABD2] rounded-full focus:outline-none placeholder:italic placeholder:text-sm mb-4"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}

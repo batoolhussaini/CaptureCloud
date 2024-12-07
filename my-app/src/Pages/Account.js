@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import phone from '../Assets/Icons/Phone.png';
+import question from '../Assets/Icons/Question Circle.png';
 import uploadCloud from '../Assets/Icons/Upload cloud black.png';
 import Popup from '../UI/Changepasswordpopup.js'; 
 import CUPopup from '../UI/ConactUsPopup.js';
 import Confirmation from '../UI/Confirmation.js';
 import Validation from '../UI/Validation';
+import QAPopup from '../UI/QAPopup.js';
+
 
 function Account() {
   useEffect(() => { document.title = 'My Account'; });
@@ -15,6 +18,8 @@ function Account() {
   const [email] = useState("janedoe@gmail.com");
   const [showPopup, setShowPopup] = useState(false);
   const [showCUPopup, setShowCUPopup] = useState(false);
+  const [showQAPopup, setShowQAPopup] = useState(false);
+
   const [showConfPopup, setShowConfPopup] = useState(false);
   const [showValidationPopup, setShowValidationPopup] = useState(false);
   const [showPasswordChangeConf, setShowPasswordChangeConf] = useState(false);
@@ -26,6 +31,10 @@ function Account() {
 
   const toggleCUPopup = () => {
     setShowCUPopup(!showCUPopup); 
+  };
+
+  const toggleQAPopup = () => {
+    setShowQAPopup(!showQAPopup); 
   };
 
   const toggleValidationPopup = () => {
@@ -114,10 +123,15 @@ function Account() {
           </button>
         </div>
       </div>
+
+      <button className="absolute bottom-20 h-7 right-24 mr-3 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline transition-colors" onClick={toggleQAPopup}>
+        <img src={question} alt="Phone Icon" className="w-6 h-6 mr-2" />
+        FAQ
+      </button> 
       
       <button className="absolute bottom-10 right-14 flex items-center text-[#3D7292] hover:text-[#6AABD2] hover:underline transition-colors" onClick={toggleCUPopup}>
         <img src={phone} alt="Phone Icon" className="w-6 h-6 mr-2" />
-        Contact Us
+        Contact us
       </button> 
 
       {showCUPopup && 
@@ -129,6 +143,13 @@ function Account() {
           button="Submit"
           onConfirm={handleCUPopupConfirm}
           handleClose={() => setShowCUPopup(false)}
+        />
+      }
+
+      {showQAPopup && 
+        <QAPopup 
+          button="Done"
+          handleClose={() => setShowQAPopup(false)}
         />
       }
 
