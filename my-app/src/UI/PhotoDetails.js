@@ -99,16 +99,16 @@ function PhotoDetails({
           </div>
 
           {/* Edit and Sold Buttons */}
-          <div className="flex justify-between w-full">
+          <div className="flex justify-center space-x-32 mt-8">
             <button
               onClick={onEdit}
-              className="bg-ccBlue px-9 py-3 rounded-[20px] font-medium text-xl"
+              className="bg-ccBlue font-medium text-black rounded-3xl shadow-md transition-color w-32 h-10 hover:scale-105 hover:rounded-4xl"
             >
               Edit
             </button>
             <button
               onClick={onMarkSold}
-              className="bg-ccBlue px-9 py-3 rounded-[20px] font-medium text-xl"
+              className="bg-ccBlue font-medium text-black rounded-3xl shadow-md transition-color w-32 h-10 hover:scale-105 hover:rounded-4xl"
             >
               Sold
             </button>
