@@ -8,6 +8,7 @@ import Button from '../UI/button';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import RestoreValidation from '../UI/RestoreValidation';
+import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
 
 import pic1 from '../Assets/Photos/pic1.jpg';
@@ -74,10 +75,22 @@ function MapPhotos() {
   
   // Delete an image
   const handleDeleteImage = () => {
-    setFlowers((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('trash')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('trash', JSON.stringify(soldImages));
+
+    setFlowers(updatedFlowers);
     setShowEditPopup(false); // Close the EditPopup after deleting
+    setConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -161,7 +174,7 @@ function MapPhotos() {
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Banff, Canada</h1>
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Paris, France</h1>
 
       <div className="flex">
         <div className="flex justify-center">
@@ -267,13 +280,13 @@ function MapPhotos() {
       </div>
 
       {isValidationVisible && (
-        <RestoreValidation
+        <Validation
           title="Move to Trash?"
           message="Are you sure you want to move the selected photo(s) to trash?"
-          button1Text="Delete"
-          button2Text="Cancel"
+          button1Text="Cancel"
+          button2Text="Delete"
           onBlue={cancelDelete}
-          onGreen={confirmDelete}
+          onRed={confirmDelete}
         />
       )}
 

@@ -9,6 +9,8 @@ import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import Confirmation from '../UI/Confirmation';
 import RestoreValidation from '../UI/RestoreValidation';
+import Validation from '../UI/Validation';
+
 
 import pic1 from '../Assets/Photos/mapPic11.jpg';
 import pic2 from '../Assets/Photos/mapPic12.jpg';
@@ -62,10 +64,22 @@ function MapPhotos() {
   };
   
   const handleDeleteImage = () => {
-    setFlowers((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
-    setShowEditPopup(false); 
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('trash')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('trash', JSON.stringify(soldImages));
+
+    setFlowers(updatedFlowers);
+    setShowEditPopup(false); // Close the EditPopup after deleting
+    setConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -255,13 +269,13 @@ function MapPhotos() {
       </div>
 
       {isValidationVisible && (
-        <RestoreValidation
+        <Validation
           title="Move to Trash?"
           message="Are you sure you want to move the selected photo(s) to trash?"
-          button1Text="Delete"
-          button2Text="Cancel"
+          button1Text="Cancel"
+          button2Text="Delete"
           onBlue={cancelDelete}
-          onGreen={confirmDelete}
+          onRed={confirmDelete}
         />
       )}
 
