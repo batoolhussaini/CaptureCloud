@@ -9,6 +9,7 @@ import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import RestoreValidation from '../UI/RestoreValidation';
 import Confirmation from '../UI/Confirmation';
+import Validation from '../UI/Validation';
 
 import pic1 from '../Assets/Photos/pic1.jpg';
 import pic2 from '../Assets/Photos/mapPic2.avif';
@@ -267,13 +268,13 @@ function MapPhotos() {
       </div>
 
       {isValidationVisible && (
-        <RestoreValidation
+        <Validation
           title="Move to Trash?"
           message="Are you sure you want to move the selected photo(s) to trash?"
-          button1Text="Delete"
-          button2Text="Cancel"
+          button1Text="Cancel"
+          button2Text="Delete"
           onBlue={cancelDelete}
-          onGreen={confirmDelete}
+          onRed={confirmDelete}
         />
       )}
 

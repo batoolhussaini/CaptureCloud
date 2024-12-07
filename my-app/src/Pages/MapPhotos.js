@@ -9,6 +9,7 @@ import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import Confirmation from '../UI/Confirmation';
 import RestoreValidation from '../UI/RestoreValidation';
+import Validation from '../UI/Validation';
 
 import pic1 from '../Assets/Photos/mapPic11.jpg';
 import pic2 from '../Assets/Photos/mapPic12.jpg';
@@ -254,34 +255,33 @@ function MapPhotos() {
         </div>
       </div>
 
-      {isValidationVisible && (
-        <RestoreValidation
-          title="Move to Trash?"
-          message="Are you sure you want to move the selected photo(s) to trash?"
-          button1Text="Delete"
-          button2Text="Cancel"
-          onBlue={cancelDelete}
-          onGreen={confirmDelete}
-        />
-      )}
+        {isValidationVisible && (
+          <Validation
+            title="Move to Trash?"
+            message="Are you sure you want to move the selected photo(s) to trash?"
+            button1Text="Cancel"
+            button2Text="Delete"
+            onBlue={cancelDelete}
+            onRed={confirmDelete}
+          />
+        )}
+        {isConfirmationVisible && (
+            <Confirmation
+            message="Successfully moved to trash."
+            onConfirm={() => setConfirmationVisible(false)}
+          />
+        )}
 
-      {isSoldValidationVisible && (
-        <RestoreValidation
-          title="Mark as Sold?"
-          message="This action will remove the photo from Home and move it to the Sold page"
-          button1Text="Sold"
-          button2Text="Cancel"
-          onBlue={cancelSold}
-          onGreen={confirmSold}
-        />
-      )}
-
-      {isConfirmationVisible && (
-        <Confirmation
-          message="Successfully moved to trash."
-          onConfirm={() => setConfirmationVisible(false)}
-        />
-      )}
+          {isSoldValidationVisible && (
+            <RestoreValidation
+              title="Mark as Sold?"
+              message="This action will remove the photo from Home and move it to the Sold page"
+              button1Text="Sold"
+              button2Text="Cancel"
+              onBlue={cancelSold}
+              onGreen={confirmSold}
+            />
+          )}
 
       {isSoldConfirmationVisible && (
         <Confirmation
