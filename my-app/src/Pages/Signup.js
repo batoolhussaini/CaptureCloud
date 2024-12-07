@@ -129,7 +129,7 @@ function Signup() {
                 <form className="space-y-6" onSubmit={handleCreateAccount} noValidate>
                     <div className="flex items-center">
                         <label htmlFor="full name" className="mr-10 w-32">
-                            *Full Name
+                            Full Name<span className="text-red-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -146,7 +146,7 @@ function Signup() {
 
                     <div className="flex items-center">
                         <label htmlFor="email" className="mr-10 w-32">
-                            *Email
+                        Email<span className="text-red-500">*</span>
                         </label>
                         <input
                             type="email"
@@ -165,7 +165,7 @@ function Signup() {
 
                     <div className="flex items-center relative">
                         <label htmlFor="password" className="mr-10 w-32">
-                            *Password
+                            Password<span className="text-red-500">*</span>
                         </label>
                         <input
                                 type={showPassword ? "text" : "password"}
@@ -226,7 +226,7 @@ function Signup() {
 
                     <div className="flex items-center relative h-10">
                         <label htmlFor="password" className="mr-10 w-32">
-                            *Confirm Password
+                            Confirm Password<span className="text-red-500">*</span>
                         </label>
                         <input
                             type={showConfirmPassword ? "text" : "password"} 
