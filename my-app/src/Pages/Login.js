@@ -136,7 +136,7 @@ function Login() {
                     </div>
                     
                     <div className="flex items-center justify-between">
-                        <label className="flex items-center text-sm text-black ml-48">
+                        <label className="flex items-center text-sm text-black ml-48 h-2">
                             <input
                                 type="checkbox"
                                 className="mr-2"
