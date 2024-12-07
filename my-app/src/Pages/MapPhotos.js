@@ -11,7 +11,6 @@ import Confirmation from '../UI/Confirmation';
 import RestoreValidation from '../UI/RestoreValidation';
 import Validation from '../UI/Validation';
 
-
 import pic1 from '../Assets/Photos/mapPic11.jpg';
 import pic2 from '../Assets/Photos/mapPic12.jpg';
 import pic3 from '../Assets/Photos/mapPic13.webp';

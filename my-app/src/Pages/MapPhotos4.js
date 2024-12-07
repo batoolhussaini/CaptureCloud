@@ -10,6 +10,7 @@ import PhotoDetails from '../UI/PhotoDetails.js';
 import RestoreValidation from '../UI/RestoreValidation';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
+import Validation from '../UI/Validation';
 
 import pic1 from '../Assets/Photos/mapPic22.jpeg';
 import pic2 from '../Assets/Photos/mapPic21.webp';
