@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
 import { useNavigate } from 'react-router-dom';
+import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 
 function AllTags() {
   const tags = ['Animal', 'Bear', 'Campus', 'Cloud', 'Garden', 'Nature', 'Red', 'Sunset', 'Wedding'];
@@ -15,6 +16,9 @@ function AllTags() {
       console.log(`Clicked on tag: ${tag}`);
     }
   };
+  const handleBackClick = () => {
+    navigate('/home'); // Adjust this route to the correct path
+  };
 
   return (
     <div className="flex flex-col">
@@ -27,6 +31,15 @@ function AllTags() {
         </div>
 
         <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Tags</h1>
+        <div className="fixed left-48 top-20 z-10"> 
+        <img
+          src={leftArrowIcon}
+          alt="Back"
+          className="w-8 h-8 mt-5 cursor-pointer"
+          title="Back to Home"
+          onClick={handleBackClick}
+        />
+        </div>
 
         {/* Centering the tags container */}
         <div className="flex justify-center items-center mt-8">
