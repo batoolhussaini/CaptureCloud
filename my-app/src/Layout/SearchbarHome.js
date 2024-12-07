@@ -89,7 +89,7 @@ function SearchbarHome({ onSearchUpdate, defaultSearch = '' }) {
             ) : (
               <li className="px-4 py-2 text-gray-500">No tags found</li>
             )}
-            <Link to="/tagslist">
+            <Link to="/all-tags">
               <li className="px-4 py-2 text-blue-500 cursor-pointer hover:bg-gray-100">View all tags...</li>
             </Link>
           </ul>

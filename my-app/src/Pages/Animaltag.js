@@ -42,14 +42,7 @@ function Animaltag() {
           <img src={logo} alt="Logo" className="w-32 ml-32" />
         </div>
 
-        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Home</h1>
-
-        <div className="relative mt-4 flex items-center justify-center ml-32">
-          <SearchbarHome
-            onSearchUpdate={handleSearchUpdate}
-            defaultSearch={isAnimalSelected ? "" : "Animal"} 
-          />
-        </div>
+        <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Animal</h1>
 
         <div className="flex flex-row flex-wrap mt-8 items-start justify-center gap-10 ml-32">
           {images.map((image, index) => (

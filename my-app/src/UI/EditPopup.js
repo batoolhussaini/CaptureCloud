@@ -177,6 +177,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
           src={plusButton}
           onClick={handleAddTag}
           alt="Add Tag"
+          title = "Add Tag"
           className="cursor-pointer m-1 bg-text-c p-1 rounded-full w-9 h-9"
         />
         </div>
@@ -196,6 +197,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               {tag}
               <button
                 onClick={() => handleRemoveTag(tag)}
+                title = "Remove tag"
                 className="ml-1 text-black"
               >
                 &times;
