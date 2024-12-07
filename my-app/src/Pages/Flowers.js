@@ -210,7 +210,7 @@ function Flowers() {
                 src={editIcon}
                 alt="Edit Icon"
                 className="w-5 h-5 mt-1 cursor-pointer"
-                title="Edit Album"
+                title="Rename album"
               />
             </button>
           </div>

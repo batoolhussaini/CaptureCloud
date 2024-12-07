@@ -18,7 +18,8 @@ function Album() {
   const [albums, setAlbums] = useState(() => {
     const savedAlbums = localStorage.getItem('albums');
     return savedAlbums ? JSON.parse(savedAlbums) : [
-      { name: "Flowers", icon: folderIcon } 
+      { name: "Flowers", icon: folderIcon },
+      { name: "Cats", icon: folderIcon },
     ];
   });
 
@@ -110,6 +111,7 @@ function Album() {
           </button>
         </div>
 
+        {/* Flowers Album */}
         {!flowersAlbum.includes("Flowers") && (
           <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
             <div
@@ -144,6 +146,39 @@ function Album() {
             <span className="text-center text-blue-400">Flowers</span>
           </div>
         )}
+
+        <div className="flex flex-col items-center space-y-1 w-1/4 mt-16"> 
+          <div
+            onClick={(e) => isSelected ? handleAlbumSelect("Cats", e) : null}
+            className={`cursor-pointer ${isSelected && selectedAlbums.includes("Cats") ? 'border-4 border-yellow-200 rounded-2xl relative' : 'rounded-2xl'}`}
+          >
+            {isSelected && selectedAlbums.includes("Cats") && (
+              <img 
+                src={checkIcon} 
+                alt="Checkmark" 
+                className="absolute top-2 right-2 w-5 h-5"
+              />
+            )}
+
+            {!isSelected && (
+              <Link to="/cats">
+                <img 
+                  src={folderIcon} 
+                  alt="Cats Album" 
+                  className="h-[160px] w-[210px]" 
+                />
+              </Link>
+            )}
+            {isSelected && (
+              <img 
+                src={folderIcon} 
+                alt="Cats Album" 
+                className="h-[160px] w-[210px]" 
+              />
+            )}
+          </div>
+          <span className="text-center text-blue-400">Cats</span>
+        </div>
 
         {albums.map((album) => (
           <div key={album.name} className="flex flex-col items-center space-y-50 p-4 w-1/4">
@@ -226,10 +261,9 @@ function Album() {
         />
       )}
 
-    
       <div className="fixed bottom-4 left-[250px] transform -translate-x-1/2 text-medium mb-4 right-94">
         <p className="text-black font-small">
-        Total Albums: {albums.length + (flowersAlbum.includes("Flowers") ? 0 : 1)}
+          Total Albums: {albums.length + 1 + (flowersAlbum.includes("Flowers") ? 0 : 1)}
         </p>
       </div>
     </div>

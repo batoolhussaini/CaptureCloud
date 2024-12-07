@@ -293,7 +293,7 @@ function AlbumDetails() {
                 src={editIcon}
                 alt="Edit Icon"
                 className="w-4 h-5 mt-0 cursor-pointer"
-                title="Edit Name"
+                title="Rename album"
               />
             </button>
           </div>

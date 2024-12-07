@@ -21,6 +21,8 @@ import MapPhotos5 from './Pages/MapPhotos5'
 import TagsList from './Pages/TagsList';
 import Animaltag from './Pages/Animaltag';
 import Skytag from './Pages/Skytag';
+import Cats from './Pages/Cats';
+
 
 
 
@@ -52,6 +54,7 @@ function App() {
         <Route path="/tagslist" element={<TagsList />} />
         <Route path="/animaltag" element={<Animaltag />} />
         <Route path="/skytag" element={<Skytag />} />
+        <Route path="/cats" element={<Cats />} />
       </Routes>
     </Router>
   );
