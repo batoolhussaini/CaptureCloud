@@ -5,7 +5,7 @@ import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 import { useNavigate } from 'react-router-dom';
 
 function AllTags() {
-  const tags = ['Adventure', 'Beach', 'Cityscape', 'Fog', 'Forest', 'Mountain', 'Ocean', 'Portrait', 'Sky', 'Travel', 'Wildlife', 'Landscape', 'Architecture', 'Flowers', 'Autumn', 'Night', 'Stars', 'Lakeside', 'Roadtrip', 'Abstract'];
+  const tags = ['Animal', 'Beach', 'Fox', 'Forest', 'Mountain','Nature', 'Sky','Summer', 'Autumn', 'Night'];
   const navigate = useNavigate();
   const handleTagClick = (tag) => {
     if (tag === 'Sky') {

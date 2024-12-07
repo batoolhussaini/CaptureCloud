@@ -27,8 +27,8 @@ function Statistics() {
     const fixedData = () => {
       const labels1 = ['Sold', 'Unsold'];
       const data1 = [37, 63];
-      const labels2 = ['Nature', 'Wedding', 'Flower', 'Sunset', 'Garden'];
-      const data2 = [15, 30, 25, 10, 20];
+      const labels2 = ['Nature', 'Animal', 'Flower', 'Street', 'Sunflower'];
+      const data2 = [15, 30, 25, 25, 5];
 
       setChartData({
         chart1: {

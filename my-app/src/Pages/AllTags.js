@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import leftArrowIcon from '../Assets/Icons/Arrow left.png';
 
 function AllTags() {
-  const tags = ['Animal', 'Bear', 'Campus', 'Cloud', 'Garden', 'Nature', 'Red', 'Sunset', 'Wedding'];
+  const tags = ['Animal', 'Cloud', 'Deer', 'Garden', 'Nature', 'Red', 'Rose', 'Street', 'Sunflower'];
   const navigate = useNavigate();
 
   const handleTagClick = (tag) => {
