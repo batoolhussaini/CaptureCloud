@@ -400,43 +400,47 @@ function Sold() {
         </div>
 
       {/* Image Boxes */}
-      <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12">
-  {combinedImages.map((image, index) => (
-    <div key={image.id} className="relative group">
-      <div
-        onClick={() => (isSelected ? handleImageSelect(image.id) : handleOpenPhotoDetails(index))}
-        onMouseEnter={() => setHovered(index)}
-        onMouseLeave={() => setHovered(null)}
-        className={`relative cursor-pointer rounded-2xl transform transition-transform duration-200 ${
-          hovered === index ? 'scale-105' : ''
-        } ${isSelected && selectedImages.includes(image.id) ? 'border-4 border-yellow-200' : ''}`}
-        style={{ width: '12rem', height: '10.5rem' }}
-      >
-        <img
-          src={image ? image.url : ''}
-          alt={`Preview ${index}`}
-          className={`object-cover rounded-2xl shadow-lg ${isSelected && selectedImages.includes(image.id) ? 'filter brightness-50' : ''}`}
-          style={{ width: '100%', height: '100%' }}
-        />
-        {isSelected && selectedImages.includes(image.id) && (
-          <img
-            src={checkIcon}
-            alt="Checkmark"
-            className="absolute top-3 right-3 w-6 h-5 z-10"
-          />
-        )}
-        {!isSelected && hovered === index && (
-          <img
-            src={fullScreenIcon}
-            alt="Expand"
-            title="Fullscreen"
-            className="absolute top-2 left-2 w-8 h-8 opacity-100 transition-opacity duration-200"
-          />
-        )}
-      </div>
-    </div>
-  ))}
-</div>
+      {combinedImages.length > 0 ? (
+        <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12">
+          {combinedImages.map((image, index) => (
+            <div key={image.id} className="relative group">
+              <div
+                onClick={() => (isSelected ? handleImageSelect(image.id) : handleOpenPhotoDetails(index))}
+                onMouseEnter={() => setHovered(index)}
+                onMouseLeave={() => setHovered(null)}
+                className={`relative cursor-pointer rounded-2xl transform transition-transform duration-200 ${
+                  hovered === index ? 'scale-105' : ''
+                } ${isSelected && selectedImages.includes(image.id) ? 'border-4 border-yellow-200' : ''}`}
+                style={{ width: '12rem', height: '10.5rem' }}
+              >
+                <img
+                  src={image ? image.url : ''}
+                  alt={`Preview ${index}`}
+                  className={`object-cover rounded-2xl shadow-lg ${isSelected && selectedImages.includes(image.id) ? 'filter brightness-50' : ''}`}
+                  style={{ width: '100%', height: '100%' }}
+                />
+                {isSelected && selectedImages.includes(image.id) && (
+                  <img
+                    src={checkIcon}
+                    alt="Checkmark"
+                    className="absolute top-3 right-3 w-6 h-5 z-10"
+                  />
+                )}
+                {!isSelected && hovered === index && (
+                  <img
+                    src={fullScreenIcon}
+                    alt="Expand"
+                    title="Fullscreen"
+                    className="absolute top-2 left-2 w-8 h-8 opacity-100 transition-opacity duration-200"
+                  />
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className=" text-xl ml-32 text-gray-500 text-center mt-12">No photos available.</p>
+      )}
 
 
       {showModal && currentImage && (

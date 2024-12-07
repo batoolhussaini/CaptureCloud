@@ -263,7 +263,7 @@ function Trash() {
           ))}
         </div>
       ) : (
-        <p className="ml-32 text-center">Trash is empty.</p>
+        <p className="text-xl ml-32 text-gray-500 text-center">Trash is empty.</p>
       )}
 
       <div
