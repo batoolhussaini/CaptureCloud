@@ -18,6 +18,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
   const [showExitWarning, setShowExitWarning] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState(image.album || '');
   const [tagErrorMessage, setTagErrorMessage] = useState('');
+  const [captionErrorMessage, setCaptionErrorMessage] = useState('');
   const [showValidation, setShowValidation] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const imageRef = useRef(null);
@@ -32,6 +33,16 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
       setTagErrorMessage('Tag already exists.');
     } else {
       setTagErrorMessage('Please write a tag before adding.');
+    }
+  };
+
+  const handleCaptionChange = (e) => {
+    const newCaption = e.target.value;
+    if (newCaption.length > 60) {
+      setCaptionErrorMessage('Caption cannot exceed 60 characters.');
+    } else {
+      setCaptionErrorMessage(''); // Clear the error message if valid
+      setCaption(newCaption);
     }
   };
 
@@ -126,10 +137,15 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
               id="caption"
               type="text"
               value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              onChange={handleCaptionChange}
               className="w-[500px] border-2 text-gray-500 italic text-c rounded-full p-1 border-text-c"
               placeholder="Enter a caption, 60 characters max"
             />
+
+          {/* Display Error Message */}
+          {captionErrorMessage && (
+          <div className="text-red-500 text-center mt-4">{captionErrorMessage}</div>
+        )}
           </div>
 
   {/* Album Selection */}
