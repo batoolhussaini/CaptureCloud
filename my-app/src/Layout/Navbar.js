@@ -23,7 +23,7 @@ import globeSelectedIcon from '../Assets/Icons/Globe-s.png';
 function Navbar() {
   const location = useLocation(); 
   const isAlbumDetailPage = location.pathname.startsWith('/album/');
-  const isAlbumsPage = location.pathname === '/albums' || isAlbumDetailPage || location.pathname === '/flowers';;
+  const isAlbumsPage = location.pathname === '/albums' || isAlbumDetailPage || location.pathname === '/flowers' || location.pathname === '/cats';
   const navigate = useNavigate();
 
 
@@ -57,7 +57,7 @@ function Navbar() {
 
       <div className="space-y-10 " style={{ paddingTop: '6vh'}}>
       <Link to="/home" className="flex items-center space-x-2 ml-8 hover:font-bold" onClick={(event) => handleNavigation(event, '/home')}>
-      {location.pathname === '/home' ? (
+      {location.pathname === '/home' || location.pathname === '/animaltag' ? (
         <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
           <img src={homeSelectedIcon} alt="Home" style={{ height: '3vh', width: '3vh' }} />
           <span className="ml-2 text-white">Home</span>
@@ -71,19 +71,19 @@ function Navbar() {
     </Link>
 
 
-        <Link to="/sold" className="flex items-center space-x-2 ml-8 hover:font-bold" onClick={(event) => handleNavigation(event, '/sold')}>
-          {location.pathname === '/sold' ? (
-            <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
+          <Link to="/sold" className="flex items-center space-x-2 ml-8 hover:font-bold" onClick={(event) => handleNavigation(event, '/sold')}>
+        {location.pathname === '/sold' || location.pathname === '/skytag' ? (
+          <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
             <img src={soldSelectedIcon} alt="Sold" style={{ height: '3vh', width: '3vh' }}/>
             <span className="ml-2 text-white">Sold</span>
           </div>
-          ) : (
-            <>
-              <img src={soldIcon} alt="Sold" style={{ height: '3vh', width: '3vh' }} />
-              <span>Sold</span>
-            </>
-          )}
-        </Link>
+        ) : (
+          <>
+            <img src={soldIcon} alt="Sold" style={{ height: '3vh', width: '3vh' }} />
+            <span>Sold</span>
+          </>
+        )}
+      </Link>
 
         <Link to="/upload" className="flex items-center space-x-2 ml-8 hover:font-bold">
           {location.pathname === '/upload' ? (
