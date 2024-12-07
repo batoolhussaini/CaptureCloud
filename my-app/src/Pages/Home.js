@@ -430,7 +430,7 @@ function Home() {
           <img
             src={checkIcon}
             alt="Checkmark"
-            className="absolute top-3 left-3 w-6 h-5 z-10"
+            className="absolute top-3 right-3 w-6 h-5 z-10"
           />
         )}
         {!isSelected && hovered === index && (
