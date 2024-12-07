@@ -146,7 +146,7 @@ function Animaltag() {
       <div className="flex">
         <div className="flex-1 p-6">
           
-          <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-1 gap-y-12 ml-[200px]">
+          <div className="mt-12 grid grid-cols-4 sm:grid-cols-4 lg:grid-cols-4 gap-1 gap-y-12 mr-10 ml-[250px]">
             {images.map((image, index) => (
               <div
                 key={index}
