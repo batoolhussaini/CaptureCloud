@@ -9,7 +9,8 @@ function AllTags() {
   const navigate = useNavigate();
   const handleTagClick = (tag) => {
     if (tag === 'Sky') {
-      window.location.href = '/skytag'; 
+      localStorage.setItem("pageBeforeSkyTag", JSON.stringify('/tagslist')); // Set All Tags page as the page before Animal Tag page
+      navigate('/skytag');
     } else {
       console.log(`Clicked on tag: ${tag}`);
     }
