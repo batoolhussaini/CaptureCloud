@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../Layout/Navbar.js';
-import Searchbar from '../Layout/Searchbar.js';
+
 import logo from '../Assets/Logo/Logo.png';
 
 function Animaltag() {
@@ -36,25 +36,6 @@ function Animaltag() {
         </div>
 
         <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Sky</h1>
-
-        {/* <div className="relative mt-4 flex items-center justify-center ml-32">
-        <button
-            className="absolute bg-[#FFFFFF] px-7 py-3 rounded-full z-10 flex items-center justify-between"
-            style={{ left: '41%' }}></button>
-          <button
-            className="absolute bg-[#CEECF5] text-blue-800 px-3 py-0.5 rounded-full z-10 flex items-center justify-between"
-            style={{ left: '39%' }}>
-            <span>Sky</span>
-            <button
-              onClick={() => console.log('X button clicked')}
-              className="text-blue-800 ml-2 text-sm rounded-full hover:text-red-500 focus:outline-none"
-              aria-label="Close"
-            >
-              x
-            </button>
-          </button>
-          {/* <Searchbar className="z-0 ml-32 w-80" placeholder="Search by tag..." /> 
-        </div>*/}
 
         <div className="mt-12 grid grid-cols-4 gap-16 ml-[290px] mr-[70px] gap-y-12 mb-20">
           {images.map((image, index) => (

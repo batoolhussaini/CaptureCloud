@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../Layout/Navbar.js';
 import SearchbarHome from '../Layout/SearchbarHome.js';
 import logo from '../Assets/Logo/Logo.png';
@@ -368,17 +369,19 @@ function Home() {
               <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
                 &#9733; Favourites
               </button>
-              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-                Nature
-              </button>
-              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-                Summer
-              </button>
-              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-                Beach
-              </button>
+              <Link to="/animaltag">
               <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
                 Animal
+              </button>
+              </Link>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                rose
+              </button>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                sunflower
+              </button>
+              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                street
               </button>
               <button
                 className={`mb-5 text-xl font-bold ${
