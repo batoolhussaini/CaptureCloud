@@ -57,7 +57,7 @@ function Navbar() {
 
       <div className="space-y-10 " style={{ paddingTop: '6vh'}}>
       <Link to="/home" className="flex items-center space-x-2 ml-8 hover:font-bold" onClick={(event) => handleNavigation(event, '/home')}>
-      {location.pathname === '/home' || location.pathname === '/animaltag' ? (
+      {location.pathname === '/home' || location.pathname === '/animaltag' || location.pathname === '/all-tags' ? (
         <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
           <img src={homeSelectedIcon} alt="Home" style={{ height: '3vh', width: '3vh' }} />
           <span className="ml-2 text-white">Home</span>
@@ -72,7 +72,7 @@ function Navbar() {
 
 
           <Link to="/sold" className="flex items-center space-x-2 ml-8 hover:font-bold" onClick={(event) => handleNavigation(event, '/sold')}>
-        {location.pathname === '/sold' || location.pathname === '/skytag' ? (
+        {location.pathname === '/sold' || location.pathname === '/skytag' || location.pathname === '/tagslist' ? (
           <div className="bg-selected h-8 w-28 flex items-center justify-center rounded-3xl" style={{ transform: 'translateX(-3vh)' }}>
             <img src={soldSelectedIcon} alt="Sold" style={{ height: '3vh', width: '3vh' }}/>
             <span className="ml-2 text-white">Sold</span>
