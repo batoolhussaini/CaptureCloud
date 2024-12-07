@@ -189,6 +189,7 @@ function Sold() {
 
       }
     });
+    
     localStorage.setItem('home', JSON.stringify(homeImages));
     localStorage.setItem('removedFromSold', JSON.stringify(removedFromSoldImages));
 
@@ -260,7 +261,6 @@ function Sold() {
       setSelectedImageIndex(nextIndex);
       setCurrentImage(updatedImages[nextIndex]);
     }
-    setShowModal(false);
     setRestoreValidationVisible(false);
     setRestoreConfirmationVisible(true);
   };
