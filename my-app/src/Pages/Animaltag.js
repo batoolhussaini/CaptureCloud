@@ -24,6 +24,7 @@ function Animaltag() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
+  
 
   // Open Photo Details modal
   const handleOpenPhotoDetails = (index) => {
@@ -52,7 +53,9 @@ function Animaltag() {
 
   // Back button navigation
   const handleBackClick = () => {
-    navigate('/all-tags'); // Adjust this route to the correct path
+    const pageBeforeAnimalTag = localStorage.getItem("pageBeforeAnimalTag");
+    const navigateTo = pageBeforeAnimalTag ? JSON.parse(pageBeforeAnimalTag) : '/default-path';
+    navigate(navigateTo); // Adjust this route to the correct path
   };
 
   return (

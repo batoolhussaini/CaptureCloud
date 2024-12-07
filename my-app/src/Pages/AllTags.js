@@ -1,13 +1,16 @@
 import React from 'react';
 import Navbar from '../Layout/Navbar.js';
 import logo from '../Assets/Logo/Logo.png';
+import { useNavigate } from 'react-router-dom';
 
 function AllTags() {
   const tags = ['Animal', 'Bear', 'Campus', 'Cloud', 'Garden', 'Nature', 'Red', 'Sunset', 'Wedding'];
+  const navigate = useNavigate();
 
   const handleTagClick = (tag) => {
     if (tag === 'Animal') {
-      window.location.href = '/animaltag'; // Navigate to the AnimalTag page
+      localStorage.setItem("pageBeforeAnimalTag", JSON.stringify('/all-tags')); // Set All Tags page as the page before Animal Tag page
+      navigate('/animaltag');
     } else {
       console.log(`Clicked on tag: ${tag}`);
     }

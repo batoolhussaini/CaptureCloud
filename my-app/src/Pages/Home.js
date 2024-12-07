@@ -306,6 +306,11 @@ function Home() {
     localStorage.setItem("isUploaded", JSON.stringify(false));
   };
 
+  const goToAnimalTag = () => {
+    localStorage.setItem("pageBeforeAnimalTag", JSON.stringify('/home'));   // Set Home page as the page before Animal tag page
+    navigate('/animaltag');
+  };
+
   return (
     <div className="flex flex-col">
       <div className="fixed">
@@ -369,11 +374,9 @@ function Home() {
               <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
                 &#9733; Favourites
               </button>
-              <Link to="/animaltag">
-              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+              <button onClick={goToAnimalTag} className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
                 Animal
               </button>
-              </Link>
               <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
                 rose
               </button>
