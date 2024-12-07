@@ -275,6 +275,11 @@ function Sold() {
     setCurrentImage(combinedImages[nextIndex]);
   };
 
+  const goToSkyTag = () => {
+    localStorage.setItem("pageBeforeSkyTag", JSON.stringify('/sold')); 
+    navigate('/skytag');
+  };
+
   const handlePreviousImage = () => {
     const prevIndex = (selectedImageIndex - 1 + combinedImages.length) % combinedImages.length;
     setSelectedImageIndex(prevIndex);
@@ -364,8 +369,8 @@ function Sold() {
               <button className="bg-blueButton-c text-[#016AC7] px-2 py-1 rounded-full mr-2 mb-2 flex items-center">
                 &#9733; Favourites
               </button>
-              <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
-                Nature
+              <button onClick={goToSkyTag} className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
+                Sky
               </button>
               <button className="bg-blueButton-c text-[#016AC7] px-3 py-1 rounded-full mr-2 mb-2 flex items-center">
                 Summer
@@ -417,7 +422,7 @@ function Sold() {
           <img
             src={checkIcon}
             alt="Checkmark"
-            className="absolute top-3 left-3 w-6 h-5 z-10"
+            className="absolute top-3 right-3 w-6 h-5 z-10"
           />
         )}
         {!isSelected && hovered === index && (
