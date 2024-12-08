@@ -388,6 +388,7 @@ function Sold() {
                     : 'text-gray-500 cursor-not-allowed'
                 }`}
                 onClick={combinedImages.length > 0 ? () => navigate('/tagslist') : null}
+                title="Browse all tags" 
               >
                 All Tags &#10230;
               </button>
