@@ -261,7 +261,7 @@ function EditPopup({ image, onClose, onSave, onDelete }) {
       </div>
       {showValidation && (
         <Validation
-          title="Delete Photo?"
+          title="Move to Trash?"
           message="Are you sure you want to move this photo to trash?"
           onRed={() => {
             onDelete(image); 

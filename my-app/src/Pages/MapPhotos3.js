@@ -7,6 +7,7 @@ import checkIcon from '../Assets/Icons/white_check.png';
 import Button from '../UI/button';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
+import RestoreValidation from '../UI/RestoreValidation';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
 
@@ -32,6 +33,8 @@ function MapPhotos() {
   const [isValidationVisible, setValidationVisible] = useState(false);
   const [isConfirmationVisible, setConfirmationVisible] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false); // Edit popup state
+  const [isSoldConfirmationVisible, setSoldConfirmationVisible] = useState(false);
+  const [isSoldValidationVisible, setSoldValidationVisible] = useState(false);
 
   // Open the first popup (Photo Details)
   const handleOpenPhotoDetails = (index) => {
@@ -57,13 +60,25 @@ function MapPhotos() {
     setShowEditPopup(false); // Close EditPopup
     setShowModal(true); // Reopen the first popup to show updated details
   };
-  
+    
   // Delete an image
   const handleDeleteImage = () => {
-    setFlowers((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('trash')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('trash', JSON.stringify(soldImages));
+
+    setFlowers(updatedFlowers);
     setShowEditPopup(false); // Close the EditPopup after deleting
+    setConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -100,16 +115,51 @@ function MapPhotos() {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
     setFlowers(updatedFlowers);
     const currentTrash = JSON.parse(localStorage.getItem('trash')) || [];
-    const newTrash = [...currentTrash, ...selectedImages];
-    localStorage.setItem('trash', JSON.stringify(newTrash));
+     selectedImages.forEach((id) => {
+      const image = flowers.find((img) => img === id);
+      if (image) {
+        currentTrash.push(image.url);  
+      }
+    });
+    localStorage.setItem('trash', JSON.stringify(currentTrash));
+
     setSelectedImages([]);
     setValidationVisible(false);
     setConfirmationVisible(true);
   };
 
+
   const cancelDelete = () => {
     setValidationVisible(false);
   };
+
+  const handleSold = () => {
+    setSoldValidationVisible(true);
+  };
+
+  const confirmSold = () => {
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('sold')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('sold', JSON.stringify(soldImages));
+
+    setFlowers(updatedFlowers);
+    setSoldValidationVisible(false);
+    setSoldConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
+  };
+
+  const cancelSold = () => {
+    setSoldValidationVisible(false);
+  };
+
   
   return (
     <div className="flex flex-col">
@@ -127,12 +177,11 @@ function MapPhotos() {
         </div>
 
         <div className="flex-1 p-6">
-          <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}
-          >
+          <div className="fixed top-12 right-40 mt-14 mr-6" title={isSelected ? "Cancel Select" : "Select Photo(s)"}>
             <Button
               onClick={handleButtonClick}
               color={isSelected ? 'bg-[#B0B0B0]' : 'bg-[#D9D9D9] hover:bg-[#B0B0B0]'}
-              className="w-36 h-12"            >
+              className="w-36 h-12">
               <span>{isSelected ? 'Cancel' : 'Select'}</span>
             </Button>
           </div>
@@ -142,8 +191,7 @@ function MapPhotos() {
               <Button
                 onClick={handleDeleteSelected}
                 color="bg-[#FF6666] hover:bg-[#e64a19]"
-                className="w-36 h-12"
-              >
+                className="w-36 h-12">
                 Delete Photos
               </Button>
             </div>
@@ -158,14 +206,10 @@ function MapPhotos() {
                     isSelected && selectedImages.includes(image)
                       ? 'border-4 border-yellow-200 rounded-2xl'
                       : 'rounded-2xl'
-                  } relative` }
-                  style={{
-                    width: '12rem',
-                    height: '10.5rem',
-                  }}
+                  } relative`}
+                  style={{ width: '12rem', height: '10.5rem' }}
                   onMouseEnter={() => setHovered(index)}
-                  onMouseLeave={() => setHovered(null)}
-                >
+                  onMouseLeave={() => setHovered(null)}>
                   {isSelected && selectedImages.includes(image) && (
                     <img
                       src={checkIcon}
@@ -173,27 +217,21 @@ function MapPhotos() {
                       className="absolute top-3 left-40 w-6 h-5 z-10"
                     />
                   )}
-
                   <img
                     src={image.url}
                     alt={`Flower ${index + 1}`}
                     className={`h-40 w-48 object-cover rounded-2xl shadow-lg transition-transform duration-200 ${
                       isSelected && selectedImages.includes(image) ? 'filter brightness-50' : ''
-                    } ${
-                      hovered === index && !isSelected ? 'transform scale-105' : ''
-                    }`}
-                    style={{
-                      marginLeft: '-1px',
-                    }}
+                    } ${hovered === index && !isSelected ? 'transform scale-105' : ''}`}
+                    style={{ marginLeft: '-1px' }}
                   />
-
                   {hovered === index && !isSelected && (
-                  <button
-                  onClick={() => handleOpenPhotoDetails(index)}
-                  className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20">
-                  Photo Details
-                  </button>
-              )}
+                    <button
+                      onClick={() => handleOpenPhotoDetails(index)}
+                      className="bg-[#BDD9E2] font-medium absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg text-center w-36 h-10 flex items-center justify-center z-20">
+                      Photo Details
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -206,20 +244,20 @@ function MapPhotos() {
               caption={flowers[selectedImageIndex].caption}
               onClose={() => setShowModal(false)}
               onEdit={handleOpenEditPopup}
-              onNext={handleNextImage} 
-              onPrev={handlePrevImage}  
+              onNext={handleNextImage}
+              onPrev={handlePrevImage}
+              onMarkSold={handleSold}
             />
           )}
 
-        {/* EditPopup Component */}
-        {showEditPopup && selectedImageIndex !== null && (
-          <EditPopup
-            image={flowers[selectedImageIndex]}
-            onClose={() => setShowEditPopup(false)}
-            onSave={handleSaveEdits}
-            onDelete={handleDeleteImage}
-          />
-        )}
+          {showEditPopup && selectedImageIndex !== null && (
+            <EditPopup
+              image={flowers[selectedImageIndex]}
+              onClose={() => setShowEditPopup(false)}
+              onSave={handleSaveEdits}
+              onDelete={handleDeleteImage}
+            />
+          )}
         </div>
       </div>
 
@@ -238,8 +276,8 @@ function MapPhotos() {
 
       {isValidationVisible && (
         <Validation
-          title="Delete Photos?"
-          message="Are you sure you want to delete the selected photo(s)?"
+          title="Move to Trash?"
+          message="Are you sure you want to move the selected photo(s) to trash?"
           button1Text="Cancel"
           button2Text="Delete"
           onBlue={cancelDelete}
@@ -247,10 +285,28 @@ function MapPhotos() {
         />
       )}
 
+      {isSoldValidationVisible && (
+        <RestoreValidation
+          title="Mark as Sold?"
+          message="This action will remove the photo from Home and move it to the Sold page"
+          button1Text="Sold"
+          button2Text="Cancel"
+          onBlue={cancelSold}
+          onGreen={confirmSold}
+        />
+      )}
+
       {isConfirmationVisible && (
         <Confirmation
-          message="Photo(s) successfully deleted."
+          message="Successfully moved to trash."
           onConfirm={() => setConfirmationVisible(false)}
+        />
+      )}
+
+      {isSoldConfirmationVisible && (
+        <Confirmation
+          message="Successfully moved to the Sold page."
+          onConfirm={() => setSoldConfirmationVisible(false)}
         />
       )}
     </div>
