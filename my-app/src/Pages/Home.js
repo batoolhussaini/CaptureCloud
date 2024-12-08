@@ -389,10 +389,11 @@ function Home() {
               <button
                 className={`mb-5 text-xl font-bold ${
                   combinedImages.length > 0
-                    ? 'text-[#016AC7]'
+                    ? 'text-[#016AC7] '
                     : 'text-gray-500 cursor-not-allowed'
                 }`}
                 onClick={combinedImages.length > 0 ? () => navigate('/all-tags') : null}
+                title="Browse all tags" 
               >
                 All Tags &#10230;
               </button>

@@ -63,10 +63,22 @@ function MapPhotos() {
   };
   
   const handleDeleteImage = () => {
-    setFlowers((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
-    setShowEditPopup(false); 
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('trash')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('trash', JSON.stringify(soldImages));
+
+    setFlowers(updatedFlowers);
+    setShowEditPopup(false); // Close the EditPopup after deleting
+    setConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -255,33 +267,34 @@ function MapPhotos() {
         </div>
       </div>
 
-        {isValidationVisible && (
-          <Validation
-            title="Move to Trash?"
-            message="Are you sure you want to move the selected photo(s) to trash?"
-            button1Text="Cancel"
-            button2Text="Delete"
-            onBlue={cancelDelete}
-            onRed={confirmDelete}
-          />
-        )}
-        {isConfirmationVisible && (
-            <Confirmation
-            message="Successfully moved to trash."
-            onConfirm={() => setConfirmationVisible(false)}
-          />
-        )}
+      {isValidationVisible && (
+        <Validation
+          title="Move to Trash?"
+          message="Are you sure you want to move the selected photo(s) to trash?"
+          button1Text="Cancel"
+          button2Text="Delete"
+          onBlue={cancelDelete}
+          onRed={confirmDelete}
+        />
+      )}
 
-          {isSoldValidationVisible && (
-            <RestoreValidation
-              title="Mark as Sold?"
-              message="This action will remove the photo from Home and move it to the Sold page"
-              button1Text="Sold"
-              button2Text="Cancel"
-              onBlue={cancelSold}
-              onGreen={confirmSold}
-            />
-          )}
+      {isSoldValidationVisible && (
+        <RestoreValidation
+          title="Mark as Sold?"
+          message="This action will remove the photo from Home and move it to the Sold page"
+          button1Text="Sold"
+          button2Text="Cancel"
+          onBlue={cancelSold}
+          onGreen={confirmSold}
+        />
+      )}
+
+      {isConfirmationVisible && (
+        <Confirmation
+          message="Successfully moved to trash."
+          onConfirm={() => setConfirmationVisible(false)}
+        />
+      )}
 
       {isSoldConfirmationVisible && (
         <Confirmation

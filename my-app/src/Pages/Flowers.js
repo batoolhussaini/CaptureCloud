@@ -13,6 +13,7 @@ import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import Validation from '../UI/Validation';
 import Confirmation from '../UI/Confirmation';
+import RestoreValidation from '../UI/RestoreValidation';
 
 import pic1 from '../Assets/Photos/pic1.jpg';
 import pic2 from '../Assets/Photos/pic2.jpg';
@@ -22,12 +23,6 @@ import pic5 from '../Assets/Photos/pic5.jpg';
 import pic6 from '../Assets/Photos/pic6.avif';
 
 function Flowers() {
-  useEffect(() => {
-    document.title = 'Albums';
-  });
-  const navigate = useNavigate();
-  const [isSelected, setIsSelected] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
   const [flowers, setFlowers] = useState([
     { url: pic1, caption: '', tags: ['pink'], isStarred: false, album: 'Flowers' },
     { url: pic2, caption: '', tags: [], isStarred: false, album: 'Flowers' },
@@ -36,6 +31,34 @@ function Flowers() {
     { url: pic5, caption: '', tags: [], isStarred: false, album: 'Flowers' },
     { url: pic6, caption: '', tags: [], isStarred: false, album: 'Flowers' },
   ]);
+
+  useEffect(() => {
+    document.title = 'Albums';
+
+     // Removing the already deleted or removed images
+     const removedFromHome = JSON.parse(localStorage.getItem('removedFromFlowers')) || [];    // Get the images that were removed from home page
+    
+     const removalCount = {};
+     removedFromHome.forEach((url) => {
+       removalCount[url] = (removalCount[url] || 0) + 1;
+     });
+ 
+     const updatedImages = flowers.filter((image) => {
+       if (removalCount[image.url]) {
+         removalCount[image.url]--;
+         return false;
+       }
+       return true;
+     });
+
+     setFlowers(updatedImages);
+ 
+     localStorage.setItem('removedFromFlowers', JSON.stringify(removedFromHome));
+ 
+  });
+  const navigate = useNavigate();
+  const [isSelected, setIsSelected] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
   const [isRenamePopupOpen, setIsRenamePopupOpen] = useState(false);
   const [albumName, setAlbumName] = useState('Flowers');
   const [hovered, setHovered] = useState(null);
@@ -47,6 +70,8 @@ function Flowers() {
   const fileInputRef = useRef(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploadConfirmationVisible, setUploadConfirmationVisible] = useState(false);
+  const [isSoldValidationVisible, setSoldValidationVisible] = useState(false);
+  const [isSoldConfirmationVisible, setSoldConfirmationVisible] = useState(false);
 
   const handleOpenPhotoDetails = (index) => {
     setSelectedImageIndex(index);
@@ -69,9 +94,30 @@ function Flowers() {
   };
 
   const handleDeleteImage = () => {
-    setFlowers((prevImages) => prevImages.filter((_, index) => index !== selectedImageIndex));
-    setShowEditPopup(false); 
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('trash')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('trash', JSON.stringify(soldImages));
+
+    // Collect the image to be deleted from Home page
+    const removedFromHomeImages = JSON.parse(localStorage.getItem('removedFromFlowers')) || [];
+    removedFromHomeImages.push(imageToSell.url);
+    localStorage.setItem('removedFromFlowers', JSON.stringify(removedFromHomeImages));
+
+
+    setFlowers(updatedFlowers);
+    setShowEditPopup(false); // Close the EditPopup after deleting
+    setConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
+
 
   const handleBackClick = () => {
     navigate('/albums');
@@ -156,6 +202,16 @@ function Flowers() {
     const currentTrash = JSON.parse(localStorage.getItem('trash')) || [];
     const newTrash = [...currentTrash, ...selectedImages];
     localStorage.setItem('trash', JSON.stringify(newTrash));
+
+    const removedFromHomeImages = JSON.parse(localStorage.getItem('removedFromFlowers')) || [];
+    selectedImages.forEach((id) => {
+      const image = flowers.find((img) => img.id === id);
+      if (image) {
+        removedFromHomeImages.push(image.url);
+      }
+    });
+    localStorage.setItem('removedFromFlowers', JSON.stringify(removedFromHomeImages));
+
     setSelectedImages([]);
     setValidationVisible(false);
     setConfirmationVisible(true);
@@ -184,6 +240,39 @@ function Flowers() {
 
   const handlePrevImage = () => {
     setSelectedImageIndex((prevIndex) => (prevIndex - 1 + flowers.length) % flowers.length);
+  };
+
+  const handleSold = () => {
+    setSoldValidationVisible(true);
+  };
+
+  const cancelSold = () => {
+    setSoldValidationVisible(false);
+  };
+
+  const confirmSold = () => {
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('sold')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('sold', JSON.stringify(soldImages));
+
+    // Collect the image to be deleted from Home page
+    const removedFromHomeImages = JSON.parse(localStorage.getItem('removedFromFlowers')) || [];
+    removedFromHomeImages.push(imageToSell.url);
+    localStorage.setItem('removedFromFlowers', JSON.stringify(removedFromHomeImages));
+
+
+    setFlowers(updatedFlowers);
+    setSoldValidationVisible(false);
+    setSoldConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
 
   return (
@@ -297,6 +386,7 @@ function Flowers() {
               caption={flowers[selectedImageIndex].caption}
               onClose={() => setShowModal(false)}
               onEdit={handleOpenEditPopup}
+              onMarkSold={handleSold}
               onNext={handleNextImage}
               onPrev={handlePrevImage}
             />
@@ -348,10 +438,28 @@ function Flowers() {
         />
       )}
 
+      {isSoldValidationVisible && (
+        <RestoreValidation
+          title="Mark as Sold?"
+          message="This action will remove the photo from Home and move it to the Sold page"
+          button1Text="Sold"
+          button2Text="Cancel"
+          onBlue={cancelSold}
+          onGreen={confirmSold}
+        />
+      )}
+
       {isConfirmationVisible && (
         <Confirmation
           message="Successfully moved to trash."
           onConfirm={() => setConfirmationVisible(false)}
+        />
+      )}
+
+      {isSoldConfirmationVisible && (
+        <Confirmation
+          message="Successfully moved to the Sold page."
+          onConfirm={() => setSoldConfirmationVisible(false)}
         />
       )}
 

@@ -8,8 +8,8 @@ import Button from '../UI/button';
 import EditPopup from '../UI/EditPopup.js';
 import PhotoDetails from '../UI/PhotoDetails.js';
 import RestoreValidation from '../UI/RestoreValidation';
-import Confirmation from '../UI/Confirmation';
 import Validation from '../UI/Validation';
+import Confirmation from '../UI/Confirmation';
 
 import pic1 from '../Assets/Photos/mapPic15.jpg';
 import pic2 from '../Assets/Photos/mapPic20.jpg';
@@ -60,13 +60,25 @@ function MapPhotos() {
     setShowEditPopup(false); // Close EditPopup
     setShowModal(true); // Reopen the first popup to show updated details
   };
-  
+    
   // Delete an image
   const handleDeleteImage = () => {
-    setFlowers((prevImages) =>
-      prevImages.filter((_, index) => index !== selectedImageIndex)
-    );
+    const imageToSell = flowers[selectedImageIndex];
+    const updatedFlowers = flowers.filter((_, index) => index !== selectedImageIndex);
+
+    const soldImages = JSON.parse(localStorage.getItem('trash')) || [];
+    soldImages.push(imageToSell.url);
+    localStorage.setItem('trash', JSON.stringify(soldImages));
+
+    setFlowers(updatedFlowers);
     setShowEditPopup(false); // Close the EditPopup after deleting
+    setConfirmationVisible(true);
+
+    if (updatedFlowers.length > 0) {
+      setSelectedImageIndex(selectedImageIndex % updatedFlowers.length);
+    } else {
+      setShowModal(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -103,12 +115,19 @@ function MapPhotos() {
     const updatedFlowers = flowers.filter((image) => !selectedImages.includes(image));
     setFlowers(updatedFlowers);
     const currentTrash = JSON.parse(localStorage.getItem('trash')) || [];
-    const newTrash = [...currentTrash, ...selectedImages];
-    localStorage.setItem('trash', JSON.stringify(newTrash));
+     selectedImages.forEach((id) => {
+      const image = flowers.find((img) => img === id);
+      if (image) {
+        currentTrash.push(image.url);  
+      }
+    });
+    localStorage.setItem('trash', JSON.stringify(currentTrash));
+
     setSelectedImages([]);
     setValidationVisible(false);
     setConfirmationVisible(true);
   };
+
 
   const cancelDelete = () => {
     setValidationVisible(false);
@@ -150,7 +169,7 @@ function MapPhotos() {
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="mt-2 w-32 ml-32" />
       </div>
-      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Banff, Canada</h1>
+      <h1 className="text-5xl text-center mb-6 text-[#6AABD2] mt-6 ml-32">Ontario, Canada</h1>
 
       <div className="flex">
         <div className="flex justify-center">
